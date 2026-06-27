@@ -1,37 +1,48 @@
 extends Node2D
 
 # ============================================================
-#  MINIGAME WAVES  -  LADO DIREITO (emocional)  -  teclas J K L
-#  Versão integrada: largura 640, pontua por manter as ondas
-#  estáveis (score/META) e falha por colapso (falhou). O Hub
-#  decide o fim.
+#  MINIGAME WAVES  -  LÓGICA PURA (lado emocional / J K L)
+#
+#  Este script NÃO desenha nada. Toda parte visual está na CENA
+#  (MinigameWaves.tscn) como nós de verdade que você pode mover,
+#  restilizar e trocar por assets no editor.
+#
+#  O script só:
+#   - roda a lógica (níveis, agitação, foco, colapso, score)
+#   - ALIMENTA os nós: pontos da Line2D, cor da zona, texto dos
+#     labels, escala das barras.
+#
+#  Nós que ele espera encontrar na cena (mude o visual à vontade,
+#  só mantenha os NOMES):
+#   Canais/CanalJ|CanalK|CanalL  -> cada um com: Onda(Line2D),
+#       Zona(ColorRect), Tecla(Label), Emo(Label), Status(Label)
+#   HUD/ScoreLabel, HUD/FalaLabel
+#   HUD/BarraScoreFill, HUD/BarraFocoFill, HUD/BarraColapsoFill (ColorRect)
 # ============================================================
 
-const LARGURA: float = 640.0
-const H: float = 720.0
-
+# desenho das ondas (relativo ao nó do canal -> posição vem da cena)
+@export var largura_onda: float = 640.0
 const NIVEL_PX: float = 56.0
 const AGIT_PX: float = 52.0
-const ZONA: float = 26.0
 
-const PULL_NIVEL: float = 2.2      # TUNE (puxada mais forte)
-const PULL_AGIT: float = 2.0       # TUNE
-const DRAIN: float = 16.0          # TUNE (gasta menos foco)
-const RECUP_FOCO: float = 24.0     # TUNE (recupera mais rápido)
-const RED_THRESH: float = 0.70
-
-const RATE_SCORE: float = 110.0    # TUNE: pontos/s quando 100% estável
+# regulação / dificuldade (agora editável no Inspector)
+@export var PULL_NIVEL: float = 2.2
+@export var PULL_AGIT: float = 2.0
+@export var DRAIN: float = 16.0
+@export var RECUP_FOCO: float = 24.0
+@export var RED_THRESH: float = 0.70
+@export var RATE_SCORE: float = 110.0
 
 # --- contrato com o Hub ---
-var META: int = 3000
+@export var META: int = 1800
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
 
 var CANAIS := [
-	{"code": KEY_J, "label": "J", "emo": "ANSIEDADE", "cor": Color("ff7bbf"), "base": 200.0, "nivel": 0.0, "agit": 0.0, "fase": 0.0, "held": false, "flash": 0.0},
-	{"code": KEY_K, "label": "K", "emo": "TRISTEZA",  "cor": Color("c850ff"), "base": 360.0, "nivel": 0.0, "agit": 0.0, "fase": 1.0, "held": false, "flash": 0.0},
-	{"code": KEY_L, "label": "L", "emo": "RAIVA",     "cor": Color("ff6a3d"), "base": 520.0, "nivel": 0.0, "agit": 0.0, "fase": 2.0, "held": false, "flash": 0.0},
+	{"nome": "CanalJ", "code": KEY_J, "label": "J", "emo": "ANSIEDADE", "cor": Color("ff7bbf"), "nivel": 0.0, "agit": 0.0, "fase": 0.0, "held": false},
+	{"nome": "CanalK", "code": KEY_K, "label": "K", "emo": "TRISTEZA",  "cor": Color("c850ff"), "nivel": 0.0, "agit": 0.0, "fase": 1.0, "held": false},
+	{"nome": "CanalL", "code": KEY_L, "label": "L", "emo": "RAIVA",     "cor": Color("ff6a3d"), "nivel": 0.0, "agit": 0.0, "fase": 2.0, "held": false},
 ]
 
 const FALAS := [
@@ -48,14 +59,35 @@ var foco: float = 100.0
 var colapso: float = 0.0
 var dist_timer: float = 3.5
 var _score_f: float = 0.0
+var _fala_t: float = 0.0
 
-var _popups: Array = []
-var _font: Font
+# refs de nós (resolvidos no _ready)
+var _score_label: Label
+var _fala_label: Label
+var _fill_score: ColorRect
+var _fill_foco: ColorRect
+var _fill_colapso: ColorRect
 
 
 func _ready() -> void:
 	randomize()
-	_font = ThemeDB.fallback_font
+	# pega os nós visuais de cada canal
+	for c in CANAIS:
+		var node := $Canais.get_node(c.nome)
+		c["onda"] = node.get_node("Onda")
+		c["zona"] = node.get_node("Zona")
+		c["tecla"] = node.get_node("Tecla")
+		c["status"] = node.get_node("Status")
+		c.tecla.text = c.label
+		var emo: Label = node.get_node("Emo")
+		emo.text = c.emo
+		emo.modulate = Color(c.cor.r, c.cor.g, c.cor.b, 0.7)
+		c.onda.default_color = c.cor
+	_score_label = $HUD/ScoreLabel
+	_fala_label = $HUD/FalaLabel
+	_fill_score = $HUD/BarraScoreFill
+	_fill_foco = $HUD/BarraFocoFill
+	_fill_colapso = $HUD/BarraColapsoFill
 
 
 func reset() -> void:
@@ -65,29 +97,31 @@ func reset() -> void:
 	dist_timer = 3.5
 	score = 0
 	_score_f = 0.0
+	_fala_t = 0.0
 	ativo = true
 	falhou = false
-	_popups.clear()
 	for c in CANAIS:
 		c.nivel = 0.0
 		c.agit = 0.0
 		c.held = false
-		c.flash = 0.0
 
 
+# ------------------------------------------------------------
+#  LÓGICA
+# ------------------------------------------------------------
 func _process(delta: float) -> void:
-	for p in _popups:
-		p.t -= delta
-	_popups = _popups.filter(func(p): return p.t > 0.0)
 	for c in CANAIS:
-		c.flash = maxf(0.0, c.flash - delta * 3.0)
 		c.fase += delta * (2.0 + c.agit * 6.0)
+	if _fala_t > 0.0:
+		_fala_t -= delta
 
-	queue_redraw()
+	if ativo:
+		_atualizar_logica(delta)
 
-	if not ativo:
-		return
+	_aplicar_visual()
 
+
+func _atualizar_logica(delta: float) -> void:
 	tempo += delta
 	var dificuldade: float = 1.0 + tempo / 70.0
 
@@ -124,7 +158,6 @@ func _process(delta: float) -> void:
 	elif pior < 0.45:
 		colapso = maxf(0.0, colapso - 26.0 * delta)
 
-	# pontua por estabilidade
 	_score_f += (1.0 - clampf(pior, 0.0, 1.0)) * RATE_SCORE * delta
 	score = int(_score_f)
 
@@ -138,12 +171,13 @@ func _instab(c) -> float:
 
 
 func _perturbar(dif: float) -> void:
-	var i: int = randi() % CANAIS.size()
-	var c = CANAIS[i]
+	var c = CANAIS[randi() % CANAIS.size()]
 	c.agit = clampf(c.agit + randf_range(0.15, 0.30) * dif, 0.0, 1.4)
 	c.nivel = clampf(c.nivel + randf_range(-0.3, 0.3) * dif, -1.3, 1.3)
-	c.flash = 1.0
-	_popups.append({"x": 40.0, "y": c.base - 64.0, "txt": FALAS[randi() % FALAS.size()], "cor": c.cor, "t": 2.4})
+	if _fala_label:
+		_fala_label.text = "« %s »" % FALAS[randi() % FALAS.size()]
+		_fala_label.modulate = Color(c.cor.r, c.cor.g, c.cor.b, 1.0)
+		_fala_t = 2.4
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -155,71 +189,43 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 
 
-func _draw() -> void:
-	draw_rect(Rect2(0, 0, LARGURA, H), Color("0a0a12"))
-
+# ------------------------------------------------------------
+#  ALIMENTA OS NÓS (sem desenhar nada)
+# ------------------------------------------------------------
+func _aplicar_visual() -> void:
 	for c in CANAIS:
-		_desenhar_canal(c)
+		# pontos da onda (em coords locais do canal; baseline = posição do nó)
+		var pts := PackedVector2Array()
+		var amp: float = (0.06 + c.agit) * AGIT_PX
+		var off: float = c.nivel * NIVEL_PX
+		var x: float = 0.0
+		while x <= largura_onda:
+			var t: float = x * 0.014 + c.fase
+			var y: float = off + sin(t) * amp + sin(t * 2.4 + 1.0) * amp * 0.5 * c.agit
+			y += randf_range(-1.0, 1.0) * amp * 0.3 * c.agit
+			pts.append(Vector2(x, y))
+			x += 6.0
+		c.onda.points = pts
 
-	_texto("EMOCIONAL  (J K L)", Vector2(28, 40), 22, Color("c850ff"))
-	_texto("SCORE: %d" % score, Vector2(LARGURA - 200, 40), 20, Color.WHITE)
-	var pb := Vector2(40, 70)
-	draw_rect(Rect2(pb.x, pb.y, 560, 10), Color(0.12, 0.12, 0.2))
-	draw_rect(Rect2(pb.x, pb.y, 560 * clampf(float(score) / META, 0.0, 1.0), 10), Color("46d6a0"))
-
-	# FOCO
-	var pf := Vector2(40, 636)
-	_texto("FOCO", Vector2(pf.x, pf.y - 8), 14, Color(0.8, 0.85, 1.0))
-	draw_rect(Rect2(pf.x, pf.y, 560, 14), Color(0.12, 0.12, 0.2))
-	draw_rect(Rect2(pf.x, pf.y, 560 * (foco / 100.0), 14), Color(0.4, 0.7, 1.0).lerp(Color(1.0, 0.5, 0.3), 1.0 - foco / 100.0))
-	# COLAPSO
-	var pc := Vector2(40, 678)
-	_texto("RISCO DE COLAPSO", Vector2(pc.x, pc.y - 8), 14, Color(0.8, 0.8, 0.9))
-	draw_rect(Rect2(pc.x, pc.y, 560, 14), Color(0.12, 0.12, 0.2))
-	draw_rect(Rect2(pc.x, pc.y, 560 * (colapso / 100.0), 14), Color(0.3, 1.0, 0.5).lerp(Color(1.0, 0.2, 0.2), colapso / 100.0))
-
-	for p in _popups:
-		var a: float = clampf(p.t / 2.4, 0.0, 1.0)
-		var col: Color = p.cor
-		col.a = a
-		_texto("« %s »" % p.txt, Vector2(p.x, p.y), 17, col)
-
-
-func _desenhar_canal(c) -> void:
-	var inst: float = _instab(c)
-	var cor_zona: Color = Color(0.3, 1.0, 0.5, 0.08).lerp(Color(1.0, 0.3, 0.3, 0.14), clampf(inst, 0.0, 1.0))
-	draw_rect(Rect2(0, c.base - ZONA, LARGURA, ZONA * 2), cor_zona)
-	draw_line(Vector2(0, c.base), Vector2(LARGURA, c.base), Color(1, 1, 1, 0.10), 1.0)
-	if c.held:
-		draw_rect(Rect2(0, c.base - ZONA, LARGURA, ZONA * 2), Color(0.45, 0.8, 1.0, 0.10))
-
-	draw_polyline(_pontos_onda(c), c.cor, 3.0)
-
-	if _font:
-		var cor_lbl: Color = Color.WHITE if c.held else c.cor
-		draw_string(_font, Vector2(20, c.base + 8), c.label, HORIZONTAL_ALIGNMENT_LEFT, -1, 28, cor_lbl)
-		draw_string(_font, Vector2(54, c.base + 6), c.emo, HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color(c.cor.r, c.cor.g, c.cor.b, 0.7))
+		var inst: float = _instab(c)
+		c.zona.color = Color(0.3, 1.0, 0.5, 0.08).lerp(Color(1.0, 0.3, 0.3, 0.14), clampf(inst, 0.0, 1.0))
+		c.tecla.modulate = Color.WHITE if c.held else c.cor
 		if inst > RED_THRESH:
-			draw_string(_font, Vector2(LARGURA - 130, c.base + 6), "INSTÁVEL", HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color(1.0, 0.4, 0.4))
+			c.status.text = "INSTÁVEL"
+			c.status.modulate = Color(1.0, 0.4, 0.4)
 		elif c.held:
-			draw_string(_font, Vector2(LARGURA - 130, c.base + 6), "PUXANDO", HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color(0.5, 0.85, 1.0))
+			c.status.text = "PUXANDO"
+			c.status.modulate = Color(0.5, 0.85, 1.0)
+		else:
+			c.status.text = ""
 
-
-func _pontos_onda(c) -> PackedVector2Array:
-	var pts := PackedVector2Array()
-	var base_y: float = c.base + c.nivel * NIVEL_PX
-	var amp: float = (0.06 + c.agit) * AGIT_PX
-	var x: float = 0.0
-	while x <= LARGURA:
-		var t: float = x * 0.014 + c.fase
-		var y: float = base_y + sin(t) * amp
-		y += sin(t * 2.4 + 1.0) * amp * 0.5 * c.agit
-		y += randf_range(-1.0, 1.0) * amp * 0.3 * c.agit
-		pts.append(Vector2(x, y))
-		x += 6.0
-	return pts
-
-
-func _texto(txt: String, pos: Vector2, tam: int, cor: Color) -> void:
-	if _font:
-		draw_string(_font, pos, txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, cor)
+	if _score_label:
+		_score_label.text = "SCORE: %d" % score
+	if _fill_score:
+		_fill_score.scale.x = clampf(float(score) / META, 0.0, 1.0)
+	if _fill_foco:
+		_fill_foco.scale.x = foco / 100.0
+	if _fill_colapso:
+		_fill_colapso.scale.x = colapso / 100.0
+	if _fala_label:
+		_fala_label.modulate.a = clampf(_fala_t / 2.4, 0.0, 1.0)

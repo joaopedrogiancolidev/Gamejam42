@@ -1,6 +1,205 @@
-[gd_scene load_steps=2 format=3 uid="uid://dxq1cyberpsiwaves3"]
+[gd_scene format=3 uid="uid://ddo67vclyoxcj"]
 
-[ext_resource type="Script" path="res://scripts/MinigameWaves.gd" id="1_waves"]
+[ext_resource type="Script" uid="uid://bwioxoxmq5w73" path="res://scripts/MinigameWaves.gd" id="1_waves"]
 
-[node name="MinigameWaves" type="Node2D"]
+[node name="MinigameWaves" type="Node2D" unique_id=1312841539]
 script = ExtResource("1_waves")
+
+[node name="Fundo" type="ColorRect" parent="." unique_id=1223361951]
+offset_right = 640.0
+offset_bottom = 720.0
+color = Color(0.039, 0.039, 0.07, 1)
+
+[node name="Canais" type="Node2D" parent="." unique_id=1202660140]
+
+[node name="CanalJ" type="Node2D" parent="Canais" unique_id=756992777]
+position = Vector2(0, 200)
+
+[node name="Zona" type="ColorRect" parent="Canais/CanalJ" unique_id=1675802344]
+offset_top = -26.0
+offset_right = 640.0
+offset_bottom = 26.0
+color = Color(0.3, 1, 0.5, 0.08)
+
+[node name="Onda" type="Line2D" parent="Canais/CanalJ" unique_id=338887986]
+points = PackedVector2Array(1457, 144)
+width = 3.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Tecla" type="Label" parent="Canais/CanalJ" unique_id=379644979]
+offset_left = 18.0
+offset_top = -26.0
+offset_right = 60.0
+offset_bottom = 12.0
+theme_override_font_sizes/font_size = 28
+text = "J"
+
+[node name="Emo" type="Label" parent="Canais/CanalJ" unique_id=1992860662]
+offset_left = 52.0
+offset_top = -22.0
+offset_right = 280.0
+offset_bottom = 2.0
+theme_override_font_sizes/font_size = 14
+text = "ANSIEDADE"
+
+[node name="Status" type="Label" parent="Canais/CanalJ" unique_id=867181853]
+offset_left = 500.0
+offset_top = -22.0
+offset_right = 640.0
+offset_bottom = 2.0
+theme_override_font_sizes/font_size = 15
+
+[node name="CanalK" type="Node2D" parent="Canais" unique_id=1342075996]
+position = Vector2(0, 360)
+
+[node name="Zona" type="ColorRect" parent="Canais/CanalK" unique_id=2130030234]
+offset_top = -26.0
+offset_right = 640.0
+offset_bottom = 26.0
+color = Color(0.3, 1, 0.5, 0.08)
+
+[node name="Onda" type="Line2D" parent="Canais/CanalK" unique_id=774541873]
+width = 3.0
+default_color = Color(0.784, 0.314, 1, 1)
+
+[node name="Tecla" type="Label" parent="Canais/CanalK" unique_id=42957470]
+offset_left = 18.0
+offset_top = -26.0
+offset_right = 60.0
+offset_bottom = 12.0
+theme_override_font_sizes/font_size = 28
+text = "K"
+
+[node name="Emo" type="Label" parent="Canais/CanalK" unique_id=691643155]
+offset_left = 52.0
+offset_top = -22.0
+offset_right = 280.0
+offset_bottom = 2.0
+theme_override_font_sizes/font_size = 14
+text = "TRISTEZA"
+
+[node name="Status" type="Label" parent="Canais/CanalK" unique_id=392546594]
+offset_left = 500.0
+offset_top = -22.0
+offset_right = 640.0
+offset_bottom = 2.0
+theme_override_font_sizes/font_size = 15
+
+[node name="CanalL" type="Node2D" parent="Canais" unique_id=742936033]
+position = Vector2(0, 520)
+
+[node name="Zona" type="ColorRect" parent="Canais/CanalL" unique_id=1684812190]
+offset_top = -26.0
+offset_right = 640.0
+offset_bottom = 26.0
+color = Color(0.3, 1, 0.5, 0.08)
+
+[node name="Onda" type="Line2D" parent="Canais/CanalL" unique_id=349748856]
+width = 3.0
+default_color = Color(1, 0.416, 0.239, 1)
+
+[node name="Tecla" type="Label" parent="Canais/CanalL" unique_id=227372001]
+offset_left = 18.0
+offset_top = -26.0
+offset_right = 60.0
+offset_bottom = 12.0
+theme_override_font_sizes/font_size = 28
+text = "L"
+
+[node name="Emo" type="Label" parent="Canais/CanalL" unique_id=2024111820]
+offset_left = 52.0
+offset_top = -22.0
+offset_right = 280.0
+offset_bottom = 2.0
+theme_override_font_sizes/font_size = 14
+text = "RAIVA"
+
+[node name="Status" type="Label" parent="Canais/CanalL" unique_id=2136807339]
+offset_left = 500.0
+offset_top = -22.0
+offset_right = 640.0
+offset_bottom = 2.0
+theme_override_font_sizes/font_size = 15
+
+[node name="HUD" type="Node2D" parent="." unique_id=47574209]
+
+[node name="Titulo" type="Label" parent="HUD" unique_id=1827093160]
+offset_left = 28.0
+offset_top = 26.0
+offset_right = 380.0
+offset_bottom = 56.0
+theme_override_font_sizes/font_size = 22
+text = "EMOCIONAL  (J K L)"
+
+[node name="ScoreLabel" type="Label" parent="HUD" unique_id=856135838]
+offset_left = 430.0
+offset_top = 26.0
+offset_right = 620.0
+offset_bottom = 52.0
+theme_override_font_sizes/font_size = 20
+text = "SCORE: 0"
+
+[node name="FalaLabel" type="Label" parent="HUD" unique_id=1668435459]
+offset_left = 40.0
+offset_top = 110.0
+offset_right = 610.0
+offset_bottom = 140.0
+theme_override_font_sizes/font_size = 17
+
+[node name="BarraScoreBg" type="ColorRect" parent="HUD" unique_id=1514458772]
+offset_left = 40.0
+offset_top = 64.0
+offset_right = 600.0
+offset_bottom = 74.0
+color = Color(0.12, 0.12, 0.2, 1)
+
+[node name="BarraScoreFill" type="ColorRect" parent="HUD" unique_id=183133681]
+offset_left = 40.0
+offset_top = 64.0
+offset_right = 600.0
+offset_bottom = 74.0
+color = Color(0.275, 0.839, 0.627, 1)
+
+[node name="FocoCap" type="Label" parent="HUD" unique_id=1208040339]
+offset_left = 40.0
+offset_top = 616.0
+offset_right = 300.0
+offset_bottom = 634.0
+theme_override_font_sizes/font_size = 14
+text = "FOCO"
+
+[node name="BarraFocoBg" type="ColorRect" parent="HUD" unique_id=325802363]
+offset_left = 40.0
+offset_top = 636.0
+offset_right = 600.0
+offset_bottom = 650.0
+color = Color(0.12, 0.12, 0.2, 1)
+
+[node name="BarraFocoFill" type="ColorRect" parent="HUD" unique_id=693669490]
+offset_left = 40.0
+offset_top = 636.0
+offset_right = 600.0
+offset_bottom = 650.0
+color = Color(0.4, 0.7, 1, 1)
+
+[node name="ColapsoCap" type="Label" parent="HUD" unique_id=1406626506]
+offset_left = 40.0
+offset_top = 658.0
+offset_right = 360.0
+offset_bottom = 676.0
+theme_override_font_sizes/font_size = 14
+text = "RISCO DE COLAPSO"
+
+[node name="BarraColapsoBg" type="ColorRect" parent="HUD" unique_id=14322546]
+offset_left = 40.0
+offset_top = 678.0
+offset_right = 600.0
+offset_bottom = 692.0
+color = Color(0.12, 0.12, 0.2, 1)
+
+[node name="BarraColapsoFill" type="ColorRect" parent="HUD" unique_id=287517154]
+offset_left = 40.0
+offset_top = 678.0
+offset_right = 600.0
+offset_bottom = 692.0
+color = Color(1, 0.3, 0.3, 1)

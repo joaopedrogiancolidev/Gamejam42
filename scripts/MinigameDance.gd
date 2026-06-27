@@ -23,7 +23,7 @@ const CHANCE_HOLD: float = 0.12
 const CHANCE_ACORDE: float = 0.08    # poucos acordes (era 0.20)
 
 # --- contrato com o Hub ---
-var META: int = 3500
+var META: int = 3000
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
