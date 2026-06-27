@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://ddo67vclyoxcj"]
 
 [ext_resource type="Script" uid="uid://bwioxoxmq5w73" path="res://scripts/MinigameWaves.gd" id="1_waves"]
+[ext_resource type="AudioStream" uid="uid://bwswl0pgqsgh4" path="res://assets/music/Zeta - RAM.mp3" id="2_xdp1u"]
+[ext_resource type="Texture2D" uid="uid://dbo6clr7xphim" path="res://assets/red_botton.png" id="3_cln0p"]
 
 [node name="MinigameWaves" type="Node2D" unique_id=1785144148]
 script = ExtResource("1_waves")
@@ -21,7 +23,6 @@ offset_top = -26.0
 offset_right = 640.0
 offset_bottom = 26.0
 color = Color(0.3, 1, 0.5, 0.08)
-metadata/_edit_use_anchors_ = true
 
 [node name="Onda" type="Line2D" parent="Canais/CanalJ" unique_id=1749279669]
 width = 3.0
@@ -29,12 +30,11 @@ default_color = Color(0.7215753, 0.63671404, 0.88685304, 1)
 
 [node name="Tecla" type="Label" parent="Canais/CanalJ" unique_id=2028135068]
 offset_left = 18.0
-offset_top = -26.0
+offset_top = -65.0
 offset_right = 60.0
-offset_bottom = 12.0
+offset_bottom = -26.0
 theme_override_font_sizes/font_size = 28
 text = "J"
-metadata/_edit_use_anchors_ = true
 
 [node name="Emo" type="Label" parent="Canais/CanalJ" unique_id=1835032573]
 offset_left = 52.0
@@ -43,15 +43,19 @@ offset_right = 280.0
 offset_bottom = 2.0
 theme_override_font_sizes/font_size = 14
 text = "ANSIEDADE"
-metadata/_edit_use_anchors_ = true
 
 [node name="Status" type="Label" parent="Canais/CanalJ" unique_id=1458333961]
 offset_left = 500.0
-offset_top = -22.0
+offset_top = -48.0
 offset_right = 640.0
-offset_bottom = 2.0
+offset_bottom = -24.0
 theme_override_font_sizes/font_size = 15
-metadata/_edit_use_anchors_ = true
+horizontal_alignment = 2
+
+[node name="RedBotton" type="Sprite2D" parent="Canais/CanalJ" unique_id=235994358]
+position = Vector2(23.000034, 272)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_cln0p")
 
 [node name="CanalK" type="Node2D" parent="Canais" unique_id=352145449]
 position = Vector2(0, 360)
@@ -61,29 +65,26 @@ offset_top = -26.0
 offset_right = 640.0
 offset_bottom = 26.0
 color = Color(0.3, 1, 0.5, 0.08)
-metadata/_edit_use_anchors_ = true
 
 [node name="Onda" type="Line2D" parent="Canais/CanalK" unique_id=1638116084]
 width = 3.0
 default_color = Color(0.784, 0.314, 1, 1)
 
 [node name="Tecla" type="Label" parent="Canais/CanalK" unique_id=1114697242]
-offset_left = 18.0
-offset_top = -26.0
-offset_right = 60.0
-offset_bottom = 12.0
+offset_left = 13.0
+offset_top = -67.0
+offset_right = 55.0
+offset_bottom = -28.0
 theme_override_font_sizes/font_size = 28
 text = "K"
-metadata/_edit_use_anchors_ = true
 
 [node name="Emo" type="Label" parent="Canais/CanalK" unique_id=2067653379]
-offset_left = 52.0
-offset_top = -22.0
-offset_right = 280.0
-offset_bottom = 2.0
+offset_left = 68.0
+offset_top = -26.0
+offset_right = 296.0
+offset_bottom = -2.0
 theme_override_font_sizes/font_size = 14
 text = "TRISTEZA"
-metadata/_edit_use_anchors_ = true
 
 [node name="Status" type="Label" parent="Canais/CanalK" unique_id=1197010645]
 offset_left = 500.0
@@ -91,7 +92,6 @@ offset_top = -22.0
 offset_right = 640.0
 offset_bottom = 2.0
 theme_override_font_sizes/font_size = 15
-metadata/_edit_use_anchors_ = true
 
 [node name="CanalL" type="Node2D" parent="Canais" unique_id=623687382]
 position = Vector2(0, 520)
@@ -101,20 +101,18 @@ offset_top = -26.0
 offset_right = 640.0
 offset_bottom = 26.0
 color = Color(0.3, 1, 0.5, 0.08)
-metadata/_edit_use_anchors_ = true
 
 [node name="Onda" type="Line2D" parent="Canais/CanalL" unique_id=437104107]
 width = 3.0
 default_color = Color(1, 0.416, 0.239, 1)
 
 [node name="Tecla" type="Label" parent="Canais/CanalL" unique_id=1663883120]
-offset_left = 18.0
-offset_top = -26.0
-offset_right = 60.0
-offset_bottom = 12.0
+offset_left = 16.0
+offset_top = -68.0
+offset_right = 58.0
+offset_bottom = -29.0
 theme_override_font_sizes/font_size = 28
 text = "L"
-metadata/_edit_use_anchors_ = true
 
 [node name="Emo" type="Label" parent="Canais/CanalL" unique_id=103474983]
 offset_left = 52.0
@@ -123,7 +121,6 @@ offset_right = 280.0
 offset_bottom = 2.0
 theme_override_font_sizes/font_size = 14
 text = "RAIVA"
-metadata/_edit_use_anchors_ = true
 
 [node name="Status" type="Label" parent="Canais/CanalL" unique_id=1623545513]
 offset_left = 500.0
@@ -131,7 +128,6 @@ offset_top = -22.0
 offset_right = 640.0
 offset_bottom = 2.0
 theme_override_font_sizes/font_size = 15
-metadata/_edit_use_anchors_ = true
 
 [node name="HUD" type="Node2D" parent="." unique_id=333098667]
 
@@ -159,21 +155,23 @@ offset_top = 110.0
 offset_right = 610.0
 offset_bottom = 140.0
 theme_override_font_sizes/font_size = 17
+horizontal_alignment = 1
+uppercase = true
 metadata/_edit_use_anchors_ = true
 
 [node name="BarraScoreBg" type="ColorRect" parent="HUD" unique_id=1153369399]
 offset_left = 40.0
-offset_top = 64.0
+offset_top = 85.0
 offset_right = 600.0
-offset_bottom = 74.0
+offset_bottom = 95.0
 color = Color(0.12, 0.12, 0.2, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="BarraScoreFill" type="ColorRect" parent="HUD" unique_id=1887163555]
 offset_left = 40.0
-offset_top = 64.0
+offset_top = 85.0
 offset_right = 600.0
-offset_bottom = 74.0
+offset_bottom = 95.0
 color = Color(0.275, 0.839, 0.627, 1)
 metadata/_edit_use_anchors_ = true
 
@@ -228,9 +226,20 @@ color = Color(1, 0.3, 0.3, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="SomL" type="AudioStreamPlayer2D" parent="." unique_id=1590135177]
+stream = ExtResource("2_xdp1u")
 
 [node name="SomRuido" type="AudioStreamPlayer2D" parent="." unique_id=1171459274]
 
 [node name="SomJ" type="AudioStreamPlayer2D" parent="." unique_id=771193078]
 
 [node name="SomK" type="AudioStreamPlayer2D" parent="." unique_id=245906211]
+
+[node name="RedBotton" type="Sprite2D" parent="." unique_id=999924333]
+position = Vector2(22.00002, 312.00003)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_cln0p")
+
+[node name="RedBotton2" type="Sprite2D" parent="." unique_id=724207324]
+position = Vector2(22.000061, 156.00002)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_cln0p")
