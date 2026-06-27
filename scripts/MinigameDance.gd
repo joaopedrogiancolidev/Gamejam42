@@ -1,56 +1,46 @@
 extends Node2D
 
 # ============================================================
-#  MINIGAME (estilo Persona 4: Dancing) - 3 botões  [v2]
-#
-#  As notas NASCEM NO CENTRO e VOAM PRA FORA rumo a 3 alvos
-#  radiais (J esq-baixo, K topo, L dir-baixo). Aperte a tecla
-#  do alvo quando a nota chega.
-#  Mecânicas: TOQUE, SEGURAR e agora ACORDES (2 notas juntas
-#  em alvos diferentes = um "passo de dança", ligadas por linha).
-#
-#  >>> ESTILO_NOTA: troque entre "estrela" e "circulo" pra mudar
-#      a aparência das notas. (deixei variável como você quis)
-#
-#  TESTAR: abra a cena e aperte F6. Roda sem música.
-#  MÚSICA: troque "song_time += delta" pela posição do
-#  AudioStreamPlayer (evita drift).
+#  MINIGAME DANCE  -  LADO ESQUERDO (racional)  -  teclas S D F
+#  Versão integrada: desenha em 640 de largura e expõe score/
+#  META/ativo/falhou pro Hub. O Hub é quem decide o fim.
 # ============================================================
-
-enum Estado { JOGANDO, COMPLETO }
 
 const ESTILO_NOTA: String = "estrela"   # "estrela" ou "circulo"
 
-const META_PONTOS: int = 6000
-const BPM: float = 125.0
-var beat_dur: float = 60.0 / BPM
-const LEAD: float = 1.8
-const APPROACH: float = 1.1
-const R_ALVO: float = 42.0
-const R_NOTA: float = 30.0
-const RAIO: float = 250.0
-const JANELA_PERFEITO: float = 0.05
-const JANELA_BOM: float = 0.11
-const CHANCE_HOLD: float = 0.18
-const CHANCE_ACORDE: float = 0.20
-
-const W: float = 1280.0
+const LARGURA: float = 640.0
 const H: float = 720.0
-var C := Vector2(W / 2, H / 2 + 20)
+const BPM: float = 95.0            # mais lento (era 125)
+var beat_dur: float = 60.0 / BPM
+const LEAD: float = 2.2
+const APPROACH: float = 1.7        # mais tempo pra ler (era 1.1)
+const R_ALVO: float = 40.0
+const R_NOTA: float = 28.0
+const RAIO: float = 230.0
+const JANELA_PERFEITO: float = 0.09  # mais generoso (era 0.05)
+const JANELA_BOM: float = 0.20       # bem mais perdoador (era 0.11)
+const CHANCE_HOLD: float = 0.12
+const CHANCE_ACORDE: float = 0.08    # poucos acordes (era 0.20)
+
+# --- contrato com o Hub ---
+var META: int = 3500
+var score: int = 0
+var ativo: bool = true
+var falhou: bool = false
+
+var C := Vector2(LARGURA / 2, H / 2 + 20)
 
 var ALVOS := [
-	{"code": KEY_J, "label": "J", "cor": Color("ff7bbf"), "ang": deg_to_rad(150), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
-	{"code": KEY_K, "label": "K", "cor": Color("c850ff"), "ang": deg_to_rad(270), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
-	{"code": KEY_L, "label": "L", "cor": Color("ff6a3d"), "ang": deg_to_rad(30),  "pos": Vector2.ZERO, "flash": 0.0, "held": false},
+	{"code": KEY_S, "label": "S", "cor": Color("6ad0ff"), "ang": deg_to_rad(150), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
+	{"code": KEY_D, "label": "D", "cor": Color("8a7bff"), "ang": deg_to_rad(270), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
+	{"code": KEY_F, "label": "F", "cor": Color("46d6a0"), "ang": deg_to_rad(30),  "pos": Vector2.ZERO, "flash": 0.0, "held": false},
 ]
 
-var estado: int = Estado.JOGANDO
 var song_time: float = -LEAD
 var notas: Array = []
 var prox_beat: float = 4.0
 var _grupo_id: int = 0
 
-var score: int = 0
 var combo: int = 0
 var combo_max: int = 0
 var n_perfeito: int = 0
@@ -70,13 +60,33 @@ func _ready() -> void:
 		a.pos = C + Vector2(cos(a.ang), sin(a.ang)) * RAIO
 
 
+func reset() -> void:
+	song_time = -LEAD
+	notas.clear()
+	prox_beat = 4.0
+	_grupo_id = 0
+	score = 0
+	combo = 0
+	combo_max = 0
+	n_perfeito = 0
+	n_bom = 0
+	n_erro = 0
+	_popups.clear()
+	_bursts.clear()
+	ativo = true
+	falhou = false
+	for a in ALVOS:
+		a.held = false
+		a.flash = 0.0
+
+
 func _gerar() -> void:
 	while prox_beat * beat_dur - APPROACH <= song_time + 0.4:
 		if song_time > 6.0 and randf() < CHANCE_ACORDE:
 			_criar_acorde(prox_beat)
 		else:
 			_criar_nota(prox_beat, randi() % 3, randf() < CHANCE_HOLD, -1)
-			if song_time > 8.0 and randf() < 0.26:
+			if song_time > 14.0 and randf() < 0.08:
 				_criar_nota(prox_beat + 0.5, randi() % 3, false, -1)
 		prox_beat += 1.0
 
@@ -91,7 +101,6 @@ func _criar_nota(beat: float, key: int, hold: bool, grupo: int) -> void:
 	notas.append(n)
 
 
-# Acorde: 2 notas no MESMO tempo, em alvos diferentes.
 func _criar_acorde(beat: float) -> void:
 	var k1: int = randi() % 3
 	var k2: int = (k1 + 1 + randi() % 2) % 3
@@ -100,7 +109,6 @@ func _criar_acorde(beat: float) -> void:
 	_criar_nota(beat, k2, false, _grupo_id)
 
 
-# ------------------------------------------------------------
 func _process(delta: float) -> void:
 	_core += delta
 	for a in ALVOS:
@@ -116,12 +124,10 @@ func _process(delta: float) -> void:
 
 	queue_redraw()
 
-	if estado != Estado.JOGANDO:
+	if not ativo:
 		return
 
-	# >>> trocar por get_playback_position() se usar música
 	song_time += delta
-
 	if song_time >= 0.0:
 		_gerar()
 
@@ -140,9 +146,6 @@ func _process(delta: float) -> void:
 
 	notas = notas.filter(func(n): return not n.resolvido or n.segurando)
 
-	if score >= META_PONTOS:
-		estado = Estado.COMPLETO
-
 
 func _pos_nota(n) -> Vector2:
 	var alvo = ALVOS[n.key]
@@ -150,18 +153,9 @@ func _pos_nota(n) -> Vector2:
 	return C.lerp(alvo.pos, prog)
 
 
-# ------------------------------------------------------------
-#  INPUT
-# ------------------------------------------------------------
 func _unhandled_input(event: InputEvent) -> void:
-	if not (event is InputEventKey) or event.echo:
+	if not ativo or not (event is InputEventKey) or event.echo:
 		return
-
-	if estado == Estado.COMPLETO:
-		if event.pressed and event.keycode in [KEY_ENTER, KEY_KP_ENTER, KEY_SPACE]:
-			_reiniciar()
-		return
-
 	for i in ALVOS.size():
 		if event.keycode == ALVOS[i].code:
 			if event.pressed:
@@ -234,10 +228,10 @@ func _hold_ok(n) -> void:
 	_burst(ALVOS[n.key].pos, Color(0.45, 0.8, 1.0))
 
 
-func _errar(n, txt: String) -> void:
+func _errar(n, _txt: String) -> void:
 	combo = 0
 	n_erro += 1
-	_popup(ALVOS[n.key].pos, txt, Color(1.0, 0.4, 0.4))
+	_popup(ALVOS[n.key].pos, _txt, Color(1.0, 0.4, 0.4))
 
 
 func _popup(pos: Vector2, txt: String, cor: Color) -> void:
@@ -248,41 +242,20 @@ func _burst(pos: Vector2, cor: Color) -> void:
 	_bursts.append({"x": pos.x, "y": pos.y, "cor": cor, "t": 0.4})
 
 
-func _reiniciar() -> void:
-	song_time = -LEAD
-	estado = Estado.JOGANDO
-	notas.clear()
-	prox_beat = 4.0
-	_grupo_id = 0
-	score = 0
-	combo = 0
-	combo_max = 0
-	n_perfeito = 0
-	n_bom = 0
-	n_erro = 0
-	_popups.clear()
-	_bursts.clear()
-	for a in ALVOS:
-		a.held = false
-		a.flash = 0.0
-
-
 # ------------------------------------------------------------
-#  DESENHO
+#  DESENHO  (tudo dentro de 0..LARGURA; o Hub posiciona o nó)
 # ------------------------------------------------------------
 func _draw() -> void:
-	draw_rect(Rect2(0, 0, W, H), Color("0a0a12"))
+	draw_rect(Rect2(0, 0, LARGURA, H), Color("0b0d16"))
 
-	# núcleo pulsante (a "mente")
-	var pr: float = 26.0 + sin(_core * 4.0) * 4.0
-	draw_circle(C, pr + 14, Color(0.5, 0.4, 0.8, 0.10))
-	draw_circle(C, pr, Color(0.5, 0.4, 0.8, 0.35))
-	draw_circle(C, pr * 0.5, Color(0.9, 0.85, 1.0, 0.5))
+	var pr: float = 24.0 + sin(_core * 4.0) * 4.0
+	draw_circle(C, pr + 12, Color(0.4, 0.55, 0.8, 0.10))
+	draw_circle(C, pr, Color(0.4, 0.55, 0.8, 0.35))
+	draw_circle(C, pr * 0.5, Color(0.85, 0.9, 1.0, 0.5))
 
 	for a in ALVOS:
 		_desenhar_alvo(a)
 
-	# linhas dos acordes (liga as 2 notas do mesmo grupo)
 	var grupos := {}
 	for n in notas:
 		if (n.resolvido and not n.segurando) or n.grupo < 0:
@@ -301,33 +274,28 @@ func _draw() -> void:
 
 	for bu in _bursts:
 		var prog: float = 1.0 - bu.t / 0.4
-		var rr: float = 12.0 + prog * 55.0
 		var c: Color = bu.cor
 		c.a = (1.0 - prog) * 0.8
-		draw_arc(Vector2(bu.x, bu.y), rr, 0, TAU, 40, c, 3.0)
+		draw_arc(Vector2(bu.x, bu.y), 12.0 + prog * 55.0, 0, TAU, 40, c, 3.0)
 
-	# HUD
-	_texto("RITMO EMOCIONAL  (J K L)", Vector2(40, 50), 24, Color("c850ff"))
-	_texto("SCORE: %d" % score, Vector2(W - 250, 45), 22, Color.WHITE)
-	_texto("COMBO: %d" % combo, Vector2(W - 250, 75), 18, Color("ffd24a"))
-	var pb := Vector2(W / 2 - 250, 60)
-	_texto("META", Vector2(pb.x, pb.y - 8), 14, Color(0.8, 0.8, 0.9))
-	draw_rect(Rect2(pb.x, pb.y, 500, 14), Color(0.12, 0.12, 0.2))
-	draw_rect(Rect2(pb.x, pb.y, 500 * clampf(float(score) / META_PONTOS, 0.0, 1.0), 14), Color("46d6a0"))
-	draw_rect(Rect2(pb.x, pb.y, 500, 14), Color(1, 1, 1, 0.2), false, 2.0)
+	# HUD do lado
+	_texto("RACIONAL  (S D F)", Vector2(28, 40), 22, Color("8ad0ff"))
+	_texto("SCORE: %d" % score, Vector2(LARGURA - 210, 40), 20, Color.WHITE)
+	_texto("COMBO: %d" % combo, Vector2(LARGURA - 210, 66), 16, Color("ffd24a"))
+	var pb := Vector2(40, 92)
+	draw_rect(Rect2(pb.x, pb.y, 560, 12), Color(0.12, 0.12, 0.2))
+	draw_rect(Rect2(pb.x, pb.y, 560 * clampf(float(score) / META, 0.0, 1.0), 12), Color("46d6a0"))
+	draw_rect(Rect2(pb.x, pb.y, 560, 12), Color(1, 1, 1, 0.2), false, 2.0)
 
 	for p in _popups:
 		var a2: float = clampf(p.t / 0.8, 0.0, 1.0)
 		var c2: Color = p.cor
 		c2.a = a2
-		_texto_centro_em(p.txt, Vector2(p.x, p.y), 22, c2)
+		_texto_centro_em(p.txt, Vector2(p.x, p.y), 20, c2)
 
-	if song_time < 0.0 and estado == Estado.JOGANDO:
-		_texto_centro("PREPARE-SE", 150, 38, Color(0.9, 0.9, 1.0))
-		_texto_centro(str(max(int(ceil(-song_time)), 1)), 210, 50, Color("c850ff"))
-
-	if estado == Estado.COMPLETO:
-		_overlay()
+	if song_time < 0.0 and ativo:
+		_texto_centro("PREPARE-SE", 160, 32, Color(0.9, 0.9, 1.0))
+		_texto_centro(str(max(int(ceil(-song_time)), 1)), 215, 46, Color("8ad0ff"))
 
 
 func _desenhar_alvo(a: Dictionary) -> void:
@@ -340,8 +308,8 @@ func _desenhar_alvo(a: Dictionary) -> void:
 	draw_circle(pos, R_ALVO - 4, Color(cor.r, cor.g, cor.b, 0.08 + a.flash * 0.3))
 	if _font:
 		var c: Color = Color.WHITE if a.flash > 0.1 else cor
-		var w: float = _font.get_string_size(a.label, HORIZONTAL_ALIGNMENT_LEFT, -1, 30).x
-		draw_string(_font, Vector2(pos.x - w / 2, pos.y + 11), a.label, HORIZONTAL_ALIGNMENT_LEFT, -1, 30, c)
+		var w: float = _font.get_string_size(a.label, HORIZONTAL_ALIGNMENT_LEFT, -1, 28).x
+		draw_string(_font, Vector2(pos.x - w / 2, pos.y + 10), a.label, HORIZONTAL_ALIGNMENT_LEFT, -1, 28, c)
 
 
 func _desenhar_nota(n) -> void:
@@ -349,14 +317,12 @@ func _desenhar_nota(n) -> void:
 		return
 	var alvo = ALVOS[n.key]
 	var cor: Color = alvo.cor
-
 	if n.hold and n.segurando:
 		var resta: float = clampf((n.end_time - song_time) / maxf(n.end_time - n.hit_time, 0.001), 0.0, 1.0)
 		draw_arc(alvo.pos, R_ALVO + 8, -PI / 2, -PI / 2 + TAU * resta, 48, Color(0.45, 0.8, 1.0), 6.0)
 		draw_circle(alvo.pos, R_NOTA, Color(0.45, 0.8, 1.0, 0.85))
 		_letra(alvo.label, alvo.pos)
 		return
-
 	var pos: Vector2 = _pos_nota(n)
 	draw_line(C, pos, Color(cor.r, cor.g, cor.b, 0.18), 2.0)
 	_forma_nota(pos, cor)
@@ -367,8 +333,7 @@ func _desenhar_nota(n) -> void:
 
 func _forma_nota(pos: Vector2, cor: Color) -> void:
 	if ESTILO_NOTA == "estrela":
-		var rot: float = _core * 1.5
-		draw_colored_polygon(_estrela(pos, R_NOTA + 6, (R_NOTA + 6) * 0.46, 5, rot), cor)
+		draw_colored_polygon(_estrela(pos, R_NOTA + 6, (R_NOTA + 6) * 0.46, 5, _core * 1.5), cor)
 	else:
 		draw_circle(pos, R_NOTA, cor)
 		draw_circle(pos, R_NOTA - 5, Color(0.06, 0.06, 0.12, 0.9))
@@ -376,8 +341,7 @@ func _forma_nota(pos: Vector2, cor: Color) -> void:
 
 func _estrela(centro: Vector2, r_out: float, r_in: float, pontas: int, rot: float) -> PackedVector2Array:
 	var pts := PackedVector2Array()
-	var total: int = pontas * 2
-	for i in total:
+	for i in pontas * 2:
 		var ang: float = rot + PI * i / pontas - PI / 2
 		var r: float = r_out if i % 2 == 0 else r_in
 		pts.append(centro + Vector2(cos(ang), sin(ang)) * r)
@@ -390,16 +354,6 @@ func _letra(label: String, pos: Vector2) -> void:
 		draw_string(_font, Vector2(pos.x - w / 2, pos.y + 8), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color.WHITE)
 
 
-func _overlay() -> void:
-	draw_rect(Rect2(0, 0, W, H), Color(0, 0, 0, 0.78))
-	_texto_centro("META ALCANÇADA!", 220, 46, Color("46d6a0"))
-	var total: int = n_perfeito + n_bom + n_erro
-	var acc: float = 100.0 * float(n_perfeito + n_bom) / float(max(total, 1))
-	_texto_centro("Perfeitos: %d    Bons: %d    Erros: %d" % [n_perfeito, n_bom, n_erro], 300, 22, Color.WHITE)
-	_texto_centro("Precisão: %.1f%%    Combo máx: %d    Score: %d" % [acc, combo_max, score], 340, 22, Color(0.85, 0.9, 1.0))
-	_texto_centro("ENTER pra jogar de novo", 410, 22, Color(0.8, 0.8, 0.9))
-
-
 func _texto(txt: String, pos: Vector2, tam: int, cor: Color) -> void:
 	if _font:
 		draw_string(_font, pos, txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, cor)
@@ -408,7 +362,7 @@ func _texto(txt: String, pos: Vector2, tam: int, cor: Color) -> void:
 func _texto_centro(txt: String, y: float, tam: int, cor: Color) -> void:
 	if _font:
 		var w: float = _font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam).x
-		draw_string(_font, Vector2(W / 2 - w / 2, y), txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, cor)
+		draw_string(_font, Vector2(LARGURA / 2 - w / 2, y), txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, cor)
 
 
 func _texto_centro_em(txt: String, pos: Vector2, tam: int, cor: Color) -> void:
