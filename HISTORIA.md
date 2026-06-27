@@ -45,12 +45,13 @@ O co-op é revelado como **plot-twist** (mais divertido e ensina a mecânica nat
 1. **MENU** — fundo + **START** (talvez um "Como jogar?").
 2. **LORE 1 — CyberTerapia™** — apresenta a premissa: você é o plantão, o João colapsou, bora
    dar um patch. *(ainda não conta que é co-op)*
-3. **TUTORIAL 1 — Waves (fácil, 1 jogador)** — aprende a segurar **J K L** pra regular as ondas.
+3. **TUTORIAL 1 — Waves (fácil, 1 jogador)** — aprende a segurar **I J K L** (lado emoção) pra
+   regular as ondas.
 4. **PLOT-TWIST — "chama o colega!"** — o lado racional começa a travar, sozinho não dá → o
    jogo chama o **2º dev** pra sentar junto. *(aqui o co-op é revelado)*
-5. **TUTORIAL 2 — Dance (1 jogador, o segundo)** — aprende o ritmo **S D F**.
+5. **TUTORIAL 2 — Dance (1 jogador, o segundo)** — aprende o ritmo **W A S D** (lado razão).
 6. **LORE 2 — a sessão oficial** — como a partida real funciona + lembrete das teclas
-   (S D F / J K L + a tecla do **special/glitch**).
+   (W A S D / I J K L + a tecla do **special/glitch**).
 7. **PARTIDA OFICIAL** — os dois jogam ao mesmo tempo; mensagens-Slack do CEO pipocam pedindo
    absurdos.
 8. **UM DOS 4 FINAIS** — cena animada com ilustração.
@@ -139,12 +140,28 @@ A narrativa é **carregada por imagem** nos momentos-chave. Prioridade pro que p
 4. **Fundos das telas de lore/tutorial.**
 5. *(luxo)* fundos neon da gameplay; avatar do João.
 
-**Paleta combinada:** neon sobre fundo escuro (#06060d). **Emoção = azul neon** (lado Waves,
-direita), **Razão = vermelho neon** (lado Dance, esquerda), divisória central (corpo caloso) =
-roxo (a mistura = integração).
+**Paleta combinada — fonte da verdade são as imagens em `assets/`:**
+**Razão = AZUL neon** (lado Dance, esquerda) · **Emoção = VERMELHO neon** (lado Waves, direita)
+· fundo escuro (#06060d) · divisória central (corpo caloso) = roxo (a mistura = integração).
 
-> Os **prompts do nano banana** estão prontos em rascunho e serão fechados assim que tivermos a
-> arte da gameplay como referência de paleta. (estão no plano interno — peço pra Letícia.)
+### Arte que já existe em `assets/`
+- `background.png` — neurônio dividido **azul (razão, esq.) / vermelho (emoção, dir.)**.
+- `background_2.png` — **duas cabeças wireframe se encarando** → ótima pro **menu / co-op**
+  (as duas mentes / o corpo caloso).
+- `brain_life_bar.png` — cérebro **azul-engrenagens (razão) / vermelho-orgânico (emoção)** →
+  barra de "vida da mente".
+- Botões neon com letra: **W A S D** (azul/razão) e **I J K L** (vermelho/emoção) + botões em
+  branco (`blue_botton`/`red_botton`).
+- `broken_botton_*` (sequência animada do botão **rachando**) → a **arte da mecânica de
+  glitch** ("a tecla quebrou / CyberTerapia™ travou" → chama o colega).
+- `perfect_*` / `great_*` → feedback de acerto (texto neon estilo grafite).
+
+> ⚠️ Conferir: o **`background` é azul-esquerda/vermelho-direita** e a gameplay é
+> **Dance/razão à esquerda, Waves/emoção à direita** → casam. Manter essa ordem nas próximas
+> artes (inclusive nas telas de final).
+
+> Os **prompts do nano banana** (pro que faltar) estão sendo afinados com base nessa arte —
+> **em hold**, fecho com a Letícia.
 
 ---
 
@@ -168,5 +185,7 @@ roxo (a mistura = integração).
 ## ❓ Em aberto (decidir juntos)
 - Revelar o co-op no plot-twist ou já no menu?
 - Nome final da startup e do João.
+- **Confirmar os bindings reais:** a arte tem botões **W A S D** (razão/azul) e **I J K L**
+  (emoção/vermelho); o código antigo usava só **J K L**. Alinhar código × arte.
 - Qual a tecla do **special/glitch** (depende da mecânica estar pronta).
 - Quantas mensagens de Slack durante a partida (sem cansar).
