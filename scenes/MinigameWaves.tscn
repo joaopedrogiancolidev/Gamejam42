@@ -2,204 +2,235 @@
 
 [ext_resource type="Script" uid="uid://bwioxoxmq5w73" path="res://scripts/MinigameWaves.gd" id="1_waves"]
 
-[node name="MinigameWaves" type="Node2D" unique_id=1312841539]
+[node name="MinigameWaves" type="Node2D" unique_id=1785144148]
 script = ExtResource("1_waves")
 
-[node name="Fundo" type="ColorRect" parent="." unique_id=1223361951]
+[node name="Fundo" type="ColorRect" parent="." unique_id=39673551]
 offset_right = 640.0
 offset_bottom = 720.0
 color = Color(0.039, 0.039, 0.07, 1)
+metadata/_edit_use_anchors_ = true
 
-[node name="Canais" type="Node2D" parent="." unique_id=1202660140]
+[node name="Canais" type="Node2D" parent="." unique_id=1389427265]
 
-[node name="CanalJ" type="Node2D" parent="Canais" unique_id=756992777]
+[node name="CanalJ" type="Node2D" parent="Canais" unique_id=461285750]
 position = Vector2(0, 200)
 
-[node name="Zona" type="ColorRect" parent="Canais/CanalJ" unique_id=1675802344]
+[node name="Zona" type="ColorRect" parent="Canais/CanalJ" unique_id=687139348]
 offset_top = -26.0
 offset_right = 640.0
 offset_bottom = 26.0
 color = Color(0.3, 1, 0.5, 0.08)
+metadata/_edit_use_anchors_ = true
 
-[node name="Onda" type="Line2D" parent="Canais/CanalJ" unique_id=338887986]
-points = PackedVector2Array(1457, 144)
+[node name="Onda" type="Line2D" parent="Canais/CanalJ" unique_id=1749279669]
 width = 3.0
-default_color = Color(0, 0, 0, 1)
+default_color = Color(0.7215753, 0.63671404, 0.88685304, 1)
 
-[node name="Tecla" type="Label" parent="Canais/CanalJ" unique_id=379644979]
+[node name="Tecla" type="Label" parent="Canais/CanalJ" unique_id=2028135068]
 offset_left = 18.0
 offset_top = -26.0
 offset_right = 60.0
 offset_bottom = 12.0
 theme_override_font_sizes/font_size = 28
 text = "J"
+metadata/_edit_use_anchors_ = true
 
-[node name="Emo" type="Label" parent="Canais/CanalJ" unique_id=1992860662]
+[node name="Emo" type="Label" parent="Canais/CanalJ" unique_id=1835032573]
 offset_left = 52.0
 offset_top = -22.0
 offset_right = 280.0
 offset_bottom = 2.0
 theme_override_font_sizes/font_size = 14
 text = "ANSIEDADE"
+metadata/_edit_use_anchors_ = true
 
-[node name="Status" type="Label" parent="Canais/CanalJ" unique_id=867181853]
+[node name="Status" type="Label" parent="Canais/CanalJ" unique_id=1458333961]
 offset_left = 500.0
 offset_top = -22.0
 offset_right = 640.0
 offset_bottom = 2.0
 theme_override_font_sizes/font_size = 15
+metadata/_edit_use_anchors_ = true
 
-[node name="CanalK" type="Node2D" parent="Canais" unique_id=1342075996]
+[node name="CanalK" type="Node2D" parent="Canais" unique_id=352145449]
 position = Vector2(0, 360)
 
-[node name="Zona" type="ColorRect" parent="Canais/CanalK" unique_id=2130030234]
+[node name="Zona" type="ColorRect" parent="Canais/CanalK" unique_id=1915743164]
 offset_top = -26.0
 offset_right = 640.0
 offset_bottom = 26.0
 color = Color(0.3, 1, 0.5, 0.08)
+metadata/_edit_use_anchors_ = true
 
-[node name="Onda" type="Line2D" parent="Canais/CanalK" unique_id=774541873]
+[node name="Onda" type="Line2D" parent="Canais/CanalK" unique_id=1638116084]
 width = 3.0
 default_color = Color(0.784, 0.314, 1, 1)
 
-[node name="Tecla" type="Label" parent="Canais/CanalK" unique_id=42957470]
+[node name="Tecla" type="Label" parent="Canais/CanalK" unique_id=1114697242]
 offset_left = 18.0
 offset_top = -26.0
 offset_right = 60.0
 offset_bottom = 12.0
 theme_override_font_sizes/font_size = 28
 text = "K"
+metadata/_edit_use_anchors_ = true
 
-[node name="Emo" type="Label" parent="Canais/CanalK" unique_id=691643155]
+[node name="Emo" type="Label" parent="Canais/CanalK" unique_id=2067653379]
 offset_left = 52.0
 offset_top = -22.0
 offset_right = 280.0
 offset_bottom = 2.0
 theme_override_font_sizes/font_size = 14
 text = "TRISTEZA"
+metadata/_edit_use_anchors_ = true
 
-[node name="Status" type="Label" parent="Canais/CanalK" unique_id=392546594]
+[node name="Status" type="Label" parent="Canais/CanalK" unique_id=1197010645]
 offset_left = 500.0
 offset_top = -22.0
 offset_right = 640.0
 offset_bottom = 2.0
 theme_override_font_sizes/font_size = 15
+metadata/_edit_use_anchors_ = true
 
-[node name="CanalL" type="Node2D" parent="Canais" unique_id=742936033]
+[node name="CanalL" type="Node2D" parent="Canais" unique_id=623687382]
 position = Vector2(0, 520)
 
-[node name="Zona" type="ColorRect" parent="Canais/CanalL" unique_id=1684812190]
+[node name="Zona" type="ColorRect" parent="Canais/CanalL" unique_id=863702706]
 offset_top = -26.0
 offset_right = 640.0
 offset_bottom = 26.0
 color = Color(0.3, 1, 0.5, 0.08)
+metadata/_edit_use_anchors_ = true
 
-[node name="Onda" type="Line2D" parent="Canais/CanalL" unique_id=349748856]
+[node name="Onda" type="Line2D" parent="Canais/CanalL" unique_id=437104107]
 width = 3.0
 default_color = Color(1, 0.416, 0.239, 1)
 
-[node name="Tecla" type="Label" parent="Canais/CanalL" unique_id=227372001]
+[node name="Tecla" type="Label" parent="Canais/CanalL" unique_id=1663883120]
 offset_left = 18.0
 offset_top = -26.0
 offset_right = 60.0
 offset_bottom = 12.0
 theme_override_font_sizes/font_size = 28
 text = "L"
+metadata/_edit_use_anchors_ = true
 
-[node name="Emo" type="Label" parent="Canais/CanalL" unique_id=2024111820]
+[node name="Emo" type="Label" parent="Canais/CanalL" unique_id=103474983]
 offset_left = 52.0
 offset_top = -22.0
 offset_right = 280.0
 offset_bottom = 2.0
 theme_override_font_sizes/font_size = 14
 text = "RAIVA"
+metadata/_edit_use_anchors_ = true
 
-[node name="Status" type="Label" parent="Canais/CanalL" unique_id=2136807339]
+[node name="Status" type="Label" parent="Canais/CanalL" unique_id=1623545513]
 offset_left = 500.0
 offset_top = -22.0
 offset_right = 640.0
 offset_bottom = 2.0
 theme_override_font_sizes/font_size = 15
+metadata/_edit_use_anchors_ = true
 
-[node name="HUD" type="Node2D" parent="." unique_id=47574209]
+[node name="HUD" type="Node2D" parent="." unique_id=333098667]
 
-[node name="Titulo" type="Label" parent="HUD" unique_id=1827093160]
+[node name="Titulo" type="Label" parent="HUD" unique_id=1238270315]
 offset_left = 28.0
 offset_top = 26.0
 offset_right = 380.0
 offset_bottom = 56.0
 theme_override_font_sizes/font_size = 22
 text = "EMOCIONAL  (J K L)"
+metadata/_edit_use_anchors_ = true
 
-[node name="ScoreLabel" type="Label" parent="HUD" unique_id=856135838]
+[node name="ScoreLabel" type="Label" parent="HUD" unique_id=256686572]
 offset_left = 430.0
 offset_top = 26.0
 offset_right = 620.0
 offset_bottom = 52.0
 theme_override_font_sizes/font_size = 20
 text = "SCORE: 0"
+metadata/_edit_use_anchors_ = true
 
-[node name="FalaLabel" type="Label" parent="HUD" unique_id=1668435459]
+[node name="FalaLabel" type="Label" parent="HUD" unique_id=136986859]
 offset_left = 40.0
 offset_top = 110.0
 offset_right = 610.0
 offset_bottom = 140.0
 theme_override_font_sizes/font_size = 17
+metadata/_edit_use_anchors_ = true
 
-[node name="BarraScoreBg" type="ColorRect" parent="HUD" unique_id=1514458772]
+[node name="BarraScoreBg" type="ColorRect" parent="HUD" unique_id=1153369399]
 offset_left = 40.0
 offset_top = 64.0
 offset_right = 600.0
 offset_bottom = 74.0
 color = Color(0.12, 0.12, 0.2, 1)
+metadata/_edit_use_anchors_ = true
 
-[node name="BarraScoreFill" type="ColorRect" parent="HUD" unique_id=183133681]
+[node name="BarraScoreFill" type="ColorRect" parent="HUD" unique_id=1887163555]
 offset_left = 40.0
 offset_top = 64.0
 offset_right = 600.0
 offset_bottom = 74.0
 color = Color(0.275, 0.839, 0.627, 1)
+metadata/_edit_use_anchors_ = true
 
-[node name="FocoCap" type="Label" parent="HUD" unique_id=1208040339]
+[node name="FocoCap" type="Label" parent="HUD" unique_id=1563394283]
 offset_left = 40.0
 offset_top = 616.0
 offset_right = 300.0
 offset_bottom = 634.0
 theme_override_font_sizes/font_size = 14
 text = "FOCO"
+metadata/_edit_use_anchors_ = true
 
-[node name="BarraFocoBg" type="ColorRect" parent="HUD" unique_id=325802363]
+[node name="BarraFocoBg" type="ColorRect" parent="HUD" unique_id=1400751249]
 offset_left = 40.0
 offset_top = 636.0
 offset_right = 600.0
 offset_bottom = 650.0
 color = Color(0.12, 0.12, 0.2, 1)
+metadata/_edit_use_anchors_ = true
 
-[node name="BarraFocoFill" type="ColorRect" parent="HUD" unique_id=693669490]
+[node name="BarraFocoFill" type="ColorRect" parent="HUD" unique_id=554859087]
 offset_left = 40.0
 offset_top = 636.0
 offset_right = 600.0
 offset_bottom = 650.0
 color = Color(0.4, 0.7, 1, 1)
+metadata/_edit_use_anchors_ = true
 
-[node name="ColapsoCap" type="Label" parent="HUD" unique_id=1406626506]
+[node name="ColapsoCap" type="Label" parent="HUD" unique_id=101697069]
 offset_left = 40.0
 offset_top = 658.0
 offset_right = 360.0
 offset_bottom = 676.0
 theme_override_font_sizes/font_size = 14
 text = "RISCO DE COLAPSO"
+metadata/_edit_use_anchors_ = true
 
-[node name="BarraColapsoBg" type="ColorRect" parent="HUD" unique_id=14322546]
+[node name="BarraColapsoBg" type="ColorRect" parent="HUD" unique_id=2073634387]
 offset_left = 40.0
 offset_top = 678.0
 offset_right = 600.0
 offset_bottom = 692.0
 color = Color(0.12, 0.12, 0.2, 1)
+metadata/_edit_use_anchors_ = true
 
-[node name="BarraColapsoFill" type="ColorRect" parent="HUD" unique_id=287517154]
+[node name="BarraColapsoFill" type="ColorRect" parent="HUD" unique_id=92654229]
 offset_left = 40.0
 offset_top = 678.0
 offset_right = 600.0
 offset_bottom = 692.0
 color = Color(1, 0.3, 0.3, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="SomL" type="AudioStreamPlayer2D" parent="." unique_id=1590135177]
+
+[node name="SomRuido" type="AudioStreamPlayer2D" parent="." unique_id=1171459274]
+
+[node name="SomJ" type="AudioStreamPlayer2D" parent="." unique_id=771193078]
+
+[node name="SomK" type="AudioStreamPlayer2D" parent="." unique_id=245906211]

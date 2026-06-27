@@ -2,30 +2,20 @@ extends Node2D
 
 # ============================================================
 #  MINIGAME WAVES  -  LÓGICA PURA (lado emocional / J K L)
-#
-#  Este script NÃO desenha nada. Toda parte visual está na CENA
-#  (MinigameWaves.tscn) como nós de verdade que você pode mover,
-#  restilizar e trocar por assets no editor.
-#
-#  O script só:
-#   - roda a lógica (níveis, agitação, foco, colapso, score)
-#   - ALIMENTA os nós: pontos da Line2D, cor da zona, texto dos
-#     labels, escala das barras.
-#
-#  Nós que ele espera encontrar na cena (mude o visual à vontade,
-#  só mantenha os NOMES):
-#   Canais/CanalJ|CanalK|CanalL  -> cada um com: Onda(Line2D),
-#       Zona(ColorRect), Tecla(Label), Emo(Label), Status(Label)
-#   HUD/ScoreLabel, HUD/FalaLabel
-#   HUD/BarraScoreFill, HUD/BarraFocoFill, HUD/BarraColapsoFill (ColorRect)
 # ============================================================
+
+# refs de áudio
+var _som_j: AudioStreamPlayer2D
+var _som_k: AudioStreamPlayer2D
+var _som_l: AudioStreamPlayer2D
+var _som_ruido: AudioStreamPlayer2D
 
 # desenho das ondas (relativo ao nó do canal -> posição vem da cena)
 @export var largura_onda: float = 640.0
 const NIVEL_PX: float = 56.0
 const AGIT_PX: float = 52.0
 
-# regulação / dificuldade (agora editável no Inspector)
+# regulação / dificuldade
 @export var PULL_NIVEL: float = 2.2
 @export var PULL_AGIT: float = 2.0
 @export var DRAIN: float = 16.0
@@ -51,7 +41,7 @@ const FALAS := [
 	"...tem dias que nada importa.",
 	"...por que sempre comigo?",
 	"...eu devia estar melhor.",
-	"...não sei se isso adianta.",
+	"...não sei si isso adianta.",
 ]
 
 var tempo: float = 0.0
@@ -83,11 +73,24 @@ func _ready() -> void:
 		emo.text = c.emo
 		emo.modulate = Color(c.cor.r, c.cor.g, c.cor.b, 0.7)
 		c.onda.default_color = c.cor
+		
 	_score_label = $HUD/ScoreLabel
 	_fala_label = $HUD/FalaLabel
 	_fill_score = $HUD/BarraScoreFill
 	_fill_foco = $HUD/BarraFocoFill
 	_fill_colapso = $HUD/BarraColapsoFill
+	
+	# Amarração segura dos nós de som usando caminhos relativos verificados
+	if has_node("SomJ"): _som_j = $SomJ
+	if has_node("SomK"): _som_k = $SomK
+	if has_node("SomL"): _som_l = $SomL
+	if has_node("SomRuido"): _som_ruido = $SomRuido
+	
+	# Inicialização do loop de estresse sonoro
+	if _som_ruido:
+		_som_ruido.volume_db = -80.0
+		if not _som_ruido.playing:
+			_som_ruido.play()
 
 
 func reset() -> void:
@@ -153,6 +156,7 @@ func _atualizar_logica(delta: float) -> void:
 		pior = maxf(pior, b)
 		if b > RED_THRESH:
 			soma_dano += (b - RED_THRESH)
+			
 	if soma_dano > 0.0:
 		colapso = minf(100.0, colapso + soma_dano * 45.0 * delta)
 	elif pior < 0.45:
@@ -164,6 +168,15 @@ func _atualizar_logica(delta: float) -> void:
 	if colapso >= 100.0:
 		colapso = 100.0
 		falhou = true
+
+	# --- CONTROLE DE ÁUDIO DO RUÍDO POR INSTABILIDADE ---
+	if _som_ruido:
+		if pior > RED_THRESH:
+			var instabilidade_extra: float = (pior - RED_THRESH) / (1.5 - RED_THRESH)
+			var energia_audio: float = lerpf(0.05, 1.0, instabilidade_extra)
+			_som_ruido.volume_db = linear_to_db(energia_audio)
+		else:
+			_som_ruido.volume_db = move_toward(_som_ruido.volume_db, -80.0, 100.0 * delta)
 
 
 func _instab(c) -> float:
@@ -186,6 +199,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	for c in CANAIS:
 		if event.keycode == c.code:
 			c.held = event.pressed
+			
+			# Dispara o áudio correspondente no exato instante do clique
+			if event.pressed:
+				match c.label:
+					"J": if _som_j: _som_j.play()
+					"K": if _som_k: _som_k.play()
+					"L": if _som_l: _som_l.play()
 			return
 
 
@@ -194,7 +214,6 @@ func _unhandled_input(event: InputEvent) -> void:
 # ------------------------------------------------------------
 func _aplicar_visual() -> void:
 	for c in CANAIS:
-		# pontos da onda (em coords locais do canal; baseline = posição do nó)
 		var pts := PackedVector2Array()
 		var amp: float = (0.06 + c.agit) * AGIT_PX
 		var off: float = c.nivel * NIVEL_PX
