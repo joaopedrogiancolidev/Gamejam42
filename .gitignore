@@ -1,0 +1,29 @@
+
+# ---- Godot 4+ ----
+# Cache do editor (regenerado automaticamente ao abrir o projeto)
+.godot/
+ 
+# Builds exportados
+/build/
+/exports/
+*.exe
+*.pck
+*.zip
+ 
+# Mono/C# (caso usem futuramente)
+.mono/
+data_*/
+mono_crash.*.json
+ 
+# ---- OS / editores ----
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+ 
+# OBS: NÃO ignore os arquivos *.import — eles são necessários e devem ser commitados.
+# OBS: export_presets.cfg pode ser commitado (útil pro time exportar igual),
+#      MAS remova se ele tiver senha de keystore (Android).
+ 
+
