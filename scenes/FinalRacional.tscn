@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dulhxou6sxcts"]
+[gd_scene load_steps=3 format=3 uid="uid://dxqfinalracional1"]
 
 [sub_resource type="Animation" id="Animation_aparecer"]
 resource_name = "aparecer"
