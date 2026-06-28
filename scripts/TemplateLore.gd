@@ -19,7 +19,7 @@ extends Node2D
 # ============================================================
 
 @export var header: String = "●  CyberTerapia™"
-@export_multiline var texto: String = "Texto da história aqui..."
+@export_multiline var texto: String = "João respirou. Disse 'não' pro deploy de sexta 18h, fechou o notebook e foi viver. O unicórnio que espere, ele escolheu ser uma pessoa inteira em vez de um recurso."
 @export var imagem: Texture2D
 @export var arte_placeholder: String = "[ ARTE AQUI ]"
 @export_file("*.tscn") var proxima_cena: String = ""

@@ -1,87 +1,185 @@
 [gd_scene format=3 uid="uid://dulhmo52s6g0s"]
 
-[sub_resource type="Animation" id="Animation_aparecer"]
-resource_name = "aparecer"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Conteudo:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Conteudo:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0.85, 0.85), Vector2(1, 1)]
-}
+[ext_resource type="Script" uid="uid://dgc3pqf3tqibf" path="res://scripts/TemplateLore.gd" id="1_tpl"]
+[ext_resource type="Texture2D" uid="uid://bubtcd6eistgo" path="res://assets/final_derrota.png" id="2_img"]
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_main"]
-_data = {
-"aparecer": SubResource("Animation_aparecer")
-}
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tela"]
+bg_color = Color(0.05, 0.05, 0.1, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.35, 0.85, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color(0.4, 0.8, 1, 0.3)
+shadow_size = 18
 
-[node name="FinalGameover" type="Node2D"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_janela"]
+bg_color = Color(0.06, 0.07, 0.13, 0.5)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.85, 1, 0.55)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
-[node name="Escurecer" type="ColorRect" parent="."]
+[node name="FinalGameover" type="Node2D" unique_id=1502633016]
+script = ExtResource("1_tpl")
+texto = "Burnout em produção. A mente do João travou na sexta 18h e a CyberTerapia™ deu kernel panic — claro, foi vibe-coded. O chefe disse que ano que vem vira unicórnio."
+imagem = ExtResource("2_img")
+proxima_cena = "res://scenes/Menu.tscn"
+
+[node name="Fundo" type="ColorRect" parent="." unique_id=1536460513]
 offset_right = 1280.0
 offset_bottom = 720.0
-color = Color(0.0235, 0.0235, 0.0510, 1)
+color = Color(0.04, 0.02, 0.06, 1)
 
-[node name="Conteudo" type="Control" parent="."]
+[node name="Monitor" type="Panel" parent="." unique_id=2002201520]
+offset_left = 90.0
+offset_top = 50.0
+offset_right = 1190.0
+offset_bottom = 670.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tela")
+
+[node name="MonitorFrame" type="TextureRect" parent="." unique_id=1386422177]
+visible = false
 offset_right = 1280.0
 offset_bottom = 720.0
-pivot_offset = Vector2(640, 360)
+expand_mode = 1
 
-[node name="Titulo" type="Label" parent="Conteudo"]
-offset_top = 196.0
-offset_right = 1280.0
-offset_bottom = 260.0
-theme_override_colors/font_color = Color(1, 0.231, 0.231, 1)
-theme_override_font_sizes/font_size = 52
-text = "COLAPSO MENTAL"
-horizontal_alignment = 1
+[node name="Janela" type="Panel" parent="." unique_id=810565537]
+offset_left = 258.0
+offset_top = 148.0
+offset_right = 1042.0
+offset_bottom = 618.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_janela")
 
-[node name="Scores" type="Label" parent="Conteudo"]
-offset_top = 292.0
-offset_right = 1280.0
-offset_bottom = 326.0
-theme_override_font_sizes/font_size = 24
-text = "Racional: 0%      Emocional: 0%"
-horizontal_alignment = 1
+[node name="TitleBar" type="ColorRect" parent="." unique_id=448460274]
+offset_left = 258.0
+offset_top = 150.0
+offset_right = 1042.0
+offset_bottom = 180.0
+color = Color(0.09, 0.1, 0.18, 0.9)
 
-[node name="Descricao" type="Label" parent="Conteudo"]
-offset_left = 240.0
-offset_top = 356.0
+[node name="Header" type="Label" parent="." unique_id=1511828420]
+offset_left = 272.0
+offset_top = 152.0
+offset_right = 900.0
+offset_bottom = 178.0
+theme_override_colors/font_color = Color(0.4, 0.9, 1, 0.9)
+theme_override_font_sizes/font_size = 16
+text = "●  CyberTerapia™"
+vertical_alignment = 1
+
+[node name="BtnFechar" type="ColorRect" parent="." unique_id=319476135]
+offset_left = 956.0
+offset_top = 158.0
+offset_right = 972.0
+offset_bottom = 174.0
+color = Color(1, 0.35, 0.35, 1)
+
+[node name="BtnMin" type="ColorRect" parent="." unique_id=2123648406]
+offset_left = 980.0
+offset_top = 158.0
+offset_right = 996.0
+offset_bottom = 174.0
+color = Color(1, 0.8, 0.2, 1)
+
+[node name="BtnMax" type="ColorRect" parent="." unique_id=1245174919]
+offset_left = 1004.0
+offset_top = 158.0
+offset_right = 1020.0
+offset_bottom = 174.0
+color = Color(0.3, 0.9, 0.4, 1)
+
+[node name="Imagem" type="TextureRect" parent="." unique_id=961291879]
+offset_left = 260.0
+offset_top = 188.0
 offset_right = 1040.0
-offset_bottom = 470.0
-theme_override_font_sizes/font_size = 20
+offset_bottom = 360.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Placeholder" type="ColorRect" parent="." unique_id=816008092]
+offset_left = 260.0
+offset_top = 188.0
+offset_right = 1040.0
+offset_bottom = 360.0
+color = Color(0.92, 0.1, 0.55, 0.9)
+
+[node name="Titulo" type="Label" parent="Placeholder" unique_id=2142742363]
+layout_mode = 0
+offset_top = 45.0
+offset_right = 780.0
+offset_bottom = 90.0
+theme_override_colors/font_color = Color(0.55, 1, 0.1, 1)
+theme_override_font_sizes/font_size = 24
+text = "🎨 graphic design is my passion 🎨"
+horizontal_alignment = 1
+
+[node name="Desc" type="Label" parent="Placeholder" unique_id=2069820327]
+layout_mode = 0
+offset_top = 95.0
+offset_right = 780.0
+offset_bottom = 165.0
+theme_override_colors/font_color = Color(1, 0.95, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "[ ARTE AQUI ]"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="TituloFinal" type="Label" parent="." unique_id=8907171]
+offset_left = 260.0
+offset_top = 362.0
+offset_right = 1040.0
+offset_bottom = 400.0
+theme_override_colors/font_color = Color(1, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 26
+text = "DERROTA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Conteudo" type="Control" parent="." unique_id=1577470052]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="Texto" type="Label" parent="Conteudo" unique_id=1782125496]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 411.0
+offset_right = 1040.0
+offset_bottom = 522.0
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 22
 text = "Burnout em produção. A mente do João travou na sexta 18h e a CyberTerapia™ deu kernel panic — claro, foi vibe-coded. O chefe disse que ano que vem vira unicórnio."
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Reiniciar" type="Label" parent="Conteudo"]
-offset_top = 500.0
-offset_right = 1280.0
-offset_bottom = 540.0
-theme_override_font_sizes/font_size = 22
-text = "ENTER pra recomeçar"
+[node name="Continuar" type="Label" parent="Conteudo" unique_id=1892244936]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 560.0
+offset_right = 1040.0
+offset_bottom = 586.0
+theme_override_colors/font_color = Color(0.5, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "▶  ENTER pra recomeçar"
 horizontal_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_main")
-}
-autoplay = "aparecer"
+[node name="StatusBar" type="Label" parent="." unique_id=861474695]
+offset_left = 272.0
+offset_top = 592.0
+offset_right = 1030.0
+offset_bottom = 614.0
+theme_override_colors/font_color = Color(0.55, 0.6, 0.75, 0.8)
+theme_override_font_sizes/font_size = 13
+text = "●  conectado à mente   ·   build: vibe-coded ✨   ·   estabilidade: 73%   ·   café: 0%"
+vertical_alignment = 1
