@@ -37,6 +37,14 @@ var _t: float = 0.0
 func _ready() -> void:
 	_header.text = header
 	_texto.text = texto
+	# moldura do "pc" (arte do monitor). Se assets/monitor.png existir,
+	# usa a imagem e esconde a borda desenhada (que é só fallback).
+	if ResourceLoader.exists("res://assets/monitor.png"):
+		$MonitorFrame.texture = load("res://assets/monitor.png")
+		$MonitorFrame.visible = true
+		$Monitor.visible = false
+	else:
+		$MonitorFrame.visible = false
 	if imagem:
 		_imagem.texture = imagem
 		_imagem.visible = true
