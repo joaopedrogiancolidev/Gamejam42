@@ -1,11 +1,39 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://doi5pnv3183k4"]
 
 [ext_resource type="PackedScene" path="res://scenes/TemplateLore.tscn" id="1_base"]
 
-[node name="Lore2" instance=ExtResource("1_base")]
+[node name="Lore2" unique_id=1968874479 instance=ExtResource("1_base")]
 header = "●  CyberTerapia™ — sessão oficial"
 texto = "Sessão oficial: os dois lados AO MESMO TEMPO.
 RAZÃO (W A S D) · EMOÇÃO (I J K L).
 Mantenham o equilíbrio — e segurem firme quando o glitch travar uma tecla."
 arte_placeholder = "[ ARTE: painel da sessão / lembrete de teclas ]"
 proxima_cena = "res://scenes/Hub.tscn"
+
+[node name="Titulo" parent="Placeholder" index="0"]
+layout_mode = 0
+
+[node name="Desc" parent="Placeholder" index="1"]
+layout_mode = 0
+
+[node name="Conteudo" parent="." index="11"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Texto" parent="Conteudo" index="0"]
+layout_mode = 0
+
+[node name="Continuar" parent="Conteudo" index="1"]
+layout_mode = 0
+
+[node name="Texto2" type="Label" parent="Conteudo" index="2" unique_id=81651829]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 366.0
+offset_right = 1040.0
+offset_bottom = 556.0
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "João respirou. Disse 'não' pro deploy de sexta 18h, fechou o notebook e foi viver. O unicórnio que espere, ele escolheu ser uma pessoa inteira em vez de um recurso."
+horizontal_alignment = 1
+autowrap_mode = 3
