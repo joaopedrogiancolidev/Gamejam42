@@ -1,11 +1,6 @@
-res://scripts/MinigameWaves.gd
-res://scripts/MinigameDance.gd
 res://scenes/FinalEmocional.tscn
 res://scenes/FinalFeliz.tscn
 res://scenes/FinalGameover.tscn
 res://scenes/FinalRacional.tscn
-res://scenes/MinigameWaves.tscn
-res://scripts/MolduraNeon.gd
-res://scenes/Hub.tscn
 res://scripts/Hub.gd
-res://scripts/Overlay.gd
+res://scenes/MinigameWaves.tscn
