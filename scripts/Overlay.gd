@@ -10,7 +10,6 @@ extends Node2D
 #  últimos segundos). Moldura e Divisoria são nós estáticos.
 # ============================================================
 
-const DURACAO: float = 60.0
 const URGENCIA: float = 5.0   # segundos finais em que o cronômetro fica vermelho
 
 @onready var _cronometro: Label = $Cronometro
@@ -22,7 +21,8 @@ func _process(_delta: float) -> void:
 		return
 
 	_cronometro.visible = true
-	var restante: int = max(0, int(ceil(DURACAO - owner.tempo)))
+	# usa a duração da partida do Hub (owner), pra não divergir do real
+	var restante: int = max(0, int(ceil(owner.DURACAO - owner.tempo)))
 	_cronometro.text = str(restante)
 
 	if restante <= URGENCIA:

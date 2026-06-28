@@ -33,9 +33,22 @@ const PRIMEIRO_SPAWN := 3.5
 const SPAWN_MIN := 4.0
 const SPAWN_MAX := 6.5
 
-const HOLD_TIME := 1.7            # segundos segurando pra consertar
-const DECAY := 0.9               # quão rápido o progresso regride ao soltar
+const HOLD_TIME := 1.7            # segundos segurando pra consertar (tipo HOLD)
+const DECAY := 0.9               # quão rápido o progresso regride ao soltar (HOLD)
 const JITTER := 8.0              # amplitude do tremor (px)
+
+# tipo MASH: imagens "goofy" enormes tomam a tela do lado afetado.
+# Cada toque elimina UMA imagem; some todas -> glitch resolvido.
+# O lado segue jogável (sem tremor), mas a visão fica encoberta.
+const MASH_MIN := 4              # qtde mínima de imagens goofy
+const MASH_MAX := 6              # qtde máxima
+const GOOFY_TAM := 170.0         # tamanho base (~2x o botão de 86px)
+const GOOFY_DIST := 180.0        # distância mínima entre centros (espaçamento)
+const GOOFY_PATHS := [
+	"res://assets/goofy/goofy_bird.png",
+	"res://assets/goofy/goofy_cat.png",
+	"res://assets/goofy/goofy_dog.png",
+]
 
 @onready var _font: Font = ThemeDB.fallback_font
 
@@ -46,14 +59,19 @@ var _base_dir: Vector2
 
 var _frames_azul: Array[Texture2D] = []
 var _frames_verm: Array[Texture2D] = []
+var _goofy_texs: Array[Texture2D] = []
+var _goofies: Array = []         # cada item: {pos, tex, rot, tam}
+var _goofy_total: int = 0
 
 # estado do glitch atual (um por vez, pra ficar legível)
 var _ativo: bool = false
 var _lado: String = ""           # "esq" | "dir"
+var _tipo: String = "hold"       # "hold" | "mash"
 var _progresso: float = 0.0
 var _spawn_t: float = PRIMEIRO_SPAWN
 var _pulse: float = 0.0
 var _prev_estado: String = "rodando"
+var _tecla_prev: bool = false    # estado anterior da tecla (edge p/ o mash)
 
 
 func _ready() -> void:
@@ -63,6 +81,9 @@ func _ready() -> void:
 	_base_dir = _waves.position
 	_frames_azul = _carregar_frames("res://assets/broken_botton_blue/broken_botton_blue")
 	_frames_verm = _carregar_frames("res://assets/broken_botton_red/broken_botton_red")
+	for p in GOOFY_PATHS:
+		if ResourceLoader.exists(p):
+			_goofy_texs.append(load(p) as Texture2D)
 
 
 func _carregar_frames(prefixo: String) -> Array[Texture2D]:
@@ -120,8 +141,45 @@ func _tentar_spawn() -> void:
 	else:
 		_lado = "esq" if pode_esq else "dir"
 
+	_tipo = "mash" if randf() < 0.5 else "hold"
 	_ativo = true
 	_progresso = 0.0
+	_tecla_prev = false
+	if _tipo == "mash":
+		_montar_goofies()
+
+
+# espalha 4-6 imagens goofy gigantes pela região do lado afetado
+func _montar_goofies() -> void:
+	_goofies.clear()
+	if _goofy_texs.is_empty():
+		_goofy_total = 0
+		return
+	var regiao: Rect2 = REGIAO_ESQ if _lado == "esq" else REGIAO_DIR
+	var n: int = randi_range(MASH_MIN, MASH_MAX)
+	for i in n:
+		var tam: float = GOOFY_TAM * randf_range(0.85, 1.15)
+		var margem: float = tam * 0.3
+		# tenta achar um ponto longe das imagens já colocadas
+		var pos := Vector2.ZERO
+		for tentativa in 20:
+			pos = Vector2(
+				randf_range(regiao.position.x + margem, regiao.position.x + regiao.size.x - margem),
+				randf_range(regiao.position.y + margem, regiao.position.y + regiao.size.y - margem))
+			var ok := true
+			for g in _goofies:
+				if pos.distance_to(g["pos"]) < GOOFY_DIST:
+					ok = false
+					break
+			if ok:
+				break
+		_goofies.append({
+			"pos": pos,
+			"tex": _goofy_texs[randi() % _goofy_texs.size()],
+			"rot": randf_range(0.0, TAU),
+			"tam": tam,
+		})
+	_goofy_total = _goofies.size()
 
 
 func _atualizar_glitch(delta: float) -> void:
@@ -132,12 +190,27 @@ func _atualizar_glitch(delta: float) -> void:
 		_resolver()
 		return
 
-	# conserto: o OUTRO lado segura a tecla dele
+	# conserto: o OUTRO lado age na tecla dele
 	var tecla: int = TECLA_REPARO_DIR if _lado == "esq" else TECLA_REPARO_ESQ
-	if Input.is_key_pressed(tecla):
+	var pressionada: bool = Input.is_key_pressed(tecla)
+
+	if _tipo == "mash":
+		# MARTELE: cada toque novo elimina uma imagem goofy.
+		# O lado segue jogável (sem tremor), só a visão fica encoberta.
+		if pressionada and not _tecla_prev and not _goofies.is_empty():
+			_goofies.pop_back()
+			_progresso = 1.0 - float(_goofies.size()) / float(maxi(_goofy_total, 1))
+		_tecla_prev = pressionada
+		if _goofies.is_empty():
+			_resolver()
+		return
+
+	# SEGURE: enche enquanto segura, regride ao soltar + estrago visual
+	if pressionada:
 		_progresso += delta / HOLD_TIME
 	else:
 		_progresso = maxf(0.0, _progresso - delta * DECAY)
+	_tecla_prev = pressionada
 
 	if _progresso >= 1.0:
 		_resolver()
@@ -153,6 +226,7 @@ func _atualizar_glitch(delta: float) -> void:
 func _resolver() -> void:
 	_ativo = false
 	_progresso = 0.0
+	_goofies.clear()
 	# devolve o lado afetado ao normal
 	_dance.position = _base_esq
 	_dance.modulate = Color.WHITE
@@ -164,6 +238,7 @@ func _resolver() -> void:
 func _limpar() -> void:
 	_ativo = false
 	_progresso = 0.0
+	_goofies.clear()
 	if _dance:
 		_dance.position = _base_esq
 		_dance.modulate = Color.WHITE
@@ -182,8 +257,20 @@ func _draw() -> void:
 	var regiao: Rect2 = REGIAO_ESQ if _lado == "esq" else REGIAO_DIR
 	var cor: Color = Color(0.45, 0.7, 1.0) if _lado == "esq" else Color(1.0, 0.35, 0.35)
 
-	_desenhar_estatica(regiao, cor)
+	if _tipo == "mash":
+		_desenhar_goofies()
+	else:
+		_desenhar_estatica(regiao, cor)
 	_desenhar_botao_e_prompt(cor)
+
+
+# imagens goofy gigantes, cada uma com posição/rotação/tamanho aleatórios
+func _desenhar_goofies() -> void:
+	for g in _goofies:
+		var tam: Vector2 = Vector2(g["tam"], g["tam"])
+		draw_set_transform(g["pos"], g["rot"], Vector2.ONE)
+		draw_texture_rect(g["tex"], Rect2(-tam * 0.5, tam), false)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 
 func _desenhar_estatica(regiao: Rect2, cor: Color) -> void:
@@ -226,11 +313,12 @@ func _desenhar_botao_e_prompt(cor: Color) -> void:
 	# prompt: quem conserta e qual tecla segurar
 	if _font == null:
 		return
+	var verbo: String = "MARTELE" if _tipo == "mash" else "SEGURE"
 	var txt: String
 	if _lado == "esq":
-		txt = "DIREITA: SEGURE [I]"
+		txt = "DIREITA: %s [I]" % verbo
 	else:
-		txt = "ESQUERDA: SEGURE [E]"
+		txt = "ESQUERDA: %s [E]" % verbo
 	var w: float = _font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x
 	var brilho: float = 0.6 + 0.4 * sin(_pulse * 6.0)
 	draw_string(_font, Vector2(centro.x - w / 2.0, centro.y + 70.0), txt,

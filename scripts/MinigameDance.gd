@@ -177,12 +177,8 @@ func _aplicar_visual() -> void:
 	_combo_label.text = "COMBO: %d" % combo
 	_fill_score.scale.x = clampf(float(score) / META, 0.0, 1.0)
 
-	# Mostra contagem regressiva antes das notas começarem
-	if song_time < 0.0 and ativo:
-		_prepare_label.visible = true
-		_prepare_label.text = "PREPARE-SE\n%d" % max(int(ceil(-song_time)), 1)
-	else:
-		_prepare_label.visible = false
+	# PREPARE-SE removido: as notas entram com o lead-in normal, sem overlay
+	_prepare_label.visible = false
 
 	# Atualiza cor das letras dos alvos conforme o flash (tecla pressionada)
 	var teclas := [

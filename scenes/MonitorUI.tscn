@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cjeo7xgeaift7"]
 
-[ext_resource type="Script" path="res://scripts/MonitorUI.gd" id="1_mui"]
+[ext_resource type="Script" uid="uid://bkewaqcf1w0vx" path="res://scripts/MonitorUI.gd" id="1_mui"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tela"]
 bg_color = Color(0.05, 0.05, 0.1, 0.92)
@@ -28,23 +28,23 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="MonitorUI" type="Node2D"]
+[node name="MonitorUI" type="Node2D" unique_id=820683137]
 script = ExtResource("1_mui")
 
-[node name="Monitor" type="Panel" parent="."]
+[node name="Monitor" type="Panel" parent="." unique_id=875305384]
 offset_left = 90.0
 offset_top = 50.0
 offset_right = 1190.0
 offset_bottom = 670.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tela")
 
-[node name="MonitorFrame" type="TextureRect" parent="."]
+[node name="MonitorFrame" type="TextureRect" parent="." unique_id=317129739]
 visible = false
 offset_right = 1280.0
 offset_bottom = 720.0
 expand_mode = 1
 
-[node name="Software" type="Control" parent="."]
+[node name="Software" type="Control" parent="." unique_id=1751132013]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 258.0
@@ -54,7 +54,7 @@ offset_bottom = 618.0
 scale = Vector2(0.9, 0.9)
 pivot_offset = Vector2(392, 235)
 
-[node name="Janela" type="Panel" parent="Software"]
+[node name="Janela" type="Panel" parent="Software" unique_id=1701729667]
 layout_mode = 0
 offset_left = -41.333313
 offset_top = -23.888885
@@ -62,14 +62,14 @@ offset_right = 795.33344
 offset_bottom = 469.4445
 theme_override_styles/panel = SubResource("StyleBoxFlat_janela")
 
-[node name="TitleBar" type="ColorRect" parent="Software"]
+[node name="TitleBar" type="ColorRect" parent="Software" unique_id=1369740743]
 layout_mode = 0
 offset_top = 2.0
 offset_right = 784.0
 offset_bottom = 32.0
 color = Color(0.09, 0.1, 0.18, 0.9)
 
-[node name="Header" type="Label" parent="Software"]
+[node name="Header" type="Label" parent="Software" unique_id=2100484385]
 layout_mode = 0
 offset_left = -18.00003
 offset_top = 0.555542
@@ -80,7 +80,7 @@ theme_override_font_sizes/font_size = 16
 text = "●  CyberTerapia™"
 vertical_alignment = 1
 
-[node name="BtnFechar" type="ColorRect" parent="Software"]
+[node name="BtnFechar" type="ColorRect" parent="Software" unique_id=1392678521]
 layout_mode = 0
 offset_left = 698.0
 offset_top = 10.0
@@ -88,7 +88,7 @@ offset_right = 714.0
 offset_bottom = 26.0
 color = Color(1, 0.35, 0.35, 1)
 
-[node name="BtnMin" type="ColorRect" parent="Software"]
+[node name="BtnMin" type="ColorRect" parent="Software" unique_id=1237186836]
 layout_mode = 0
 offset_left = 722.0
 offset_top = 10.0
@@ -96,7 +96,7 @@ offset_right = 738.0
 offset_bottom = 26.0
 color = Color(1, 0.8, 0.2, 1)
 
-[node name="BtnMax" type="ColorRect" parent="Software"]
+[node name="BtnMax" type="ColorRect" parent="Software" unique_id=1033693619]
 layout_mode = 0
 offset_left = 746.0
 offset_top = 10.0
@@ -104,14 +104,14 @@ offset_right = 762.0
 offset_bottom = 26.0
 color = Color(0.3, 0.9, 0.4, 1)
 
-[node name="Conteudo" type="Control" parent="Software"]
-layout_mode = 0
+[node name="Conteudo" type="Control" parent="Software" unique_id=374116876]
+anchors_preset = 0
 offset_left = 2.0
 offset_top = 40.0
 offset_right = 782.0
 offset_bottom = 440.0
 
-[node name="StatusBar" type="Label" parent="Software"]
+[node name="StatusBar" type="Label" parent="Software" unique_id=1844381400]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 444.0
@@ -119,5 +119,5 @@ offset_right = 772.0
 offset_bottom = 466.0
 theme_override_colors/font_color = Color(0.55, 0.6, 0.75, 0.8)
 theme_override_font_sizes/font_size = 13
-text = "●  conectado à mente   ·   build: vibe-coded ✨   ·   estabilidade: 42%   ·   café: 0%"
+text = "●  conectado à mente   ·   build: vibe-coded ✨   ·   deixar pra depois: 42%   ·   café: 0%"
 vertical_alignment = 1

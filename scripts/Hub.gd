@@ -15,6 +15,7 @@ extends Node2D
 # ============================================================
 
 const DURACAO: float = 60.0
+const DURACAO_REF: float = 60.0   # duração para a qual as METAs foram balanceadas
 
 # pulsação do background ("respiração do cérebro")
 const BG_PULSO_VEL: float = 1.1   # rad/s (~5.7s por ciclo)
@@ -40,6 +41,13 @@ var _bg_alpha_base: float = 0.2
 
 
 func _ready() -> void:
+	# o tempo do emocional acompanha a duração da partida
+	waves.TEMPO_LIMITE = DURACAO
+	# as metas de score escalam com a duração (balanceadas para DURACAO_REF),
+	# pra barrinha continuar enchível na mesma proporção
+	var fator: float = DURACAO / DURACAO_REF
+	dance.META = int(round(dance.META * fator))
+	waves.META = int(round(waves.META * fator))
 	if _background2:
 		_bg_alpha_base = _background2.self_modulate.a
 	if not bg_music.playing:
@@ -100,8 +108,8 @@ func _terminar(tipo: String) -> void:
 	# preenche os scores se a cena tiver esse label
 	var sc = _cena_final.get_node_or_null("Conteudo/Scores")
 	if sc:
-		var r: int = int(float(dance.score) / float(dance.META) * 100.0)
-		var e: int = int(float(waves.score) / float(waves.META) * 100.0)
+		var r: int = mini(100, int(float(dance.score) / float(dance.META) * 100.0))
+		var e: int = mini(100, int(float(waves.score) / float(waves.META) * 100.0))
 		sc.text = "Racional: %d%%      Emocional: %d%%" % [r, e]
 
 

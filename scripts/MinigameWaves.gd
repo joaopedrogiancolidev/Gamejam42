@@ -33,6 +33,9 @@ const DIFICULDADE_MULT: float = 0.52 # PUNIÇÃO (dreno/colapso/limiar). Perturb
 
 # --- contrato com o Hub ---
 @export var META: int = 5200
+# tempo de partida do emocional. Quando rodando dentro do Hub, sincroniza
+# com o DURACAO da partida no _ready. 30s por enquanto pra testes.
+@export var TEMPO_LIMITE: float = 30.0
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
@@ -106,7 +109,6 @@ func _ready() -> void:
 	if has_node("SomRuido"): _som_ruido = $SomRuido
 	
 	if _som_ruido:
-		_som_ruido.volume_db = -80.0
 		if not _som_ruido.playing:
 			_som_ruido.play()
 
@@ -279,7 +281,7 @@ func _atualizar_logica(delta: float) -> void:
 	if score >= META:
 		score = META
 		ativo = false
-	elif tempo >= 60.0:
+	elif tempo >= TEMPO_LIMITE:
 		if score < META:
 			falhou = true
 		ativo = false
