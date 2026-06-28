@@ -5,7 +5,7 @@
 [node name="Tutorial1" unique_id=912544041 instance=ExtResource("1_base")]
 header = "●  TUTORIAL — lado emocional"
 texto = "Primeiro, as ONDAS EMOCIONAIS.
-Segure I J K L pra puxar ansiedade, tristeza e raiva de volta pra zona calma.
+Segure J K L pra voltar pra zona calma.
 Não deixe o RISCO DE COLAPSO encher."
 arte_placeholder = "[ aqui roda o minigame WAVES em modo fácil ]"
 proxima_cena = "res://scenes/PlotTwist.tscn"
