@@ -22,6 +22,10 @@ config/features=PackedStringArray("4.6", "GL Compatibility")
 
 buses/default_bus_layout="uid://dg6vfl3na4twe"
 
+[autoload]
+
+SairGlobal="*res://scripts/SairGlobal.gd"
+
 [display]
 
 window/size/viewport_width=1280

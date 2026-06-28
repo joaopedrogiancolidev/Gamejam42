@@ -33,7 +33,7 @@ const PRIMEIRO_SPAWN := 3.5
 const SPAWN_MIN := 4.0
 const SPAWN_MAX := 6.5
 
-const HOLD_TIME := 1.7            # segundos segurando pra consertar (tipo HOLD)
+const HOLD_TIME := 1.0            # segundos segurando pra consertar (tipo HOLD)
 const DECAY := 0.9               # quão rápido o progresso regride ao soltar (HOLD)
 const JITTER := 8.0              # amplitude do tremor (px)
 
