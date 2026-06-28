@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://cv0t765ay2tka" path="res://scripts/Overlay.gd" id="4_overlay"]
 [ext_resource type="AudioStream" uid="uid://bwswl0pgqsgh4" path="res://assets/music/Zeta - RAM.mp3" id="5_1t77w"]
 [ext_resource type="Texture2D" uid="uid://c4q2iaj4rbw65" path="res://assets/background_2.png" id="6_tm630"]
-[ext_resource type="Script" path="res://scripts/GlitchManager.gd" id="7_glitch"]
+[ext_resource type="Script" uid="uid://duy5xnb1kipxt" path="res://scripts/GlitchManager.gd" id="7_glitch"]
 
 [node name="Hub" type="Node2D" unique_id=454329926]
 script = ExtResource("1_hub")
@@ -36,9 +36,6 @@ offset_right = 641.0
 offset_bottom = 720.0
 color = Color(0.5, 0.4, 0.8, 0.5)
 
-[node name="GlitchManager" type="Node2D" parent="UI" unique_id=778451293]
-script = ExtResource("7_glitch")
-
 [node name="Cronometro" type="Label" parent="UI/Overlay" unique_id=2125937120]
 offset_top = 92.0
 offset_right = 1280.0
@@ -47,6 +44,9 @@ pivot_offset = Vector2(640, 112)
 theme_override_font_sizes/font_size = 30
 text = "60"
 horizontal_alignment = 1
+
+[node name="GlitchManager" type="Node2D" parent="UI" unique_id=778451293]
+script = ExtResource("7_glitch")
 
 [node name="bg_music" type="AudioStreamPlayer" parent="." unique_id=1073164063]
 stream = ExtResource("5_1t77w")

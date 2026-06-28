@@ -26,7 +26,7 @@ extends Node2D
 @export var R_NOTA: float = 28.0
 
 # --- Contrato com o Hub ---
-@export var META: int = 2800
+@export var META: int = 5600
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
@@ -254,12 +254,12 @@ func _julgar(n, dt: float) -> void:
 	var mult: int = 1 + combo / 10
 	if dt <= JANELA_PERFEITO:
 		n_perfeito += 1
-		score += 200 * mult
+		score += 400 * mult
 		_popup(pos, "PERFEITO!", Color(0.4, 1.0, 0.7))
 		_burst(pos, Color(0.4, 1.0, 0.7))
 	else:
 		n_bom += 1
-		score += 100 * mult
+		score += 200 * mult
 		_popup(pos, "bom", Color(1.0, 0.85, 0.4))
 		_burst(pos, ALVOS[n.key].cor)
 	if n.hold:
@@ -273,7 +273,7 @@ func _hold_ok(n) -> void:
 	combo += 1
 	combo_max = max(combo_max, combo)
 	var mult: int = 1 + combo / 10
-	score += 300 * mult
+	score += 600 * mult
 	_popup(ALVOS[n.key].pos, "SEGUROU!", Color(0.45, 0.8, 1.0))
 	_burst(ALVOS[n.key].pos, Color(0.45, 0.8, 1.0))
 
@@ -386,12 +386,29 @@ func _desenhar_acorde(a: Vector2, b: Vector2, prog: float) -> void:
 	draw_line(a, b, Color(cor.r, cor.g, cor.b, 0.30 * pulso), w * 1.7)
 	draw_line(a, b, Color(cor.r, cor.g, cor.b, 0.95), w)
 	draw_line(a, b, Color(1, 1, 1, 0.9), maxf(2.0, w * 0.35))
-	# "AO MESMO TEMPO" surgindo e crescendo no meio do traço
+	# "AO MESMO TEMPO" em cima do traço, no mesmo ângulo da linha
 	if _font and prog > 0.15:
-		var meio: Vector2 = (a + b) * 0.5
 		var tam: int = int(lerpf(12.0, 22.0, prog))
 		var alpha: float = clampf((prog - 0.15) / 0.5, 0.0, 1.0)
-		_texto_centro_em("AO MESMO TEMPO", meio + Vector2(0, -w - 12.0), tam, Color(1.0, 0.6, 0.95, alpha))
+		_texto_na_linha("AO MESMO TEMPO", a, b, w, tam, Color(1.0, 0.6, 0.95, alpha))
+
+
+# Desenha um texto centralizado SOBRE a linha a->b, girado no ângulo dela.
+func _texto_na_linha(txt: String, a: Vector2, b: Vector2, larg_linha: float, tam: int, cor: Color) -> void:
+	if _font == null:
+		return
+	var ang: float = (b - a).angle()
+	# mantém o texto sempre legível (nunca de cabeça pra baixo)
+	if ang > PI / 2.0 or ang < -PI / 2.0:
+		ang += PI
+	var meio: Vector2 = (a + b) * 0.5
+	# desloca perpendicularmente pra ficar EM CIMA do traço (acima dele)
+	var perp := Vector2(cos(ang - PI / 2.0), sin(ang - PI / 2.0))
+	var base: Vector2 = meio + perp * (larg_linha * 0.5 + 6.0)
+	var w_txt: float = _font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam).x
+	draw_set_transform(base, ang, Vector2.ONE)
+	draw_string(_font, Vector2(-w_txt / 2.0, 0.0), txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, cor)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)  # reseta a transform do canvas
 
 
 func _forma_nota(pos: Vector2, cor: Color) -> void:
