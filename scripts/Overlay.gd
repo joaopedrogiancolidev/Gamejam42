@@ -10,7 +10,7 @@ extends Node2D
 #  últimos segundos). Moldura e Divisoria são nós estáticos.
 # ============================================================
 
-const DURACAO: float = 30.0
+const DURACAO: float = 60.0
 const URGENCIA: float = 5.0   # segundos finais em que o cronômetro fica vermelho
 
 @onready var _cronometro: Label = $Cronometro

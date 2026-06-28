@@ -7,18 +7,18 @@ extends Node2D
 # ============================================================
 
 # --- Parâmetros de ritmo (editáveis no inspetor) ---
-@export var BPM: float = 75.0
+@export var BPM: float = 90.0
 @export var LEAD: float = 3.0          # tempo de preparação antes das notas
 @export var APPROACH: float = 2.5      # duração da viagem de cada nota ao alvo
 @export var BEAT_INICIAL: float = 8.0  # beat em que a primeira nota é gerada
 
 # --- Janelas de acerto (quanto maior, mais perdoador) ---
-@export var JANELA_PERFEITO: float = 0.12
-@export var JANELA_BOM: float = 0.28
+@export var JANELA_PERFEITO: float = 0.10
+@export var JANELA_BOM: float = 0.23
 
 # --- Geração de notas ---
-@export var CHANCE_HOLD: float = 0.08
-@export var CHANCE_ACORDE: float = 0.0  # 0 = sem acordes simultâneos
+@export var CHANCE_HOLD: float = 0.15
+@export var CHANCE_ACORDE: float = 0.10  # acordes simultâneos (S+D etc) pra apertar
 
 # --- Visuais ---
 @export_enum("estrela", "circulo") var ESTILO_NOTA: String = "estrela"
@@ -26,7 +26,7 @@ extends Node2D
 @export var R_NOTA: float = 28.0
 
 # --- Contrato com o Hub ---
-@export var META: int = 1700
+@export var META: int = 2800
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false

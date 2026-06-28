@@ -29,10 +29,10 @@ const AGIT_PX: float = 52.0
 @export var RED_THRESH: float = 0.50  
 @export var RATE_SCORE: float = 120.0  
 
-const DIFICULDADE_MULT: float = 0.45 # bem mais fácil - pra testar a final feliz
+const DIFICULDADE_MULT: float = 0.68 # mais agressivo: dreno/perturbação/colapso mais fortes
 
 # --- contrato com o Hub ---
-@export var META: int = 1500
+@export var META: int = 2600
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
@@ -278,7 +278,7 @@ func _atualizar_logica(delta: float) -> void:
 	if score >= META:
 		score = META
 		ativo = false
-	elif tempo >= 30.0:
+	elif tempo >= 60.0:
 		if score < META:
 			falhou = true
 		ativo = false

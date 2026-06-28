@@ -14,7 +14,7 @@ extends Node2D
 #   - alguém COLAPSA          -> FinalGameover
 # ============================================================
 
-const DURACAO: float = 30.0
+const DURACAO: float = 60.0
 
 # pulsação do background ("respiração do cérebro")
 const BG_PULSO_VEL: float = 1.1   # rad/s (~5.7s por ciclo)
