@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cb6o0dkp1x5xd"]
 
-[ext_resource type="Script" path="res://scripts/TemplateLore.gd" id="1_tpl"]
+[ext_resource type="Script" uid="uid://dgc3pqf3tqibf" path="res://scripts/TemplateLore.gd" id="1_tpl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tela"]
 bg_color = Color(0.05, 0.05, 0.1, 0.92)
