@@ -24,12 +24,12 @@ extends Node2D
 @export var arte_placeholder: String = "[ ARTE AQUI ]"
 @export_file("*.tscn") var proxima_cena: String = ""
 
-@onready var _header: Label = $Header
-@onready var _texto: Label = $Conteudo/Texto
-@onready var _imagem: TextureRect = $Imagem
-@onready var _placeholder: ColorRect = $Placeholder
-@onready var _placeholder_desc: Label = $Placeholder/Desc
-@onready var _continuar: Label = $Conteudo/Continuar
+@onready var _header: Label = $Software/Header
+@onready var _texto: Label = $Software/Conteudo/Texto
+@onready var _imagem: TextureRect = $Software/Imagem
+@onready var _placeholder: ColorRect = $Software/Placeholder
+@onready var _placeholder_desc: Label = $Software/Placeholder/Desc
+@onready var _continuar: Label = $Software/Conteudo/Continuar
 
 var _t: float = 0.0
 
