@@ -1,34 +1,37 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://6wbb6halkm33"]
 
-[ext_resource type="Script" path="res://scripts/Menu.gd" id="1_menu"]
+[ext_resource type="Script" uid="uid://i4yp4akh874h" path="res://scripts/Menu.gd" id="1_menu"]
 
-[node name="Menu" type="Node2D"]
+[node name="Menu" type="Node2D" unique_id=920337749]
 script = ExtResource("1_menu")
 
-[node name="Fundo" type="ColorRect" parent="."]
+[node name="Fundo" type="ColorRect" parent="." unique_id=933018927]
 offset_right = 1280.0
 offset_bottom = 720.0
 color = Color(0.0235, 0.0235, 0.051, 1)
 
-[node name="Heads" type="TextureRect" parent="."]
+[node name="Heads" type="TextureRect" parent="." unique_id=44138340]
 modulate = Color(0.7, 0.8, 1, 0.4)
 offset_right = 1280.0
 offset_bottom = 720.0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Cerebro" type="TextureRect" parent="."]
+[node name="Cerebro" type="TextureRect" parent="." unique_id=1586909905]
 modulate = Color(1, 1, 1, 0.45)
 offset_right = 1280.0
 offset_bottom = 720.0
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Conteudo" type="Control" parent="."]
+[node name="Conteudo" type="Control" parent="." unique_id=1152340568]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 1280.0
 offset_bottom = 720.0
 
-[node name="Titulo" type="Label" parent="Conteudo"]
+[node name="Titulo" type="Label" parent="Conteudo" unique_id=729010954]
+layout_mode = 0
 offset_top = 150.0
 offset_right = 1280.0
 offset_bottom = 240.0
@@ -37,7 +40,8 @@ theme_override_font_sizes/font_size = 76
 text = "CyberTerapia™"
 horizontal_alignment = 1
 
-[node name="Tagline" type="Label" parent="Conteudo"]
+[node name="Tagline" type="Label" parent="Conteudo" unique_id=1820122755]
+layout_mode = 0
 offset_top = 250.0
 offset_right = 1280.0
 offset_bottom = 284.0
@@ -46,7 +50,8 @@ theme_override_font_sizes/font_size = 24
 text = "by Sinapse.AI"
 horizontal_alignment = 1
 
-[node name="Subtagline" type="Label" parent="Conteudo"]
+[node name="Subtagline" type="Label" parent="Conteudo" unique_id=778171485]
+layout_mode = 0
 offset_top = 286.0
 offset_right = 1280.0
 offset_bottom = 314.0
@@ -55,17 +60,19 @@ theme_override_font_sizes/font_size = 16
 text = "beta (muito beta)"
 horizontal_alignment = 1
 
-[node name="Start" type="Label" parent="Conteudo"]
-offset_left = 50.0
-offset_top = 590.0
-offset_right = 560.0
-offset_bottom = 640.0
+[node name="Start" type="Label" parent="Conteudo" unique_id=6150558]
+layout_mode = 0
+offset_left = 39.0
+offset_top = 598.0
+offset_right = 549.0
+offset_bottom = 648.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 32
 text = "▶  ENTER pra começar"
 vertical_alignment = 1
 
-[node name="Btn1" type="TextureRect" parent="Conteudo"]
+[node name="Btn1" type="TextureRect" parent="Conteudo" unique_id=757641690]
+layout_mode = 0
 offset_left = 50.0
 offset_top = 650.0
 offset_right = 92.0
@@ -73,7 +80,8 @@ offset_bottom = 692.0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ComoJogarHint" type="Label" parent="Conteudo"]
+[node name="ComoJogarHint" type="Label" parent="Conteudo" unique_id=71728543]
+layout_mode = 0
 offset_left = 100.0
 offset_top = 658.0
 offset_right = 420.0
@@ -83,17 +91,21 @@ theme_override_font_sizes/font_size = 20
 text = "Como jogar?"
 vertical_alignment = 1
 
-[node name="ComoJogarPainel" type="Control" parent="."]
+[node name="ComoJogarPainel" type="Control" parent="." unique_id=867031854]
 visible = false
+layout_mode = 3
+anchors_preset = 0
 offset_right = 1280.0
 offset_bottom = 720.0
 
-[node name="Escurecer" type="ColorRect" parent="ComoJogarPainel"]
+[node name="Escurecer" type="ColorRect" parent="ComoJogarPainel" unique_id=2103012388]
+layout_mode = 0
 offset_right = 1280.0
 offset_bottom = 720.0
 color = Color(0, 0, 0, 0.85)
 
-[node name="Titulo2" type="Label" parent="ComoJogarPainel"]
+[node name="Titulo2" type="Label" parent="ComoJogarPainel" unique_id=653204979]
+layout_mode = 0
 offset_top = 140.0
 offset_right = 1280.0
 offset_bottom = 196.0
@@ -102,7 +114,8 @@ theme_override_font_sizes/font_size = 30
 text = "CO-OP LOCAL  ·  2 jogadores, 1 teclado"
 horizontal_alignment = 1
 
-[node name="RazaoLabel" type="Label" parent="ComoJogarPainel"]
+[node name="RazaoLabel" type="Label" parent="ComoJogarPainel" unique_id=476114000]
+layout_mode = 0
 offset_left = 210.0
 offset_top = 264.0
 offset_right = 444.0
@@ -113,7 +126,8 @@ text = "RAZÃO"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="BtnW" type="TextureRect" parent="ComoJogarPainel"]
+[node name="BtnW" type="TextureRect" parent="ComoJogarPainel" unique_id=479877725]
+layout_mode = 0
 offset_left = 462.0
 offset_top = 246.0
 offset_right = 542.0
@@ -121,7 +135,8 @@ offset_bottom = 326.0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="BtnA" type="TextureRect" parent="ComoJogarPainel"]
+[node name="BtnA" type="TextureRect" parent="ComoJogarPainel" unique_id=903833882]
+layout_mode = 0
 offset_left = 554.0
 offset_top = 246.0
 offset_right = 634.0
@@ -129,7 +144,8 @@ offset_bottom = 326.0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="BtnS" type="TextureRect" parent="ComoJogarPainel"]
+[node name="BtnS" type="TextureRect" parent="ComoJogarPainel" unique_id=1941584945]
+layout_mode = 0
 offset_left = 646.0
 offset_top = 246.0
 offset_right = 726.0
@@ -137,7 +153,8 @@ offset_bottom = 326.0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="BtnD" type="TextureRect" parent="ComoJogarPainel"]
+[node name="BtnD" type="TextureRect" parent="ComoJogarPainel" unique_id=381266076]
+layout_mode = 0
 offset_left = 738.0
 offset_top = 246.0
 offset_right = 818.0
@@ -145,7 +162,8 @@ offset_bottom = 326.0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="EmocaoLabel" type="Label" parent="ComoJogarPainel"]
+[node name="EmocaoLabel" type="Label" parent="ComoJogarPainel" unique_id=1965350960]
+layout_mode = 0
 offset_left = 210.0
 offset_top = 364.0
 offset_right = 444.0
@@ -156,7 +174,8 @@ text = "EMOÇÃO"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="BtnI" type="TextureRect" parent="ComoJogarPainel"]
+[node name="BtnI" type="TextureRect" parent="ComoJogarPainel" unique_id=55073376]
+layout_mode = 0
 offset_left = 462.0
 offset_top = 346.0
 offset_right = 542.0
@@ -164,7 +183,8 @@ offset_bottom = 426.0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="BtnJ" type="TextureRect" parent="ComoJogarPainel"]
+[node name="BtnJ" type="TextureRect" parent="ComoJogarPainel" unique_id=413730291]
+layout_mode = 0
 offset_left = 554.0
 offset_top = 346.0
 offset_right = 634.0
@@ -172,7 +192,8 @@ offset_bottom = 426.0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="BtnK" type="TextureRect" parent="ComoJogarPainel"]
+[node name="BtnK" type="TextureRect" parent="ComoJogarPainel" unique_id=1907897086]
+layout_mode = 0
 offset_left = 646.0
 offset_top = 346.0
 offset_right = 726.0
@@ -180,7 +201,8 @@ offset_bottom = 426.0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="BtnL" type="TextureRect" parent="ComoJogarPainel"]
+[node name="BtnL" type="TextureRect" parent="ComoJogarPainel" unique_id=402245918]
+layout_mode = 0
 offset_left = 738.0
 offset_top = 346.0
 offset_right = 818.0
@@ -188,7 +210,8 @@ offset_bottom = 426.0
 expand_mode = 1
 stretch_mode = 5
 
-[node name="GlitchNote" type="Label" parent="ComoJogarPainel"]
+[node name="GlitchNote" type="Label" parent="ComoJogarPainel" unique_id=898380605]
+layout_mode = 0
 offset_left = 140.0
 offset_top = 470.0
 offset_right = 1140.0
@@ -199,7 +222,8 @@ text = "No glitch, uma tecla trava — o colega assume a emergência."
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="CloseHint" type="Label" parent="ComoJogarPainel"]
+[node name="CloseHint" type="Label" parent="ComoJogarPainel" unique_id=389566482]
+layout_mode = 0
 offset_top = 556.0
 offset_right = 1280.0
 offset_bottom = 591.0

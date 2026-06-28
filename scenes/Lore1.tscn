@@ -1,50 +1,32 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://bmomykciw7w5h"]
 
-[ext_resource type="Script" path="res://scripts/CardLore.gd" id="1_card"]
+[ext_resource type="PackedScene" path="res://scenes/CardLore.tscn" id="1_base"]
 
-[node name="Lore1" type="Node2D"]
-script = ExtResource("1_card")
+[node name="Lore1" unique_id=123050302 instance=ExtResource("1_base")]
 texto = "03:47 da manhã. Seu plantão na CyberTerapia™ apita.
 O João — dev júnior, primeira startup dos sonhos — entrou em burnout, e a mente dele caiu em produção.
 Quem atende o chamado? Você. E a ferramenta pra consertar é vibe-coded, igual o resto daqui.
 Respira fundo. Bora dar um patch nesse cérebro."
 proxima_cena = "res://scenes/Hub.tscn"
 
-[node name="Fundo" type="ColorRect" parent="."]
-offset_right = 1280.0
-offset_bottom = 720.0
-color = Color(0.0235, 0.0235, 0.051, 1)
+[node name="Conteudo" parent="." index="4"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -2.0
+offset_top = -43.0
+offset_right = 1278.0
+offset_bottom = 677.0
 
-[node name="Imagem" type="TextureRect" parent="."]
-offset_top = 40.0
-offset_right = 1280.0
-offset_bottom = 380.0
-expand_mode = 1
-stretch_mode = 5
+[node name="Texto" parent="Conteudo" index="0"]
+layout_mode = 0
+offset_left = 793.0
+offset_top = 247.0
+offset_right = 1162.0
+offset_bottom = 626.0
 
-[node name="Conteudo" type="Control" parent="."]
-offset_right = 1280.0
-offset_bottom = 720.0
-
-[node name="Texto" type="Label" parent="Conteudo"]
-offset_left = 140.0
-offset_top = 400.0
-offset_right = 1140.0
-offset_bottom = 650.0
-theme_override_colors/font_color = Color(0.9, 0.9, 1, 1)
-theme_override_font_sizes/font_size = 24
-text = "03:47 da manhã. Seu plantão na CyberTerapia™ apita.
-O João — dev júnior, primeira startup dos sonhos — entrou em burnout, e a mente dele caiu em produção.
-Quem atende o chamado? Você. E a ferramenta pra consertar é vibe-coded, igual o resto daqui.
-Respira fundo. Bora dar um patch nesse cérebro."
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="Continuar" type="Label" parent="Conteudo"]
-offset_top = 662.0
-offset_right = 1280.0
-offset_bottom = 700.0
-theme_override_colors/font_color = Color(0.7, 0.7, 0.85, 1)
-theme_override_font_sizes/font_size = 22
-text = "▶  ENTER pra continuar"
-horizontal_alignment = 1
+[node name="Continuar" parent="Conteudo" index="1"]
+layout_mode = 0
+offset_left = 141.0
+offset_top = 672.0
+offset_right = 1121.0
+offset_bottom = 710.0
