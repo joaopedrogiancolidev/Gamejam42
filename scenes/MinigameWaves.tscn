@@ -6,6 +6,9 @@
 [ext_resource type="AudioStream" uid="uid://2bamcx0solrl" path="res://assets/sfx/wave_lvl1.mp3" id="4_cln0p"]
 [ext_resource type="Script" uid="uid://dbjj464c0mntd" path="res://scripts/ChordPlayer.gd" id="4_o8tfl"]
 [ext_resource type="AudioStream" uid="uid://s0tl6jx5oa1w" path="res://assets/sfx/musical-fx-roman-stinger-01.mp3" id="5_8t1mf"]
+[ext_resource type="Texture2D" uid="uid://xn6tauwpbkc3" path="res://assets/botton_j.png" id="7_odrtq"]
+[ext_resource type="Texture2D" uid="uid://2l038jrk0kiw" path="res://assets/botton_k.png" id="8_q5wui"]
+[ext_resource type="Texture2D" uid="uid://bokicppj6sgcq" path="res://assets/botton_l.png" id="9_krcoe"]
 
 [node name="MinigameWaves" type="Node2D" unique_id=1785144148]
 script = ExtResource("1_waves")
@@ -32,12 +35,13 @@ width = 3.0
 default_color = Color(0.7215753, 0.63671404, 0.88685304, 1)
 
 [node name="Tecla" type="Label" parent="Canais/CanalJ" unique_id=2028135068]
+visible = false
 offset_left = 18.0
 offset_top = -65.0
-offset_right = 60.0
-offset_bottom = -26.0
+offset_right = 44.0
+offset_bottom = -28.0
 theme_override_font_sizes/font_size = 28
-text = "J"
+text = " "
 
 [node name="Emo" type="Label" parent="Canais/CanalJ" unique_id=1835032573]
 offset_left = 52.0
@@ -56,6 +60,7 @@ theme_override_font_sizes/font_size = 15
 horizontal_alignment = 2
 
 [node name="RedBotton" type="Sprite2D" parent="Canais/CanalJ" unique_id=235994358]
+visible = false
 modulate = Color(1, 1, 1, 0.5647059)
 position = Vector2(23.000034, 272)
 scale = Vector2(0.2, 0.2)
@@ -65,6 +70,7 @@ texture = ExtResource("3_cln0p")
 position = Vector2(0, 360)
 
 [node name="RedBotton" type="Sprite2D" parent="Canais/CanalK" unique_id=999924333]
+visible = false
 modulate = Color(1, 1, 1, 0.5647059)
 position = Vector2(22.00002, -47.99997)
 scale = Vector2(0.2, 0.2)
@@ -81,6 +87,7 @@ width = 3.0
 default_color = Color(0.784, 0.314, 1, 1)
 
 [node name="Tecla" type="Label" parent="Canais/CanalK" unique_id=1114697242]
+visible = false
 offset_left = 13.0
 offset_top = -67.0
 offset_right = 55.0
@@ -108,10 +115,11 @@ horizontal_alignment = 2
 position = Vector2(0, 520)
 
 [node name="RedBotton2" type="Sprite2D" parent="Canais/CanalL" unique_id=724207324]
+visible = false
 modulate = Color(1, 1, 1, 0.5647059)
 self_modulate = Color(18.892157, 18.892157, 18.892157, 1)
-position = Vector2(22.000061, -364)
-scale = Vector2(0.2, 0.2)
+position = Vector2(12.250015, -371.25)
+scale = Vector2(0.0065216026, 0.010869637)
 texture = ExtResource("3_cln0p")
 
 [node name="Zona" type="ColorRect" parent="Canais/CanalL" unique_id=863702706]
@@ -125,6 +133,7 @@ width = 3.0
 default_color = Color(1, 0.416, 0.239, 1)
 
 [node name="Tecla" type="Label" parent="Canais/CanalL" unique_id=1663883120]
+visible = false
 offset_left = 16.0
 offset_top = -68.0
 offset_right = 58.0
@@ -156,7 +165,7 @@ offset_top = 26.0
 offset_right = 380.0
 offset_bottom = 56.0
 theme_override_font_sizes/font_size = 22
-text = "EMOCIONAL  (J K L)
+text = "EMOCIONAL
 "
 metadata/_edit_use_anchors_ = true
 
@@ -272,3 +281,18 @@ base_player = NodePath("AudioStreamPlayer")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="ChordPlayer" unique_id=151142757]
 stream = ExtResource("5_8t1mf")
+
+[node name="BottonJ" type="Sprite2D" parent="." unique_id=1104363368]
+position = Vector2(20, 156)
+scale = Vector2(0.1826087, 0.19130436)
+texture = ExtResource("7_odrtq")
+
+[node name="BottonK" type="Sprite2D" parent="." unique_id=1678685488]
+position = Vector2(22, 313)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("8_q5wui")
+
+[node name="BottonL" type="Sprite2D" parent="." unique_id=1733943134]
+position = Vector2(23.000015, 474)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("9_krcoe")

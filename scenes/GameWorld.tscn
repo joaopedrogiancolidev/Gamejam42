@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://dleab4w55yc4a"]
+
+[ext_resource type="Script" uid="uid://bxqum3ym5r0k2" path="res://scripts/Hub.gd" id="1_hub"]
+[ext_resource type="PackedScene" uid="uid://ddo67vb1yguwj" path="res://scenes/MinigameDance.tscn" id="2_dance"]
+[ext_resource type="PackedScene" uid="uid://ddo67vclyoxcj" path="res://scenes/MinigameWaves.tscn" id="3_waves"]
+[ext_resource type="Script" uid="uid://cv0t765ay2tka" path="res://scripts/Overlay.gd" id="4_overlay"]
+[ext_resource type="AudioStream" uid="uid://bwswl0pgqsgh4" path="res://assets/music/Zeta - RAM.mp3" id="5_1t77w"]
+[ext_resource type="Texture2D" uid="uid://c4q2iaj4rbw65" path="res://assets/background_2.png" id="6_tm630"]
+[ext_resource type="Script" uid="uid://duy5xnb1kipxt" path="res://scripts/GlitchManager.gd" id="7_glitch"]
+
+[node name="GameWorld" type="Node2D" unique_id=2090614546]
+script = ExtResource("1_hub")
+
+[node name="Dance" parent="." unique_id=1972141340 instance=ExtResource("2_dance")]
+position = Vector2(0, 144)
+scale = Vector2(1, 0.8)
+
+[node name="Waves" parent="." unique_id=1377142961 instance=ExtResource("3_waves")]
+position = Vector2(640, 144)
+scale = Vector2(1, 0.8)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1798604938]
+
+[node name="Overlay" type="Node2D" parent="UI" unique_id=1411386745]
+script = ExtResource("4_overlay")
+
+[node name="Moldura" type="Line2D" parent="UI/Overlay" unique_id=302670979]
+points = PackedVector2Array(0, 144, 1280, 144)
+width = 2.0
+default_color = Color(0.4, 0.4, 0.6, 0.25)
+
+[node name="Divisoria" type="ColorRect" parent="UI/Overlay" unique_id=358651767]
+offset_left = 639.0
+offset_top = 144.0
+offset_right = 641.0
+offset_bottom = 720.0
+color = Color(0.5, 0.4, 0.8, 0.5)
+
+[node name="Cronometro" type="Label" parent="UI/Overlay" unique_id=1186807454]
+offset_top = 92.0
+offset_right = 1280.0
+offset_bottom = 132.0
+pivot_offset = Vector2(640, 112)
+theme_override_font_sizes/font_size = 30
+text = "30"
+horizontal_alignment = 1
+
+[node name="GlitchManager" type="Node2D" parent="UI" unique_id=440475815]
+script = ExtResource("7_glitch")
+
+[node name="bg_music" type="AudioStreamPlayer" parent="." unique_id=229848476]
+stream = ExtResource("5_1t77w")
+volume_db = -10.0
+bus = &"Music"
+parameters/looping = true
+
+[node name="Background2" type="Sprite2D" parent="." unique_id=45971152]
+self_modulate = Color(1, 1, 1, 0.27450982)
+position = Vector2(638, 373)
+scale = Vector2(0.3641676, 0.27298388)
+texture = ExtResource("6_tm630")
