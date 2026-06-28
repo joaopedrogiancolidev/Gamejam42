@@ -3,12 +3,23 @@
 [ext_resource type="PackedScene" uid="uid://cb6o0dkp1x5xd" path="res://scenes/TemplateLore.tscn" id="1_base"]
 [ext_resource type="Texture2D" uid="uid://bubtcd6eistgo" path="res://assets/final_derrota.png" id="2_img"]
 
-[node name="FinalGameover" instance=ExtResource("1_base")]
+[node name="FinalGameover" unique_id=1058957215 instance=ExtResource("1_base")]
+mostrar_monitor = false
+escala_conteudo = 1.5
 texto = "Burnout em produção. A mente do João travou na sexta 18h e a CyberTerapia™ deu kernel panic — claro, foi vibe-coded. O chefe disse que ano que vem vira unicórnio."
 imagem = ExtResource("2_img")
 proxima_cena = "res://scenes/Menu.tscn"
 
-[node name="TituloFinal" type="Label" parent="Software"]
+[node name="MonitorFrame" parent="." index="2" unique_id=886256351]
+visible = true
+
+[node name="Texto" parent="Software/Conteudo" parent_id_path=PackedInt32Array(329387098) index="0" unique_id=2123188344]
+offset_left = 0.0
+offset_top = 285.0
+offset_right = 780.0
+offset_bottom = 148.88895
+
+[node name="TituloFinal" type="Label" parent="Software" parent_id_path=PackedInt32Array(434879675) index="10" unique_id=200604787]
 layout_mode = 0
 offset_left = 2.0
 offset_top = 213.0
@@ -19,7 +30,3 @@ theme_override_font_sizes/font_size = 26
 text = "DERROTA"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Texto" parent="Software/Conteudo"]
-layout_mode = 0
-offset_top = 285.0

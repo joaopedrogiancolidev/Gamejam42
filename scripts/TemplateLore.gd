@@ -26,6 +26,13 @@ extends Node2D
 # vai abrigar OUTRA coisa no lugar — ex.: o Tutorial2 roda o minigame
 # Dance dentro do monitor. Desligado por padrão: não afeta as demais telas.
 @export var esconder_arte: bool = false
+# Mostra a moldura de monitor própria desta tela. Desligue quando a tela
+# já é exibida DENTRO de outro monitor (ex.: os finais aparecem na TV do
+# Hub), pra não duplicar a moldura.
+@export var mostrar_monitor: bool = true
+# Multiplica o tamanho do conteúdo (nó Software). 1.0 = padrão; ex.: 1.5 nos
+# finais, que aparecem dentro da TV do Hub e precisam de mais destaque.
+@export var escala_conteudo: float = 1.0
 @export_file("*.tscn") var proxima_cena: String = ""
 
 var _header: Label
@@ -57,20 +64,35 @@ func _ready() -> void:
 	_placeholder_desc = get_node_or_null(sw + "Placeholder/Desc")
 	_continuar       = get_node_or_null(sw + "Conteudo/Continuar")
 
+	# aumenta/diminui o conteúdo (Software) a partir do centro (pivot já
+	# está no meio na cena base), multiplicando a escala existente
+	if escala_conteudo != 1.0:
+		var _sw := get_node_or_null("Software")
+		if _sw:
+			_sw.scale *= escala_conteudo
+
 	if _header:
 		_header.text = header
 	if _texto:
 		_texto.text = texto
-	# moldura do "pc" (arte do monitor). Se assets/monitor.png existir,
-	# usa a imagem e esconde a borda desenhada (que é só fallback).
+	# moldura do "pc" (arte do monitor). Se mostrar_monitor estiver off, some
+	# com a moldura toda (a tela já está dentro de outro monitor). Senão, usa
+	# a arte monitor.png e esconde a borda desenhada (que é só fallback).
 	var _frame := get_node_or_null("MonitorFrame")
 	var _mon := get_node_or_null("Monitor")
-	if ResourceLoader.exists("res://assets/monitor.png"):
-		$MonitorFrame.texture = load("res://assets/monitor.png")
-		$MonitorFrame.visible = true
-		$Monitor.visible = false
-	else:
-		$MonitorFrame.visible = false
+	if not mostrar_monitor:
+		if _frame:
+			_frame.visible = false
+		if _mon:
+			_mon.visible = false
+	elif ResourceLoader.exists("res://assets/monitor.png"):
+		if _frame:
+			_frame.texture = load("res://assets/monitor.png")
+			_frame.visible = true
+		if _mon:
+			_mon.visible = false
+	elif _frame:
+		_frame.visible = false
 	if esconder_arte:
 		# a telinha vira só moldura + texto; outra coisa ocupa o espaço
 		if _imagem:
