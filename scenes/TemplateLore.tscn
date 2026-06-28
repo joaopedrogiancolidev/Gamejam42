@@ -169,9 +169,9 @@ autowrap_mode = 3
 [node name="Continuar" type="Label" parent="Software/Conteudo" unique_id=1956556048]
 layout_mode = 0
 offset_left = -6.8888893
-offset_top = 428.88892
+offset_top = 27.77774
 offset_right = 773.1111
-offset_bottom = 456.88892
+offset_bottom = 55.77774
 theme_override_colors/font_color = Color(0.5, 0.9, 1, 1)
 theme_override_font_sizes/font_size = 20
 text = "▶  ENTER pra continuar"
