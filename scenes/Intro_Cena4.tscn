@@ -4,6 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://lmr7wti5estg" path="res://assets/4.png" id="2_img"]
 
 [node name="Intro_Cena4" instance=ExtResource("1_base")]
-texto = "O pânico (mas com foco!) toma conta da sala. Do lado do João, que tá em completo estado de choque, os outros dois devs do time assumem os teclados mecânicos e começam a digitar na velocidade da luz, fazendo aquele CLACK-CLACK furioso. Eles olham para as telas cheias de códigos azuis tentando achar onde foi que o sistema capotou. Ao fundo, um holograma gigante do cérebro do João brilha cheio de alertas vermelhos e ícones de insetos. A missão agora é clara: debugar a mente do parça antes que o cérebro dele vire patê digital!"
+texto = "O pânico (mas com foco!) toma conta da sala. Do lado do João, que tá em completo estado de choque, os outros dois devs do time assumem os teclados mecânicos e começam a digitar na velocidade da luz, fazendo aquele CLACK-CLACK furioso. Eles olham para as telas cheias de códigos azuis tentando achar onde foi que o sistema capotou. A missão agora é clara: debugar a mente do parça antes que o cérebro dele vire patê digital!"
 imagem = ExtResource("2_img")
 proxima_cena = "res://scenes/Tutorial1.tscn"

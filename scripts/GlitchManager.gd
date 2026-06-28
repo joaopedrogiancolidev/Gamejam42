@@ -14,7 +14,7 @@ extends Node2D
 #  conforme o anel de progresso enche.
 #
 #   - Glitch na ESQUERDA (Dance/azul)  -> direita SEGURA [I]
-#   - Glitch na DIREITA  (Waves/vermelho) -> esquerda SEGURA [E]
+#   - Glitch na DIREITA  (Waves/vermelho) -> esquerda SEGURA [W]
 #
 #  Sem acoplamento com a lógica dos minigames: só mexo na
 #  position/modulate do nó-raiz de cada lado (tremor + piscada).
@@ -25,7 +25,7 @@ const REGIAO_ESQ := Rect2(0, 144, 640, 576)
 const REGIAO_DIR := Rect2(640, 144, 640, 576)
 
 # teclas de conserto (uma por jogador; o jogador conserta o lado OPOSTO)
-const TECLA_REPARO_ESQ := KEY_E   # jogador esquerdo -> conserta glitch da DIREITA
+const TECLA_REPARO_ESQ := KEY_W   # jogador esquerdo -> conserta glitch da DIREITA
 const TECLA_REPARO_DIR := KEY_I   # jogador direito  -> conserta glitch da ESQUERDA
 
 # ritmo de spawn
@@ -345,7 +345,7 @@ func _desenhar_botao_e_prompt(cor: Color) -> void:
 	if _lado == "esq":
 		txt = "DIREITA: %s [I]" % verbo
 	else:
-		txt = "ESQUERDA: %s [E]" % verbo
+		txt = "ESQUERDA: %s [W]" % verbo
 	var w: float = _font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x
 	var brilho: float = 0.6 + 0.4 * sin(_pulse * 6.0)
 	draw_string(_font, Vector2(centro.x - w / 2.0, centro.y + 70.0), txt,
