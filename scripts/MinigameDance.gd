@@ -2,43 +2,58 @@ extends Node2D
 
 # ============================================================
 #  MINIGAME DANCE  -  LADO ESQUERDO (racional)  -  teclas S D F
-#  Versão integrada: desenha em 640 de largura e expõe score/
-#  META/ativo/falhou pro Hub. O Hub é quem decide o fim.
+#  Versão com cena editável: posições e parâmetros ajustáveis
+#  no inspetor do Godot. O Hub coordena o fim de jogo.
 # ============================================================
 
-const ESTILO_NOTA: String = "estrela"   # "estrela" ou "circulo"
+# --- Parâmetros de ritmo (editáveis no inspetor) ---
+@export var BPM: float = 75.0
+@export var LEAD: float = 3.0          # tempo de preparação antes das notas
+@export var APPROACH: float = 2.5      # duração da viagem de cada nota ao alvo
+@export var BEAT_INICIAL: float = 8.0  # beat em que a primeira nota é gerada
 
-const LARGURA: float = 640.0
-const H: float = 720.0
-const BPM: float = 95.0            # mais lento (era 125)
-var beat_dur: float = 60.0 / BPM
-const LEAD: float = 2.2
-const APPROACH: float = 1.7        # mais tempo pra ler (era 1.1)
-const R_ALVO: float = 40.0
-const R_NOTA: float = 28.0
-const RAIO: float = 230.0
-const JANELA_PERFEITO: float = 0.09  # mais generoso (era 0.05)
-const JANELA_BOM: float = 0.20       # bem mais perdoador (era 0.11)
-const CHANCE_HOLD: float = 0.12
-const CHANCE_ACORDE: float = 0.08    # poucos acordes (era 0.20)
+# --- Janelas de acerto (quanto maior, mais perdoador) ---
+@export var JANELA_PERFEITO: float = 0.12
+@export var JANELA_BOM: float = 0.28
 
-# --- contrato com o Hub ---
-var META: int = 3000
+# --- Geração de notas ---
+@export var CHANCE_HOLD: float = 0.08
+@export var CHANCE_ACORDE: float = 0.0  # 0 = sem acordes simultâneos
+
+# --- Visuais ---
+@export_enum("estrela", "circulo") var ESTILO_NOTA: String = "estrela"
+@export var R_ALVO: float = 40.0
+@export var R_NOTA: float = 28.0
+
+# --- Contrato com o Hub ---
+@export var META: int = 3000
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
 
-var C := Vector2(LARGURA / 2, H / 2 + 20)
+# --- Referências aos nós da cena ---
+@onready var _centro        := $Centro
+@onready var _alvo_s        := $Alvos/AlvoS
+@onready var _alvo_d        := $Alvos/AlvoD
+@onready var _alvo_f        := $Alvos/AlvoF
+@onready var _score_label   := $HUD/ScoreLabel
+@onready var _combo_label   := $HUD/ComboLabel
+@onready var _fill_score    := $HUD/BarraScoreFill
+@onready var _prepare_label := $HUD/PrepareLabel
 
+# --- Dados dos alvos (tecla, cor; posição lida da cena em _ready) ---
 var ALVOS := [
-	{"code": KEY_S, "label": "S", "cor": Color("6ad0ff"), "ang": deg_to_rad(150), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
-	{"code": KEY_D, "label": "D", "cor": Color("8a7bff"), "ang": deg_to_rad(270), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
-	{"code": KEY_F, "label": "F", "cor": Color("46d6a0"), "ang": deg_to_rad(30),  "pos": Vector2.ZERO, "flash": 0.0, "held": false},
+	{"code": KEY_S, "label": "S", "cor": Color("6ad0ff"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
+	{"code": KEY_D, "label": "D", "cor": Color("8a7bff"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
+	{"code": KEY_F, "label": "F", "cor": Color("46d6a0"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
 ]
 
-var song_time: float = -LEAD
+# --- Estado interno ---
+var beat_dur: float = 0.0
+var C: Vector2 = Vector2.ZERO  # posição do centro (lida do nó $Centro)
+var song_time: float = 0.0
 var notas: Array = []
-var prox_beat: float = 4.0
+var prox_beat: float = 0.0
 var _grupo_id: int = 0
 
 var combo: int = 0
@@ -56,14 +71,21 @@ var _font: Font
 func _ready() -> void:
 	randomize()
 	_font = ThemeDB.fallback_font
-	for a in ALVOS:
-		a.pos = C + Vector2(cos(a.ang), sin(a.ang)) * RAIO
+	beat_dur = 60.0 / BPM
+	song_time = -LEAD
+	prox_beat = BEAT_INICIAL
+
+	# Lê posições dos nós da cena — mova os nós no editor para reposicionar
+	C = _centro.position
+	ALVOS[0].pos = _alvo_s.position
+	ALVOS[1].pos = _alvo_d.position
+	ALVOS[2].pos = _alvo_f.position
 
 
 func reset() -> void:
 	song_time = -LEAD
 	notas.clear()
-	prox_beat = 4.0
+	prox_beat = BEAT_INICIAL
 	_grupo_id = 0
 	score = 0
 	combo = 0
@@ -86,8 +108,6 @@ func _gerar() -> void:
 			_criar_acorde(prox_beat)
 		else:
 			_criar_nota(prox_beat, randi() % 3, randf() < CHANCE_HOLD, -1)
-			if song_time > 14.0 and randf() < 0.08:
-				_criar_nota(prox_beat + 0.5, randi() % 3, false, -1)
 		prox_beat += 1.0
 
 
@@ -122,6 +142,7 @@ func _process(delta: float) -> void:
 		bu.t -= delta
 	_bursts = _bursts.filter(func(bu): return bu.t > 0.0)
 
+	_aplicar_visual()
 	queue_redraw()
 
 	if not ativo:
@@ -145,6 +166,31 @@ func _process(delta: float) -> void:
 				_errar(n, "ERROU")
 
 	notas = notas.filter(func(n): return not n.resolvido or n.segurando)
+
+
+func _aplicar_visual() -> void:
+	_score_label.text = "SCORE: %d" % score
+	_combo_label.text = "COMBO: %d" % combo
+	_fill_score.scale.x = clampf(float(score) / META, 0.0, 1.0)
+
+	# Mostra contagem regressiva antes das notas começarem
+	if song_time < 0.0 and ativo:
+		_prepare_label.visible = true
+		_prepare_label.text = "PREPARE-SE\n%d" % max(int(ceil(-song_time)), 1)
+	else:
+		_prepare_label.visible = false
+
+	# Atualiza cor das letras dos alvos conforme o flash (tecla pressionada)
+	var teclas := [
+		_alvo_s.get_node("Tecla"),
+		_alvo_d.get_node("Tecla"),
+		_alvo_f.get_node("Tecla"),
+	]
+	for i in ALVOS.size():
+		if ALVOS[i].flash > 0.1:
+			teclas[i].modulate = Color.WHITE
+		else:
+			teclas[i].modulate = ALVOS[i].cor
 
 
 func _pos_nota(n) -> Vector2:
@@ -243,19 +289,24 @@ func _burst(pos: Vector2, cor: Color) -> void:
 
 
 # ------------------------------------------------------------
-#  DESENHO  (tudo dentro de 0..LARGURA; o Hub posiciona o nó)
+#  DESENHO  —  apenas elementos dinâmicos (notas, efeitos)
+#  O fundo e o HUD são nós da cena atualizados por _aplicar_visual()
 # ------------------------------------------------------------
 func _draw() -> void:
-	draw_rect(Rect2(0, 0, LARGURA, H), Color("0b0d16"))
+	if C == Vector2.ZERO:
+		return  # aguarda _ready() inicializar
 
+	# Pulso central animado
 	var pr: float = 24.0 + sin(_core * 4.0) * 4.0
 	draw_circle(C, pr + 12, Color(0.4, 0.55, 0.8, 0.10))
 	draw_circle(C, pr, Color(0.4, 0.55, 0.8, 0.35))
 	draw_circle(C, pr * 0.5, Color(0.85, 0.9, 1.0, 0.5))
 
+	# Alvos (círculos nas posições dos nós; letras são Labels da cena)
 	for a in ALVOS:
 		_desenhar_alvo(a)
 
+	# Linhas de conexão entre notas de um mesmo acorde
 	var grupos := {}
 	for n in notas:
 		if (n.resolvido and not n.segurando) or n.grupo < 0:
@@ -269,47 +320,34 @@ func _draw() -> void:
 		if g.size() >= 2:
 			draw_line(g[0], g[1], Color(1, 1, 1, 0.30), 3.0)
 
+	# Notas em movimento
 	for n in notas:
 		_desenhar_nota(n)
 
+	# Efeitos de burst ao acertar
 	for bu in _bursts:
 		var prog: float = 1.0 - bu.t / 0.4
 		var c: Color = bu.cor
 		c.a = (1.0 - prog) * 0.8
 		draw_arc(Vector2(bu.x, bu.y), 12.0 + prog * 55.0, 0, TAU, 40, c, 3.0)
 
-	# HUD do lado
-	_texto("RACIONAL  (S D F)", Vector2(28, 40), 22, Color("8ad0ff"))
-	_texto("SCORE: %d" % score, Vector2(LARGURA - 210, 40), 20, Color.WHITE)
-	_texto("COMBO: %d" % combo, Vector2(LARGURA - 210, 66), 16, Color("ffd24a"))
-	var pb := Vector2(40, 92)
-	draw_rect(Rect2(pb.x, pb.y, 560, 12), Color(0.12, 0.12, 0.2))
-	draw_rect(Rect2(pb.x, pb.y, 560 * clampf(float(score) / META, 0.0, 1.0), 12), Color("46d6a0"))
-	draw_rect(Rect2(pb.x, pb.y, 560, 12), Color(1, 1, 1, 0.2), false, 2.0)
-
+	# Textos flutuantes de feedback (PERFEITO, bom, ERROU…)
 	for p in _popups:
 		var a2: float = clampf(p.t / 0.8, 0.0, 1.0)
 		var c2: Color = p.cor
 		c2.a = a2
 		_texto_centro_em(p.txt, Vector2(p.x, p.y), 20, c2)
 
-	if song_time < 0.0 and ativo:
-		_texto_centro("PREPARE-SE", 160, 32, Color(0.9, 0.9, 1.0))
-		_texto_centro(str(max(int(ceil(-song_time)), 1)), 215, 46, Color("8ad0ff"))
-
 
 func _desenhar_alvo(a: Dictionary) -> void:
 	var pos: Vector2 = a.pos
 	var cor: Color = a.cor
-	var frac: float = song_time / beat_dur
+	var frac: float = song_time / beat_dur if beat_dur > 0.0 else 0.0
 	frac = frac - floor(frac)
 	var glow: float = (1.0 - frac) * 0.4 + a.flash * 0.6
 	draw_arc(pos, R_ALVO, 0, TAU, 44, Color(cor.r, cor.g, cor.b, 0.35 + glow), 3.0)
 	draw_circle(pos, R_ALVO - 4, Color(cor.r, cor.g, cor.b, 0.08 + a.flash * 0.3))
-	if _font:
-		var c: Color = Color.WHITE if a.flash > 0.1 else cor
-		var w: float = _font.get_string_size(a.label, HORIZONTAL_ALIGNMENT_LEFT, -1, 28).x
-		draw_string(_font, Vector2(pos.x - w / 2, pos.y + 10), a.label, HORIZONTAL_ALIGNMENT_LEFT, -1, 28, c)
+	# Letra do alvo renderizada pelo Label filho do nó na cena
 
 
 func _desenhar_nota(n) -> void:
@@ -318,15 +356,16 @@ func _desenhar_nota(n) -> void:
 	var alvo = ALVOS[n.key]
 	var cor: Color = alvo.cor
 	if n.hold and n.segurando:
+		# Nota sendo segurada: arco de progresso ao redor do alvo
 		var resta: float = clampf((n.end_time - song_time) / maxf(n.end_time - n.hit_time, 0.001), 0.0, 1.0)
 		draw_arc(alvo.pos, R_ALVO + 8, -PI / 2, -PI / 2 + TAU * resta, 48, Color(0.45, 0.8, 1.0), 6.0)
 		draw_circle(alvo.pos, R_NOTA, Color(0.45, 0.8, 1.0, 0.85))
-		_letra(alvo.label, alvo.pos)
+		# Letra omitida aqui — o Label da cena já exibe no alvo
 		return
 	var pos: Vector2 = _pos_nota(n)
 	draw_line(C, pos, Color(cor.r, cor.g, cor.b, 0.18), 2.0)
 	_forma_nota(pos, cor)
-	_letra(alvo.label, pos)
+	_letra(alvo.label, pos)  # letra acompanha a nota em movimento
 	if n.hold:
 		draw_arc(pos, R_NOTA + 6, 0, TAU, 32, Color(0.45, 0.8, 1.0, 0.7), 2.0)
 
@@ -352,17 +391,6 @@ func _letra(label: String, pos: Vector2) -> void:
 	if _font:
 		var w: float = _font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 24).x
 		draw_string(_font, Vector2(pos.x - w / 2, pos.y + 8), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color.WHITE)
-
-
-func _texto(txt: String, pos: Vector2, tam: int, cor: Color) -> void:
-	if _font:
-		draw_string(_font, pos, txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, cor)
-
-
-func _texto_centro(txt: String, y: float, tam: int, cor: Color) -> void:
-	if _font:
-		var w: float = _font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam).x
-		draw_string(_font, Vector2(LARGURA / 2 - w / 2, y), txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, cor)
 
 
 func _texto_centro_em(txt: String, pos: Vector2, tam: int, cor: Color) -> void:
