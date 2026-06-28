@@ -1,6 +1,7 @@
-[gd_scene format=3 uid="uid://6wbb6halkm33"]
+[gd_scene format=3 uid="uid://crrs0yehrbsug"]
 
 [ext_resource type="Script" uid="uid://i4yp4akh874h" path="res://scripts/Menu.gd" id="1_menu"]
+[ext_resource type="FontFile" uid="uid://l1viy35bm006" path="res://assets/fonts/RubikGlitch-Regular.ttf" id="2_font"]
 
 [node name="Menu" type="Node2D" unique_id=920337749]
 script = ExtResource("1_menu")
@@ -67,28 +68,30 @@ offset_top = 598.0
 offset_right = 549.0
 offset_bottom = 648.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 32
-text = "▶  ENTER pra começar"
+text = "▶  ENTER para começar"
 vertical_alignment = 1
 
 [node name="Btn1" type="TextureRect" parent="Conteudo" unique_id=757641690]
 layout_mode = 0
-offset_left = 50.0
-offset_top = 650.0
-offset_right = 92.0
-offset_bottom = 692.0
+offset_left = 29.0
+offset_top = 651.0
+offset_right = 71.0
+offset_bottom = 693.0
 expand_mode = 1
 stretch_mode = 5
 
 [node name="ComoJogarHint" type="Label" parent="Conteudo" unique_id=71728543]
 layout_mode = 0
-offset_left = 100.0
-offset_top = 658.0
-offset_right = 420.0
-offset_bottom = 690.0
+offset_left = 79.0
+offset_top = 662.0
+offset_right = 399.0
+offset_bottom = 694.0
 theme_override_colors/font_color = Color(0.7, 0.7, 0.85, 0.85)
-theme_override_font_sizes/font_size = 20
-text = "Como jogar?"
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "COMO JOGAR?"
 vertical_alignment = 1
 
 [node name="ComoJogarPainel" type="Control" parent="." unique_id=867031854]
@@ -108,10 +111,21 @@ color = Color(0, 0, 0, 0.85)
 layout_mode = 0
 offset_top = 140.0
 offset_right = 1280.0
-offset_bottom = 196.0
+offset_bottom = 172.0
 theme_override_colors/font_color = Color(0.9, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 30
-text = "CO-OP LOCAL  ·  2 jogadores, 1 teclado"
+text = "CO-OP LOCAL"
+horizontal_alignment = 1
+
+[node name="Titulo2Sub" type="Label" parent="ComoJogarPainel" unique_id=653204980]
+layout_mode = 0
+offset_top = 172.0
+offset_right = 1280.0
+offset_bottom = 200.0
+theme_override_colors/font_color = Color(0.9, 0.9, 1, 0.7)
+theme_override_font_sizes/font_size = 18
+text = "2 jogadores, 1 teclado"
 horizontal_alignment = 1
 
 [node name="RazaoLabel" type="Label" parent="ComoJogarPainel" unique_id=476114000]
@@ -121,6 +135,7 @@ offset_top = 264.0
 offset_right = 444.0
 offset_bottom = 308.0
 theme_override_colors/font_color = Color(0.247, 0.816, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 28
 text = "RAZÃO"
 horizontal_alignment = 2
@@ -169,6 +184,7 @@ offset_top = 364.0
 offset_right = 444.0
 offset_bottom = 408.0
 theme_override_colors/font_color = Color(1, 0.38, 0.38, 1)
+theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 28
 text = "EMOÇÃO"
 horizontal_alignment = 2
@@ -222,12 +238,23 @@ text = "No glitch, uma tecla trava — o colega assume a emergência."
 horizontal_alignment = 1
 autowrap_mode = 3
 
+[node name="BtnVoltar" type="TextureRect" parent="ComoJogarPainel" unique_id=389566480]
+layout_mode = 0
+offset_left = 553.0
+offset_top = 554.0
+offset_right = 595.0
+offset_bottom = 596.0
+expand_mode = 1
+stretch_mode = 5
+
 [node name="CloseHint" type="Label" parent="ComoJogarPainel" unique_id=389566482]
 layout_mode = 0
+offset_left = 603.0
 offset_top = 556.0
-offset_right = 1280.0
+offset_right = 750.0
 offset_bottom = 591.0
 theme_override_colors/font_color = Color(0.7, 0.7, 0.85, 0.7)
+theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 20
-text = "[1]  fechar"
-horizontal_alignment = 1
+text = "VOLTAR"
+vertical_alignment = 1

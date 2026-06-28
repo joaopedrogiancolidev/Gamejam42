@@ -28,7 +28,16 @@ window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 
+[gui]
+
+theme/custom_font="uid://pm4rnm10psh2"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
 [rendering]
 
+rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
