@@ -31,10 +31,10 @@ const AGIT_PX: float = 52.0
 @export var RED_THRESH: float = 0.50  
 @export var RATE_SCORE: float = 120.0  
 
-const DIFICULDADE_MULT: float = 0.7 # 30% mais fácil para testes
+const DIFICULDADE_MULT: float = 0.45 # bem mais fácil - pra testar a final feliz
 
 # --- contrato com o Hub ---
-@export var META: int = 2000           
+@export var META: int = 1500
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false

@@ -26,7 +26,7 @@ extends Node2D
 @export var R_NOTA: float = 28.0
 
 # --- Contrato com o Hub ---
-@export var META: int = 3000
+@export var META: int = 1700
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
@@ -167,6 +167,10 @@ func _process(delta: float) -> void:
 
 	notas = notas.filter(func(n): return not n.resolvido or n.segurando)
 
+	if score >= META:
+		score = META
+		ativo = false
+
 
 func _aplicar_visual() -> void:
 	_score_label.text = "SCORE: %d" % score
@@ -250,12 +254,12 @@ func _julgar(n, dt: float) -> void:
 	var mult: int = 1 + combo / 10
 	if dt <= JANELA_PERFEITO:
 		n_perfeito += 1
-		score += 100 * mult
+		score += 200 * mult
 		_popup(pos, "PERFEITO!", Color(0.4, 1.0, 0.7))
 		_burst(pos, Color(0.4, 1.0, 0.7))
 	else:
 		n_bom += 1
-		score += 50 * mult
+		score += 100 * mult
 		_popup(pos, "bom", Color(1.0, 0.85, 0.4))
 		_burst(pos, ALVOS[n.key].cor)
 	if n.hold:
@@ -269,7 +273,7 @@ func _hold_ok(n) -> void:
 	combo += 1
 	combo_max = max(combo_max, combo)
 	var mult: int = 1 + combo / 10
-	score += 150 * mult
+	score += 300 * mult
 	_popup(ALVOS[n.key].pos, "SEGUROU!", Color(0.45, 0.8, 1.0))
 	_burst(ALVOS[n.key].pos, Color(0.45, 0.8, 1.0))
 
