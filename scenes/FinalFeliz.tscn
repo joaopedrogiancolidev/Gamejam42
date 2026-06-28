@@ -8,6 +8,18 @@ mostrar_monitor = false
 escala_conteudo = 1.5
 texto = "João respirou. Disse 'não' pro deploy de sexta 18h, fechou o notebook e foi viver. O unicórnio que espere, ele escolheu ser uma pessoa inteira em vez de um recurso."
 imagem = ExtResource("2_img")
+proxima_cena = "res://scenes/Menu.tscn"
+
+[node name="Variacao" type="Label" parent="Software/Conteudo"]
+offset_left = 535.0
+offset_top = 27.0
+offset_right = 688.0
+offset_bottom = 55.0
+theme_override_colors/font_color = Color(0.3, 1, 0.5, 1)
+theme_override_font_sizes/font_size = 13
+text = "VARIAÇÃO < 10%"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="TituloFinal" type="Label" parent="Software"]
 layout_mode = 0
