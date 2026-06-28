@@ -20,6 +20,7 @@ extends Node2D
 
 @onready var _start: Label = $Conteudo/Start
 @onready var _painel: Control = $ComoJogarPainel
+@onready var bg_music: AudioStreamPlayer = $bg_music
 
 var _t: float = 0.0
 
@@ -48,6 +49,9 @@ func _ready() -> void:
 		if hint:
 			hint.text = "[1]  Como jogar?"
 	_painel.visible = false
+	if MusicPlayer.playing:
+		MusicPlayer.stop()
+	bg_music.play()
 
 
 func _set_tex(node_path: String, asset_path: String) -> bool:
@@ -85,7 +89,9 @@ func _input(event: InputEvent) -> void:
 		KEY_2, KEY_KP_2:
 			# atalho: vai direto pro jogo (Hub), pulando intro/tutorial
 			get_tree().change_scene_to_file("res://scenes/Hub.tscn")
+			bg_music.stop()
 
 
 func _comecar() -> void:
 	get_tree().change_scene_to_file("res://scenes/Intro_Cena1.tscn")
+	bg_music.stop()

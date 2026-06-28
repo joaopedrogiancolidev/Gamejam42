@@ -59,6 +59,8 @@ func _ready() -> void:
 	waves.META = int(round(waves.META * fator))
 	if _background2:
 		_bg_alpha_base = _background2.self_modulate.a
+	if MusicPlayer.playing:
+		MusicPlayer.stop()
 	if not bg_music.playing:
 		bg_music.play()
 
