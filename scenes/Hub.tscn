@@ -46,6 +46,7 @@ horizontal_alignment = 1
 
 [node name="bg_music" type="AudioStreamPlayer" parent="." unique_id=1073164063]
 stream = ExtResource("5_1t77w")
+volume_db = 1.43
 bus = &"Music"
 parameters/looping = true
 

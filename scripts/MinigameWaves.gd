@@ -103,9 +103,6 @@ func _ready() -> void:
 	_bg_rect = get_node_or_null("Background") if get_node_or_null("Background") else get_node_or_null("HUD/Background")
 	_garantir_rating_popups()
 	
-	if has_node("SomJ"): _som_j = $SomJ
-	if has_node("SomK"): _som_k = $SomK
-	if has_node("SomL"): _som_l = $SomL
 	if has_node("SomRuido"): _som_ruido = $SomRuido
 	
 	if _som_ruido:
