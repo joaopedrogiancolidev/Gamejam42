@@ -7,18 +7,18 @@ extends Node2D
 # ============================================================
 
 # --- Parâmetros de ritmo (editáveis no inspetor) ---
-@export var BPM: float = 75.0
+@export var BPM: float = 90.0
 @export var LEAD: float = 3.0          # tempo de preparação antes das notas
 @export var APPROACH: float = 2.5      # duração da viagem de cada nota ao alvo
 @export var BEAT_INICIAL: float = 8.0  # beat em que a primeira nota é gerada
 
 # --- Janelas de acerto (quanto maior, mais perdoador) ---
-@export var JANELA_PERFEITO: float = 0.12
-@export var JANELA_BOM: float = 0.28
+@export var JANELA_PERFEITO: float = 0.10
+@export var JANELA_BOM: float = 0.23
 
 # --- Geração de notas ---
-@export var CHANCE_HOLD: float = 0.08
-@export var CHANCE_ACORDE: float = 0.0  # 0 = sem acordes simultâneos
+@export var CHANCE_HOLD: float = 0.0    # holds REMOVIDOS: não nasce mais nota de segurar
+@export var CHANCE_ACORDE: float = 0.20  # acordes simultâneos (S+D etc) — mecânica destaque
 
 # --- Visuais ---
 @export_enum("estrela", "circulo") var ESTILO_NOTA: String = "estrela"
@@ -26,7 +26,7 @@ extends Node2D
 @export var R_NOTA: float = 28.0
 
 # --- Contrato com o Hub ---
-@export var META: int = 1700
+@export var META: int = 5600
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
@@ -254,12 +254,12 @@ func _julgar(n, dt: float) -> void:
 	var mult: int = 1 + combo / 10
 	if dt <= JANELA_PERFEITO:
 		n_perfeito += 1
-		score += 200 * mult
+		score += 400 * mult
 		_popup(pos, "PERFEITO!", Color(0.4, 1.0, 0.7))
 		_burst(pos, Color(0.4, 1.0, 0.7))
 	else:
 		n_bom += 1
-		score += 100 * mult
+		score += 200 * mult
 		_popup(pos, "bom", Color(1.0, 0.85, 0.4))
 		_burst(pos, ALVOS[n.key].cor)
 	if n.hold:
@@ -273,7 +273,7 @@ func _hold_ok(n) -> void:
 	combo += 1
 	combo_max = max(combo_max, combo)
 	var mult: int = 1 + combo / 10
-	score += 300 * mult
+	score += 600 * mult
 	_popup(ALVOS[n.key].pos, "SEGUROU!", Color(0.45, 0.8, 1.0))
 	_burst(ALVOS[n.key].pos, Color(0.45, 0.8, 1.0))
 
@@ -310,19 +310,20 @@ func _draw() -> void:
 	for a in ALVOS:
 		_desenhar_alvo(a)
 
-	# Linhas de conexão entre notas de um mesmo acorde
+	# Acordes (estilo Persona 4 Dancing All Night): as duas notas ficam
+	# LIGADAS por um traço neon grosso que ENGROSSA conforme se aproxima
+	# das extremidades, avisando que precisam ser apertadas JUNTAS.
 	var grupos := {}
 	for n in notas:
-		if (n.resolvido and not n.segurando) or n.grupo < 0:
+		if n.resolvido or n.grupo < 0:
 			continue
-		var p: Vector2 = _pos_nota(n)
-		if grupos.has(n.grupo):
-			grupos[n.grupo].append(p)
-		else:
-			grupos[n.grupo] = [p]
-	for g in grupos.values():
-		if g.size() >= 2:
-			draw_line(g[0], g[1], Color(1, 1, 1, 0.30), 3.0)
+		var info = grupos.get(n.grupo, {"pts": [], "prog": 0.0})
+		info.pts.append(_pos_nota(n))
+		info.prog = clampf((song_time - (n.hit_time - APPROACH)) / APPROACH, 0.0, 1.0)
+		grupos[n.grupo] = info
+	for info in grupos.values():
+		if info.pts.size() >= 2:
+			_desenhar_acorde(info.pts[0], info.pts[1], info.prog)
 
 	# Notas em movimento
 	for n in notas:
@@ -372,6 +373,42 @@ func _desenhar_nota(n) -> void:
 	_letra(alvo.label, pos)  # letra acompanha a nota em movimento
 	if n.hold:
 		draw_arc(pos, R_NOTA + 6, 0, TAU, 32, Color(0.45, 0.8, 1.0, 0.7), 2.0)
+
+
+func _desenhar_acorde(a: Vector2, b: Vector2, prog: float) -> void:
+	# traço neon rosa/magenta vibrante pra destacar do resto
+	var cor := Color(1.0, 0.35, 0.85)
+	# a grossura cresce conforme as notas se aproximam dos alvos
+	var w: float = lerpf(4.0, 16.0, prog)
+	var pulso: float = 0.85 + 0.15 * sin(_core * 8.0)
+	# glow neon: camadas largas e translúcidas + núcleo branco brilhante
+	draw_line(a, b, Color(cor.r, cor.g, cor.b, 0.12 * pulso), w * 2.6)
+	draw_line(a, b, Color(cor.r, cor.g, cor.b, 0.30 * pulso), w * 1.7)
+	draw_line(a, b, Color(cor.r, cor.g, cor.b, 0.95), w)
+	draw_line(a, b, Color(1, 1, 1, 0.9), maxf(2.0, w * 0.35))
+	# "AO MESMO TEMPO" em cima do traço, no mesmo ângulo da linha
+	if _font and prog > 0.15:
+		var tam: int = int(lerpf(12.0, 22.0, prog))
+		var alpha: float = clampf((prog - 0.15) / 0.5, 0.0, 1.0)
+		_texto_na_linha("AO MESMO TEMPO", a, b, w, tam, Color(1.0, 0.6, 0.95, alpha))
+
+
+# Desenha um texto centralizado SOBRE a linha a->b, girado no ângulo dela.
+func _texto_na_linha(txt: String, a: Vector2, b: Vector2, larg_linha: float, tam: int, cor: Color) -> void:
+	if _font == null:
+		return
+	var ang: float = (b - a).angle()
+	# mantém o texto sempre legível (nunca de cabeça pra baixo)
+	if ang > PI / 2.0 or ang < -PI / 2.0:
+		ang += PI
+	var meio: Vector2 = (a + b) * 0.5
+	# desloca perpendicularmente pra ficar EM CIMA do traço (acima dele)
+	var perp := Vector2(cos(ang - PI / 2.0), sin(ang - PI / 2.0))
+	var base: Vector2 = meio + perp * (larg_linha * 0.5 + 6.0)
+	var w_txt: float = _font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam).x
+	draw_set_transform(base, ang, Vector2.ONE)
+	draw_string(_font, Vector2(-w_txt / 2.0, 0.0), txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, cor)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)  # reseta a transform do canvas
 
 
 func _forma_nota(pos: Vector2, cor: Color) -> void:
