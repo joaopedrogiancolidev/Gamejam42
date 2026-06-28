@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://ddo67vb1yguwj"]
 
 [ext_resource type="Script" uid="uid://c48geakn1xmmc" path="res://scripts/MinigameDance.gd" id="1_dance"]
+[ext_resource type="AudioStream" uid="uid://dac7opsegj2xo" path="res://assets/sfx/hit.mp3" id="2_36tu2"]
+[ext_resource type="AudioStream" uid="uid://fk8heehm40b6" path="res://assets/sfx/miss.mp3" id="3_123nh"]
 
 [node name="MinigameDance" type="Node2D" unique_id=1376978469]
 script = ExtResource("1_dance")
@@ -24,8 +26,8 @@ offset_left = -20.0
 offset_top = -18.0
 offset_right = 20.0
 offset_bottom = 18.0
-theme_override_font_sizes/font_size = 24
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
 text = "S"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -38,8 +40,8 @@ offset_left = -20.0
 offset_top = -18.0
 offset_right = 20.0
 offset_bottom = 18.0
-theme_override_font_sizes/font_size = 24
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
 text = "D"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -52,8 +54,8 @@ offset_left = -20.0
 offset_top = -18.0
 offset_right = 20.0
 offset_bottom = 18.0
-theme_override_font_sizes/font_size = 24
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
 text = "F"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -65,8 +67,8 @@ offset_left = 28.0
 offset_top = 26.0
 offset_right = 420.0
 offset_bottom = 56.0
+theme_override_colors/font_color = Color(0.541, 0.816, 1, 1)
 theme_override_font_sizes/font_size = 22
-theme_override_colors/font_color = Color(0.541, 0.816, 1.0, 1)
 text = "RACIONAL  (S D F)"
 
 [node name="ScoreLabel" type="Label" parent="HUD" unique_id=100000012]
@@ -74,8 +76,8 @@ offset_left = 430.0
 offset_top = 26.0
 offset_right = 630.0
 offset_bottom = 52.0
-theme_override_font_sizes/font_size = 20
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
 text = "SCORE: 0"
 
 [node name="ComboLabel" type="Label" parent="HUD" unique_id=100000013]
@@ -83,8 +85,8 @@ offset_left = 430.0
 offset_top = 52.0
 offset_right = 630.0
 offset_bottom = 74.0
+theme_override_colors/font_color = Color(1, 0.824, 0.29, 1)
 theme_override_font_sizes/font_size = 16
-theme_override_colors/font_color = Color(1.0, 0.824, 0.29, 1)
 text = "COMBO: 0"
 
 [node name="BarraScoreBg" type="ColorRect" parent="HUD" unique_id=100000014]
@@ -107,8 +109,14 @@ offset_left = 110.0
 offset_top = 140.0
 offset_right = 530.0
 offset_bottom = 240.0
+theme_override_colors/font_color = Color(0.9, 0.9, 1, 1)
 theme_override_font_sizes/font_size = 36
-theme_override_colors/font_color = Color(0.9, 0.9, 1.0, 1)
 text = "PREPARE-SE"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="HitSFX" type="AudioStreamPlayer" parent="." unique_id=1661557491]
+stream = ExtResource("2_36tu2")
+
+[node name="MissSFX" type="AudioStreamPlayer" parent="." unique_id=1712311080]
+stream = ExtResource("3_123nh")

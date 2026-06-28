@@ -12,6 +12,10 @@ extends Node2D
 @export var APPROACH: float = 2.5      # duração da viagem de cada nota ao alvo
 @export var BEAT_INICIAL: float = 8.0  # beat em que a primeira nota é gerada
 
+# --- Audio ---
+@onready var hit_sfx: AudioStreamPlayer = $HitSFX
+@onready var miss_sfx: AudioStreamPlayer = $MissSFX
+
 # --- Janelas de acerto (quanto maior, mais perdoador) ---
 @export var JANELA_PERFEITO: float = 0.10
 @export var JANELA_BOM: float = 0.23
@@ -227,6 +231,9 @@ func _press(ki: int) -> void:
 				melhor = n
 	if melhor != null and md <= JANELA_BOM:
 		_julgar(melhor, md)
+		hit_sfx.play()
+	else:
+		miss_sfx.play()
 
 
 func _release(ki: int) -> void:
