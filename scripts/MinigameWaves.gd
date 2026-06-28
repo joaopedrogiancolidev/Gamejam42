@@ -53,6 +53,16 @@ var travado: bool = false:
 				c.held = false
 				c.held_stable_time = 0.0
 
+# --- Modo autônomo (tutorial / rodar fora do Hub) ---
+# DESLIGADO por padrão: no Hub continua tudo igual, o Hub manda no fim.
+# Ligado (tutorial): ao acabar (vitória OU colapso) mostra o resultado e
+# troca pra `proxima_cena` sozinho; ENTER/ESC pulam a qualquer momento.
+# Espelha o `autonomo` do MinigameDance.gd.
+@export var autonomo: bool = false
+@export_file("*.tscn") var proxima_cena: String = ""
+var _fim_t: float = 0.0
+var _saindo: bool = false
+
 var CANAIS := [
 	{"nome": "CanalJ", "code": KEY_J, "label": "J", "emo": "ANSIEDADE", "cor": Color("ff7bbf"), "nivel": 0.0, "agit": 0.0, "fase": 0.0, "held": false, "held_stable_time": 0.0, "was_unstable": false, "neon_t": 0.0},
 	{"nome": "CanalK", "code": KEY_K, "label": "K", "emo": "TRISTEZA",  "cor": Color("c850ff"), "nivel": 0.0, "agit": 0.0, "fase": 1.0, "held": false, "held_stable_time": 0.0, "was_unstable": false, "neon_t": 0.0},
@@ -60,12 +70,12 @@ var CANAIS := [
 ]
 
 const FALAS := [
-	"...não consigo desligar a cabeça.",
-	"...sinto que decepciono todos.",
-	"...tem dias que nada importa.",
-	"...por que sempre comigo?",
-	"...eu devia estar melhor.",
+	"...ganho menos que um atendente de OXXO, com zero benefícios.",
+	"...'é rapidinho' faz três horas.",
+	"...esse código não tem salvação, só contenção.",
+	"...home office só quando ele 'sentir a energia do time'.",
 	"...não sei se isso adianta.",
+	"...equity de empresa que não fatura é só um print bonito."
 ]
 
 var tempo: float = 0.0
@@ -196,6 +206,8 @@ func reset() -> void:
 	_fala_t = 0.0
 	ativo = true
 	falhou = false
+	_fim_t = 0.0
+	_saindo = false
 	for label in ["J", "K", "L"]:
 		if _rating_states.has(label):
 			_rating_states[label] = {"active": false, "type": "", "frame": 0, "timer": 0.0}
@@ -227,8 +239,23 @@ func _process(delta: float) -> void:
 	if ativo:
 		_atualizar_logica(delta)
 		_processar_animacao_nota(delta)
+	elif autonomo:
+		# acabou (vitória ou colapso) rodando sozinho (tutorial): dá um
+		# respiro mostrando o resultado e segue pra próxima cena.
+		_fim_t += delta
+		if _fim_t > 2.0:
+			_ir_proxima()
 
 	_aplicar_visual()
+
+
+func _ir_proxima() -> void:
+	# só no modo autônomo; troca de cena uma única vez
+	if not autonomo or _saindo:
+		return
+	_saindo = true
+	if proxima_cena != "":
+		get_tree().change_scene_to_file(proxima_cena)
 
 
 func _atualizar_logica(delta: float) -> void:
@@ -336,6 +363,11 @@ func _perturbar(dif: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# autônomo: ENTER/ESC pula pra próxima cena (vale até com o jogo parado)
+	if autonomo and event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode in [KEY_ENTER, KEY_KP_ENTER, KEY_ESCAPE]:
+			_ir_proxima()
+			return
 	if not ativo or travado or not (event is InputEventKey) or event.echo:
 		return
 	for c in CANAIS:
@@ -492,3 +524,8 @@ func _aplicar_visual() -> void:
 		_fill_colapso.scale.x = colapso / 100.0
 	if _fala_label:
 		_fala_label.modulate.a = clampf(_fala_t / 1.8, 0.0, 1.0)
+
+	# modo autônomo (tutorial): mensagem de fim sobre a FalaLabel
+	if autonomo and not ativo and _fala_label:
+		_fala_label.text = "COLAPSO  ·  ENTER pra seguir" if falhou else "MANDOU BEM!  ·  ENTER pra seguir"
+		_fala_label.modulate = Color(1, 0.5, 0.5, 1) if falhou else Color(0.5, 1, 0.7, 1)

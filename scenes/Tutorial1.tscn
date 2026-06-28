@@ -1,14 +1,57 @@
 [gd_scene format=3 uid="uid://cuv2188duq3n5"]
 
 [ext_resource type="PackedScene" uid="uid://cb6o0dkp1x5xd" path="res://scenes/TemplateLore.tscn" id="1_base"]
+[ext_resource type="PackedScene" uid="uid://ddo67vclyoxcj" path="res://scenes/MinigameWaves.tscn" id="2_waves"]
 
 [node name="Tutorial1" unique_id=912544041 instance=ExtResource("1_base")]
 header = "●  TUTORIAL — lado emocional"
-texto = "Primeiro, as ONDAS EMOCIONAIS.
-Segure I J K L pra puxar ansiedade, tristeza e raiva de volta pra zona calma.
-Não deixe o RISCO DE COLAPSO encher."
-arte_placeholder = "[ aqui roda o minigame WAVES em modo fácil ]"
-proxima_cena = "res://scenes/PlotTwist.tscn"
+texto = ""
+esconder_arte = true
+proxima_cena = "res://scenes/Tutorial2.tscn"
+
+[node name="Placeholder" parent="Software" parent_id_path=PackedInt32Array(434879675) index="7" unique_id=931311874]
+visible = false
+
+[node name="Titulo" parent="Software/Placeholder" index="0" unique_id=135157807]
+visible = false
+
+[node name="Desc" parent="Software/Placeholder" index="1" unique_id=1048017954]
+visible = false
 
 [node name="Texto" parent="Software/Conteudo" parent_id_path=PackedInt32Array(329387098) index="0" unique_id=2123188344]
+visible = false
 offset_left = 482.22226
+
+[node name="Continuar" parent="Software/Conteudo" parent_id_path=PackedInt32Array(329387098) index="1" unique_id=1956556048]
+offset_left = 467.77774
+offset_top = 394.44446
+offset_right = 710.7777
+offset_bottom = 421.44446
+
+[node name="Waves" parent="." index="4" unique_id=254203456 instance=ExtResource("2_waves")]
+position = Vector2(298, 212)
+scale = Vector2(0.5, 0.5)
+PULL_NIVEL = 1.8
+PULL_AGIT = 1.6
+DRAIN = 22.0
+RED_THRESH = 0.62
+RATE_SCORE = 120.0
+TEMPO_LIMITE = 20.0
+autonomo = true
+proxima_cena = "res://scenes/Tutorial2.tscn"
+
+[node name="Instrucao" type="Label" parent="." index="5" unique_id=226189626]
+offset_left = 651.0
+offset_top = 264.0
+offset_right = 1000.0
+offset_bottom = 464.0
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 0.95)
+theme_override_font_sizes/font_size = 18
+text = "Primeiro, as ONDAS EMOCIONAIS.
+
+Segure  J  K  L  pra voltar pra zona calma, estabilizando as ondas de ANSIEDADE, TRISTEZA e RAIVA.
+
+Não deixe o RISCO DE COLAPSO encher."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
