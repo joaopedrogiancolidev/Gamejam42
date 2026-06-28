@@ -27,20 +27,24 @@ const AGIT_PX: float = 52.0
 @export var DRAIN: float = 35.0        
 @export var RECUP_FOCO: float = 18.0   
 @export var RED_THRESH: float = 0.50  
-@export var RATE_SCORE: float = 240.0
+@export var RATE_SCORE: float = 2000.0 / 60.0  # enche a barra por TEMPO: 2000 em 60s (objetivo = aguentar 60s)
 
-const DIFICULDADE_MULT: float = 0.52 # PUNIÇÃO (dreno/colapso/limiar). Perturbações têm tuning próprio
+const DIFICULDADE_MULT: float = 0.624 # PUNIÇÃO (dreno/colapso/limiar). +20% de dificuldade (era 0.52)
+const ONDA_FORCA: float = 0.744 # força da ondulação por perturbação (+20%, era 0.62)
+const FREQ_MULT: float = 1.2    # frequência das perturbações (+20% mais frequentes)
 
 # --- contrato com o Hub ---
-@export var META: int = 5200
+@export var META: int = 2000
 # tempo de partida do emocional. Quando rodando dentro do Hub, sincroniza
 # com o DURACAO da partida no _ready. 30s por enquanto pra testes.
 @export var TEMPO_LIMITE: float = 30.0
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
-# congelado por glitch do tipo "segurar": os botões deste lado travam
-# (não jogam nem pontuam) até o OUTRO jogador consertar. Separado de `ativo`.
+# travado por glitch do tipo "segurar": BLOQUEIA o input deste lado (o
+# jogador não consegue segurar as teclas pra estabilizar) até o OUTRO
+# jogador consertar. A simulação NÃO para: as ondas seguem perturbando e
+# o colapso pode subir enquanto está travado. Separado de `ativo`.
 var travado: bool = false:
 	set(v):
 		travado = v
@@ -216,7 +220,11 @@ func _process(delta: float) -> void:
 	if _fala_t > 0.0:
 		_fala_t -= delta
 
-	if ativo and not travado:
+	# Mesmo travado pelo glitch, a simulação continua: as ondas seguem
+	# perturbando e o colapso pode subir. O que o `travado` faz é só
+	# bloquear o INPUT (no _unhandled_input) — o jogador não consegue
+	# segurar as teclas pra estabilizar até o outro lado consertar.
+	if ativo:
 		_atualizar_logica(delta)
 		_processar_animacao_nota(delta)
 
@@ -259,7 +267,7 @@ func _atualizar_logica(delta: float) -> void:
 	if dist_timer <= 0.0:
 		_perturbar(dificuldade)
 		# frequência das perturbações é independente da punição: mais interação
-		dist_timer = randf_range(0.75, 1.45) / dificuldade
+		dist_timer = randf_range(0.75, 1.45) / (dificuldade * FREQ_MULT)
 
 	var pior: float = 0.0
 	var soma_dano: float = 0.0
@@ -278,7 +286,9 @@ func _atualizar_logica(delta: float) -> void:
 	elif pior < 0.45:
 		colapso = maxf(0.0, colapso - 20.0 * (1.0 + (1.0 - DIFICULDADE_MULT)) * delta)
 
-	_score_f += (1.0 - clampf(pior, 0.0, 1.0)) * RATE_SCORE * delta
+	# a barra verde enche por TEMPO (objetivo = aguentar 60s): 2000/60 por
+	# segundo, independente de estabilidade. Quem joga bem é pra NÃO colapsar.
+	_score_f += RATE_SCORE * delta
 	score = int(_score_f)
 
 	# Modulação dinâmica do fundo baseado na distorção (Verde Claro -> Verde Escuro/Preto)
@@ -317,8 +327,8 @@ func _perturbar(dif: float) -> void:
 	var c = CANAIS[randi() % CANAIS.size()]
 	# força fixa (0.8), desacoplada do MULT de punição — perturbar bastante,
 	# mas o erro continua pouco punível (colapso baixo + limiar folgado)
-	c.agit = clampf(c.agit + randf_range(0.22, 0.42) * dif * 0.62, 0.0, 1.4)
-	c.nivel = clampf(c.nivel + randf_range(-0.45, 0.45) * dif * 0.62, -1.3, 1.3)
+	c.agit = clampf(c.agit + randf_range(0.22, 0.42) * dif * ONDA_FORCA, 0.0, 1.4)
+	c.nivel = clampf(c.nivel + randf_range(-0.45, 0.45) * dif * ONDA_FORCA, -1.3, 1.3)
 	if _fala_label:
 		_fala_label.text = "« %s »" % FALAS[randi() % FALAS.size()]
 		_fala_label.modulate = Color(c.cor.r, c.cor.g, c.cor.b, 1.0)
@@ -337,11 +347,9 @@ func _unhandled_input(event: InputEvent) -> void:
 					var inst = _instab(c)
 					# Se soltou bem próximo do equilíbrio perfeito (<0.15) e sem gastar foco extra (<0.15s)
 					if inst <= 0.15 and c.held_stable_time < 0.15:
-						_engajar_nota_popup("perfect", c.label)
-						_score_f += 300.0 # Bônus por precisão cirúrgica
+						_engajar_nota_popup("perfect", c.label)  # só feedback visual (score é por tempo)
 					elif inst <= 0.38:
 						_engajar_nota_popup("great", c.label)
-						_score_f += 150.0
 					c.was_unstable = false
 				return
 				

@@ -23,9 +23,6 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	# Esc fecha o jogo (útil porque rodamos em fullscreen)
-	if event.is_action_pressed("ui_cancel"):
-		get_tree().quit()
-		return
 	# repassa teclado/etc. pro jogo lá dentro do monitor
+	# (ESC pra sair é tratado globalmente pelo autoload SairGlobal)
 	_viewport.push_input(event)
