@@ -1,11 +1,33 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://b50ifuyqluaq7"]
 
-[ext_resource type="PackedScene" path="res://scenes/TemplateLore.tscn" id="1_base"]
+[ext_resource type="PackedScene" uid="uid://cb6o0dkp1x5xd" path="res://scenes/TemplateLore.tscn" id="1_base"]
+[ext_resource type="PackedScene" uid="uid://ddo67vb1yguwj" path="res://scenes/MinigameDance.tscn" id="2_dance"]
 
-[node name="Tutorial2" instance=ExtResource("1_base")]
-header = "●  TUTORIAL — lado racional"
-texto = "Agora o RITMO RACIONAL.
-No tempo certo, aperte W A S D pra executar as tarefas no ritmo.
+[node name="Tutorial2" unique_id=1486695104 instance=ExtResource("1_base")]
+header = "●  TUTORIAL — ritmo racional"
+texto = "No tempo certo, aperte  A  S  D  pra executar as tarefas no ritmo.
 Mandar bem em sequência = COMBO."
-arte_placeholder = "[ aqui roda o minigame DANCE em modo fácil ]"
+esconder_arte = true
+
+[node name="Placeholder" parent="Software" parent_id_path=PackedInt32Array(434879675) index="7" unique_id=931311874]
+visible = false
+
+[node name="Titulo" parent="Software/Placeholder" index="0" unique_id=135157807]
+visible = false
+
+[node name="Desc" parent="Software/Placeholder" index="1" unique_id=1048017954]
+visible = false
+
+[node name="Texto" parent="Software/Conteudo" parent_id_path=PackedInt32Array(329387098) index="0" unique_id=2123188344]
+offset_left = 448.8889
+offset_top = 106.66667
+offset_right = 738.8889
+offset_bottom = 380.0
+
+[node name="Dance" parent="." index="4" unique_id=2111201790 instance=ExtResource("2_dance")]
+position = Vector2(300, 231.00002)
+scale = Vector2(0.42, 0.42)
+BEAT_INICIAL = 4.0
+META = 1500
+autonomo = true
 proxima_cena = "res://scenes/Lore2.tscn"

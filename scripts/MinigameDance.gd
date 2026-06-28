@@ -1,9 +1,14 @@
 extends Node2D
 
 # ============================================================
-#  MINIGAME DANCE  -  LADO ESQUERDO (racional)  -  teclas S D F
+#  MINIGAME DANCE  -  LADO ESQUERDO (racional)  -  teclas A S D
 #  Versão com cena editável: posições e parâmetros ajustáveis
-#  no inspetor do Godot. O Hub coordena o fim de jogo.
+#  no inspetor do Godot.
+#
+#  No HUB: o Hub coordena o fim de jogo (lê score/falhou/ativo).
+#  AUTÔNOMO (tutorial): ligue `autonomo` no inspetor e aponte
+#  `proxima_cena` — aí ele mesmo cuida do fim (bate META -> troca
+#  de cena sozinho; ENTER/ESC pula). É assim que o Tutorial2 roda.
 # ============================================================
 
 # --- Parâmetros de ritmo (editáveis no inspetor) ---
@@ -33,6 +38,15 @@ extends Node2D
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
+
+# --- Modo autônomo (tutorial / rodar fora do Hub) ---
+# DESLIGADO por padrão: no Hub continua tudo igual, o Hub manda no fim.
+# Ligado (tutorial): ao bater a META ele troca pra `proxima_cena`
+# sozinho; ENTER/ESC pula a qualquer momento.
+@export var autonomo: bool = false
+@export_file("*.tscn") var proxima_cena: String = ""
+var _fim_t: float = 0.0
+var _saindo: bool = false
 
 # --- Referências aos nós da cena ---
 @onready var _centro        := $Centro
@@ -114,6 +128,8 @@ func reset() -> void:
 	_bursts.clear()
 	ativo = true
 	falhou = false
+	_fim_t = 0.0
+	_saindo = false
 	for a in ALVOS:
 		a.held = false
 		a.flash = 0.0
@@ -163,6 +179,11 @@ func _process(delta: float) -> void:
 	queue_redraw()
 
 	if not ativo:
+		# autônomo: terminou (bateu META) -> segue sozinho depois de um respiro
+		if autonomo:
+			_fim_t += delta
+			if _fim_t > 2.0:
+				_ir_proxima()
 		return
 
 	song_time += delta
@@ -194,8 +215,13 @@ func _aplicar_visual() -> void:
 	_combo_label.text = "COMBO: %d" % combo
 	_fill_score.scale.x = clampf(float(score) / META, 0.0, 1.0)
 
-	# PREPARE-SE removido: as notas entram com o lead-in normal, sem overlay
-	_prepare_label.visible = false
+	# PREPARE-SE removido: as notas entram com o lead-in normal, sem overlay.
+	# No modo autônomo, ao terminar mostra o aviso de "pode seguir".
+	if autonomo and not ativo:
+		_prepare_label.visible = true
+		_prepare_label.text = "MANDOU BEM!\nENTER pra seguir"
+	else:
+		_prepare_label.visible = false
 
 	# Atualiza cor das letras dos alvos conforme o flash (tecla pressionada)
 	var teclas := [
@@ -210,6 +236,15 @@ func _aplicar_visual() -> void:
 			teclas[i].modulate = ALVOS[i].cor
 
 
+func _ir_proxima() -> void:
+	# só no modo autônomo; troca de cena uma única vez
+	if not autonomo or _saindo:
+		return
+	_saindo = true
+	if proxima_cena != "":
+		get_tree().change_scene_to_file(proxima_cena)
+
+
 func _pos_nota(n) -> Vector2:
 	var alvo = ALVOS[n.key]
 	var prog: float = clampf((song_time - (n.hit_time - APPROACH)) / APPROACH, 0.0, 1.0)
@@ -217,6 +252,11 @@ func _pos_nota(n) -> Vector2:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# autônomo: ENTER/ESC pula pra próxima cena (vale até com o jogo parado)
+	if autonomo and event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode in [KEY_ENTER, KEY_KP_ENTER, KEY_ESCAPE]:
+			_ir_proxima()
+			return
 	if not ativo or not (event is InputEventKey) or event.echo:
 		return
 	for i in ALVOS.size():
