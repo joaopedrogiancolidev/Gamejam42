@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/TemplateLore.tscn" id="1_base"]
+
+[node name="PlotTwist" instance=ExtResource("1_base")]
+header = "⚠  ALERTA DO SISTEMA"
+texto = "KERNEL PANIC: o lado RACIONAL travou.
+Sozinho você não dá conta dos dois lados...
+CHAMA UM COLEGA pra sentar do seu lado — agora são 2 no mesmo teclado!"
+arte_placeholder = "[ ARTE: CHAMA O COLEGA! · 2 players ]"
+proxima_cena = "res://scenes/Tutorial2.tscn"

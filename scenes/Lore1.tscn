@@ -1,32 +1,12 @@
-[gd_scene format=3 uid="uid://bmomykciw7w5h"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/CardLore.tscn" id="1_base"]
+[ext_resource type="PackedScene" path="res://scenes/TemplateLore.tscn" id="1_base"]
 
-[node name="Lore1" unique_id=123050302 instance=ExtResource("1_base")]
+[node name="Lore1" instance=ExtResource("1_base")]
+header = "●  CyberTerapia™ — chamado de plantão"
 texto = "03:47 da manhã. Seu plantão na CyberTerapia™ apita.
 O João — dev júnior, primeira startup dos sonhos — entrou em burnout, e a mente dele caiu em produção.
 Quem atende o chamado? Você. E a ferramenta pra consertar é vibe-coded, igual o resto daqui.
 Respira fundo. Bora dar um patch nesse cérebro."
-proxima_cena = "res://scenes/Hub.tscn"
-
-[node name="Conteudo" parent="." index="4"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = -2.0
-offset_top = -43.0
-offset_right = 1278.0
-offset_bottom = 677.0
-
-[node name="Texto" parent="Conteudo" index="0"]
-layout_mode = 0
-offset_left = 793.0
-offset_top = 247.0
-offset_right = 1162.0
-offset_bottom = 626.0
-
-[node name="Continuar" parent="Conteudo" index="1"]
-layout_mode = 0
-offset_left = 141.0
-offset_top = 672.0
-offset_right = 1121.0
-offset_bottom = 710.0
+arte_placeholder = "[ ARTE: alerta de plantão 03:47 ]"
+proxima_cena = "res://scenes/Tutorial1.tscn"

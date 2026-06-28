@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://scripts/CardLore.gd" id="1_card"]
+[ext_resource type="Script" path="res://scripts/TemplateLore.gd" id="1_tpl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tela"]
 bg_color = Color(0.05, 0.05, 0.1, 0.92)
@@ -16,8 +16,8 @@ corner_radius_bottom_left = 20
 shadow_color = Color(0.4, 0.8, 1, 0.3)
 shadow_size = 18
 
-[node name="CardLore" type="Node2D"]
-script = ExtResource("1_card")
+[node name="TemplateLore" type="Node2D"]
+script = ExtResource("1_tpl")
 
 [node name="Fundo" type="ColorRect" parent="."]
 offset_right = 1280.0
@@ -38,7 +38,7 @@ offset_right = 1150.0
 offset_bottom = 96.0
 theme_override_colors/font_color = Color(0.4, 0.9, 1, 0.85)
 theme_override_font_sizes/font_size = 18
-text = "●  CyberTerapia™  —  sessão em andamento"
+text = "●  CyberTerapia™"
 
 [node name="Imagem" type="TextureRect" parent="."]
 offset_left = 150.0
@@ -47,6 +47,32 @@ offset_right = 1130.0
 offset_bottom = 400.0
 expand_mode = 1
 stretch_mode = 5
+
+[node name="Placeholder" type="ColorRect" parent="."]
+offset_left = 150.0
+offset_top = 112.0
+offset_right = 1130.0
+offset_bottom = 400.0
+color = Color(0.92, 0.1, 0.55, 0.9)
+
+[node name="Titulo" type="Label" parent="Placeholder"]
+offset_top = 95.0
+offset_right = 980.0
+offset_bottom = 140.0
+theme_override_colors/font_color = Color(0.55, 1, 0.1, 1)
+theme_override_font_sizes/font_size = 26
+text = "🎨 graphic design is my passion 🎨"
+horizontal_alignment = 1
+
+[node name="Desc" type="Label" parent="Placeholder"]
+offset_top = 150.0
+offset_right = 980.0
+offset_bottom = 230.0
+theme_override_colors/font_color = Color(1, 0.95, 0.2, 1)
+theme_override_font_sizes/font_size = 20
+text = "[ ARTE AQUI ]"
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="Conteudo" type="Control" parent="."]
 offset_right = 1280.0
@@ -59,7 +85,7 @@ offset_right = 1130.0
 offset_bottom = 606.0
 theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
 theme_override_font_sizes/font_size = 24
-text = "Texto da lore aqui..."
+text = "Texto da história aqui..."
 horizontal_alignment = 1
 autowrap_mode = 3
 
