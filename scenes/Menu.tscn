@@ -148,7 +148,7 @@ offset_bottom = 308.0
 theme_override_colors/font_color = Color(0.247, 0.816, 1, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 28
-text = "RAZÃO"
+text = "RACIONAL"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -197,7 +197,7 @@ offset_bottom = 408.0
 theme_override_colors/font_color = Color(1, 0.38, 0.38, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 28
-text = "EMOÇÃO"
+text = "EMOCIONAL"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -270,20 +270,32 @@ theme_override_font_sizes/font_size = 20
 text = "VOLTAR"
 vertical_alignment = 1
 
-[node name="Btn3" type="TextureRect" parent="Conteudo" unique_id=812345678]
+[node name="JogarHint" type="Label" parent="Conteudo" unique_id=812345701]
 layout_mode = 0
 offset_left = 480.0
+offset_top = 662.0
+offset_right = 849.0
+offset_bottom = 694.0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.85, 0.85)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "[2]  PULAR INTRO"
+vertical_alignment = 1
+
+[node name="Btn3" type="TextureRect" parent="Conteudo" unique_id=812345678]
+layout_mode = 0
+offset_left = 920.0
 offset_top = 651.0
-offset_right = 522.0
+offset_right = 962.0
 offset_bottom = 693.0
 expand_mode = 1
 stretch_mode = 5
 
 [node name="CreditosHint" type="Label" parent="Conteudo" unique_id=812345679]
 layout_mode = 0
-offset_left = 529.0
+offset_left = 970.0
 offset_top = 662.0
-offset_right = 849.0
+offset_right = 1251.0
 offset_bottom = 694.0
 theme_override_colors/font_color = Color(0.7, 0.7, 0.85, 0.85)
 theme_override_fonts/font = ExtResource("2_font")
