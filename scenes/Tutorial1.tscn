@@ -10,5 +10,14 @@ Não deixe o RISCO DE COLAPSO encher."
 arte_placeholder = "[ aqui roda o minigame WAVES em modo fácil ]"
 proxima_cena = "res://scenes/PlotTwist.tscn"
 
+[node name="Placeholder" parent="Software" parent_id_path=PackedInt32Array(434879675) index="7" unique_id=931311874]
+visible = false
+
+[node name="Titulo" parent="Software/Placeholder" index="0" unique_id=135157807]
+visible = false
+
+[node name="Desc" parent="Software/Placeholder" index="1" unique_id=1048017954]
+visible = false
+
 [node name="Texto" parent="Software/Conteudo" parent_id_path=PackedInt32Array(329387098) index="0" unique_id=2123188344]
 offset_left = 482.22226
