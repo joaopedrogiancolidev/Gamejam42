@@ -22,8 +22,10 @@ visible = false
 offset_left = 601.11115
 
 [node name="Continuar" parent="Software/Conteudo" parent_id_path=PackedInt32Array(329387098) index="1" unique_id=1956556048]
-offset_left = 535.55554
-offset_bottom = 455.88892
+offset_left = 491.11108
+offset_top = 417.7778
+offset_right = 728.6666
+offset_bottom = 444.7778
 
 [node name="Dance" parent="." index="4" unique_id=254203455 instance=ExtResource("2_dance")]
 position = Vector2(320, 200)
@@ -34,10 +36,10 @@ autonomo = true
 proxima_cena = "res://scenes/Hub.tscn"
 
 [node name="Instrucao" type="Label" parent="." index="5" unique_id=226189625]
-offset_left = 775.0
-offset_top = 256.0
-offset_right = 989.0
-offset_bottom = 334.0
+offset_left = 734.0
+offset_top = 271.0
+offset_right = 948.0
+offset_bottom = 349.0
 theme_override_colors/font_color = Color(0.7, 0.85, 1, 0.95)
 theme_override_font_sizes/font_size = 18
 text = "No tempo certo, aperte  A  S  D  no ritmo.  Em sequência = COMBO."
