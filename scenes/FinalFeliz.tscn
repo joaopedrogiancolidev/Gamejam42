@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://dxqfinalfeliz1"]
+[gd_scene format=3 uid="uid://b2dnrg6db4irk"]
 
 [sub_resource type="Animation" id="Animation_aparecer"]
 resource_name = "aparecer"
@@ -68,7 +68,7 @@ offset_top = 356.0
 offset_right = 1040.0
 offset_bottom = 470.0
 theme_override_font_sizes/font_size = 20
-text = "Razão e emoção em equilíbrio. João sai da sessão inteiro:\nsente o que precisa sentir e entende o que precisa entender."
+text = "João respirou. Disse 'não' pro deploy de sexta 18h, fechou o notebook e foi viver. O unicórnio que espere — ele escolheu ser uma pessoa inteira em vez de um recurso."
 horizontal_alignment = 1
 autowrap_mode = 3
 
