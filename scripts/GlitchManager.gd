@@ -271,6 +271,24 @@ func _draw() -> void:
 	else:
 		_desenhar_estatica(regiao, cor)
 	_desenhar_botao_e_prompt(cor)
+	_desenhar_titulo_glitch()
+
+
+# "GLITCH!!!" em destaque logo acima do cronômetro grande (topo central),
+# com tremor + RGB-split pra dar a vibe de tela bugando
+func _desenhar_titulo_glitch() -> void:
+	if _font == null:
+		return
+	var txt := "G L I T C H !!!"
+	var tam := 44
+	var w: float = _font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam).x
+	var base := Vector2(640.0 - w / 2.0, 84.0)
+	var jit := Vector2(randf_range(-3.0, 3.0), randf_range(-2.0, 2.0))
+	var pulse: float = 0.6 + 0.4 * sin(_pulse * 14.0)
+	# RGB-split: vermelho e ciano deslocados + branco pulsando no meio
+	draw_string(_font, base + jit + Vector2(3, 0), txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, Color(1.0, 0.2, 0.3, 0.85))
+	draw_string(_font, base + jit - Vector2(3, 0), txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, Color(0.2, 1.0, 1.0, 0.85))
+	draw_string(_font, base + jit, txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, Color(1, 1, 1, pulse))
 
 
 # imagens goofy gigantes, cada uma com posição/rotação/tamanho aleatórios

@@ -318,17 +318,17 @@ func _julgar(n, dt: float) -> void:
 	var pos: Vector2 = ALVOS[n.key].pos
 	combo += 1
 	combo_max = max(combo_max, combo)
-	var mult: int = 1 + combo / 10
-	# acorde (teclas ao mesmo tempo) vale mais que nota simples
-	var acorde: bool = n.grupo >= 0
+	# sequência maior que 3 (4+ acertos seguidos) dobra os pontos
+	var mult: int = 2 if combo > 3 else 1
+	# great = 20, perfect = 40 (acorde são 2 notas, então pontua 2x naturalmente)
 	if dt <= JANELA_PERFEITO:
 		n_perfeito += 1
-		score += (100 if acorde else 60) * mult
+		score += 40 * mult
 		_popup(pos, "PERFEITO!", Color(0.4, 1.0, 0.7))
 		_burst(pos, Color(0.4, 1.0, 0.7))
 	else:
 		n_bom += 1
-		score += (50 if acorde else 30) * mult
+		score += 20 * mult
 		_popup(pos, "bom", Color(1.0, 0.85, 0.4))
 		_burst(pos, ALVOS[n.key].cor)
 	if n.hold:
