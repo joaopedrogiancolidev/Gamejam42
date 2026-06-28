@@ -23,26 +23,25 @@ visible = false
 offset_left = 482.22226
 
 [node name="Continuar" parent="Software/Conteudo" parent_id_path=PackedInt32Array(329387098) index="1" unique_id=1956556048]
-offset_left = 491.11108
-offset_top = 417.7778
-offset_right = 728.6666
-offset_bottom = 444.7778
+offset_left = 467.77774
+offset_top = 394.44446
+offset_right = 710.7777
+offset_bottom = 421.44446
 
 [node name="Waves" parent="." index="4" unique_id=254203456 instance=ExtResource("2_waves")]
-position = Vector2(210, 150)
+position = Vector2(298, 212)
 scale = Vector2(0.5, 0.5)
-META = 2000
-TEMPO_LIMITE = 20.0
 PULL_NIVEL = 1.8
 PULL_AGIT = 1.6
 DRAIN = 22.0
 RED_THRESH = 0.62
+TEMPO_LIMITE = 20.0
 
 [node name="Instrucao" type="Label" parent="." index="5" unique_id=226189626]
-offset_left = 640.0
-offset_top = 230.0
-offset_right = 1100.0
-offset_bottom = 430.0
+offset_left = 651.0
+offset_top = 264.0
+offset_right = 1000.0
+offset_bottom = 464.0
 theme_override_colors/font_color = Color(0.7, 0.85, 1, 0.95)
 theme_override_font_sizes/font_size = 18
 text = "Primeiro, as ONDAS EMOCIONAIS.
