@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/TemplateLore.tscn" id="1_base"]
+
+[node name="Lore2" instance=ExtResource("1_base")]
+header = "●  CyberTerapia™ — sessão oficial"
+texto = "Sessão oficial: os dois lados AO MESMO TEMPO.
+RAZÃO (W A S D) · EMOÇÃO (I J K L).
+Mantenham o equilíbrio — e segurem firme quando o glitch travar uma tecla."
+arte_placeholder = "[ ARTE: painel da sessão / lembrete de teclas ]"
+proxima_cena = "res://scenes/Hub.tscn"

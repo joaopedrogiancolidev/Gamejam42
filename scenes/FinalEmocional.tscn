@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://dxqfinalemocional1"]
+[gd_scene format=3 uid="uid://crtlrhithgdvc"]
 
 [sub_resource type="Animation" id="Animation_aparecer"]
 resource_name = "aparecer"
@@ -68,7 +68,7 @@ offset_top = 356.0
 offset_right = 1040.0
 offset_bottom = 470.0
 theme_override_font_sizes/font_size = 20
-text = "João sente com intensidade, mas se perde sem a razão pra ancorar.\nA emoção tomou conta e ele afundou nela."
+text = "Sem a razão pra ancorar, João afundou no código amaldiçoado. Cada 'é rapidinho' virou uma onda, e ele se perdeu no caos que juraram que ele 'daria um jeitinho'."
 horizontal_alignment = 1
 autowrap_mode = 3
 

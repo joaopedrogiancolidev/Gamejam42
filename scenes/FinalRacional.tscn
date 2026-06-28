@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://dxqfinalracional1"]
+[gd_scene format=3 uid="uid://dulhxou6sxcts"]
 
 [sub_resource type="Animation" id="Animation_aparecer"]
 resource_name = "aparecer"
@@ -68,7 +68,7 @@ offset_top = 356.0
 offset_right = 1040.0
 offset_bottom = 470.0
 theme_override_font_sizes/font_size = 20
-text = "João entende tudo sobre si mesmo, mas não se permite sentir.\nA lógica blindou a dor — e também a vida."
+text = "João entregou tudo: o legado domado, a demo no ar, metas batidas. O chefe postou no LinkedIn. O João virou um recurso eficiente — e esqueceu que existia vida fora da sprint."
 horizontal_alignment = 1
 autowrap_mode = 3
 

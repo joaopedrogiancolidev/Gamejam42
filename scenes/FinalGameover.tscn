@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://dxqfinalgameover1"]
+[gd_scene format=3 uid="uid://dulhmo52s6g0s"]
 
 [sub_resource type="Animation" id="Animation_aparecer"]
 resource_name = "aparecer"
@@ -68,7 +68,7 @@ offset_top = 356.0
 offset_right = 1040.0
 offset_bottom = 470.0
 theme_override_font_sizes/font_size = 20
-text = "A mente não aguentou a pressão da sessão.\nFoi preciso interromper antes que piorasse."
+text = "Burnout em produção. A mente do João travou na sexta 18h e a CyberTerapia™ deu kernel panic — claro, foi vibe-coded. O chefe disse que ano que vem vira unicórnio."
 horizontal_alignment = 1
 autowrap_mode = 3
 
