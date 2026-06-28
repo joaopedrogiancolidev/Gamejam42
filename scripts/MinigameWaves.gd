@@ -89,7 +89,6 @@ func _ready() -> void:
 		c["tecla"] = node.get_node("Tecla")
 		c["status"] = node.get_node("Status")
 		c["botao"] = _buscar_sprite_botao(node)
-		c["botao_glow"] = _garantir_glow_botao(c.botao)
 		c.tecla.text = c.label
 		var emo: Label = node.get_node("Emo")
 		emo.text = c.emo
@@ -177,29 +176,6 @@ func _buscar_sprite_botao(node: Node) -> Sprite2D:
 	return null
 
 
-func _garantir_glow_botao(botao: Sprite2D) -> Sprite2D:
-	if botao == null:
-		return null
-
-	var glow: Sprite2D = botao.get_node_or_null("NeonGlow")
-	if glow == null:
-		glow = Sprite2D.new()
-		glow.name = "NeonGlow"
-		glow.texture = botao.texture
-		glow.centered = botao.centered
-		glow.offset = botao.offset
-		glow.z_index = -1
-		var mat := CanvasItemMaterial.new()
-		mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
-		glow.material = mat
-		botao.add_child(glow)
-
-	glow.visible = true
-	glow.modulate = Color(1, 0.3, 0.3, 0.0)
-	glow.scale = Vector2(1.12, 1.12)
-	return glow
-
-
 func reset() -> void:
 	tempo = 0.0
 	foco = 100.0
@@ -225,9 +201,6 @@ func reset() -> void:
 		if c.has("botao") and c.botao != null:
 			c.botao.scale = Vector2(0.2, 0.2)
 			c.botao.modulate = Color.WHITE
-		if c.has("botao_glow") and c.botao_glow != null:
-			c.botao_glow.scale = Vector2(1.12, 1.12)
-			c.botao_glow.modulate = Color(1, 0.3, 0.3, 0.0)
 
 
 func _process(delta: float) -> void:
@@ -473,17 +446,6 @@ func _aplicar_visual() -> void:
 		if c.neon_t > 0.0:
 			zona_base = zona_base.lerp(Color(c.cor.r, c.cor.g, c.cor.b, 0.34), clampf(c.neon_t, 0.0, 1.0))
 		c.zona.color = zona_base
-
-		# Neon no botão físico da lane (RedBotton)
-		if c.has("botao") and c.botao != null:
-			var energia_botao: float = clampf(c.neon_t * 0.85 + (0.20 if c.held else 0.0) + clampf(inst, 0.0, 1.0) * 0.25, 0.0, 1.0)
-			var base_cor: Color = c.cor.lerp(Color(1.0, 0.45, 0.45), 0.45)
-			c.botao.modulate = Color(1.0, 1.0, 1.0).lerp(base_cor, energia_botao * 0.6)
-			c.botao.scale = Vector2.ONE * (0.2 * (1.0 + energia_botao * 0.10))
-
-			if c.has("botao_glow") and c.botao_glow != null:
-				c.botao_glow.modulate = Color(base_cor.r, base_cor.g, base_cor.b, 0.08 + energia_botao * 0.32)
-				c.botao_glow.scale = Vector2.ONE * (1.08 + energia_botao * 0.18)
 
 		c.onda.width = 3.0 + c.neon_t * 2.0
 		c.tecla.scale = Vector2.ONE * (1.0 + 0.10 * c.neon_t)
