@@ -5,9 +5,7 @@ extends Node2D
 # ============================================================
 
 # refs de áudio
-var _som_j: AudioStreamPlayer2D
-var _som_k: AudioStreamPlayer2D
-var _som_l: AudioStreamPlayer2D
+@onready var chord_player: ChordPlayer = $ChordPlayer
 var _som_ruido: AudioStreamPlayer2D
 
 @export_dir var great_frames_dir: String = "res://assets/great_red"
@@ -339,9 +337,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			if event.pressed:
 				c.held = true
 				match c.label:
-					"J": if _som_j: _som_j.play()
-					"K": if _som_k: _som_k.play()
-					"L": if _som_l: _som_l.play()
+					"J": chord_player.press("C")
+					"K": chord_player.press("E")
+					"L": chord_player.press("G")
+			else:
+				match c.label:
+					"J": chord_player.release("C")
+					"K": chord_player.release("E")
+					"L": chord_player.release("G")
 			return
 
 
