@@ -35,6 +35,7 @@ extends Node2D
 @export var escala_conteudo: float = 1.0
 @export_file("*.tscn") var proxima_cena: String = ""
 
+
 var _header: Label
 var _texto: Label
 var _imagem: TextureRect
@@ -114,6 +115,10 @@ func _ready() -> void:
 	modulate = Color(1, 1, 1, 0)
 	var tw := create_tween()
 	tw.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.4)
+	
+	if not MusicPlayer.playing:
+		MusicPlayer.stream = preload("res://assets/music/Anonymous420 - Ｂ　Ｕ　Ｒ　Ｎ　Ｏ　Ｕ　Ｔ.mp3")
+		MusicPlayer.play()
 
 
 func _process(delta: float) -> void:
