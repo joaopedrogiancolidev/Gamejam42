@@ -36,6 +36,7 @@ func _ready() -> void:
 	_set_tex("ComoJogarPainel/BtnJ", "res://assets/botton_j.png")
 	_set_tex("ComoJogarPainel/BtnK", "res://assets/botton_k.png")
 	_set_tex("ComoJogarPainel/BtnL", "res://assets/botton_l.png")
+	_set_tex("ComoJogarPainel/BtnVoltar", "res://assets/botton_nb1.png")
 	# botão da tecla 1 (abre o "como jogar"). Se o Godot ainda não
 	# importou a arte (sem .import), cai pro texto "[1]" como fallback.
 	if not _set_tex("Conteudo/Btn1", "res://assets/botton_nb1.png"):

@@ -27,12 +27,15 @@ const AGIT_PX: float = 52.0
 @export var DRAIN: float = 35.0        
 @export var RECUP_FOCO: float = 18.0   
 @export var RED_THRESH: float = 0.50  
-@export var RATE_SCORE: float = 120.0  
+@export var RATE_SCORE: float = 240.0
 
-const DIFICULDADE_MULT: float = 0.45 # bem mais fácil - pra testar a final feliz
+const DIFICULDADE_MULT: float = 0.52 # PUNIÇÃO (dreno/colapso/limiar). Perturbações têm tuning próprio
 
 # --- contrato com o Hub ---
-@export var META: int = 1500
+@export var META: int = 5200
+# tempo de partida do emocional. Quando rodando dentro do Hub, sincroniza
+# com o DURACAO da partida no _ready. 30s por enquanto pra testes.
+@export var TEMPO_LIMITE: float = 30.0
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
@@ -106,7 +109,6 @@ func _ready() -> void:
 	if has_node("SomRuido"): _som_ruido = $SomRuido
 	
 	if _som_ruido:
-		_som_ruido.volume_db = -80.0
 		if not _som_ruido.playing:
 			_som_ruido.play()
 
@@ -214,7 +216,7 @@ func _process(delta: float) -> void:
 
 func _atualizar_logica(delta: float) -> void:
 	tempo += delta
-	var dificuldade: float = 1.0 + tempo / 15.0 
+	var dificuldade: float = 1.0 + tempo / 22.0  # escalada mais suave (≈3.7x no fim, era 5x)
 
 	var segurando: int = 0
 	for c in CANAIS:
@@ -247,7 +249,8 @@ func _atualizar_logica(delta: float) -> void:
 	dist_timer -= delta
 	if dist_timer <= 0.0:
 		_perturbar(dificuldade)
-		dist_timer = randf_range(0.7, 1.5) / dificuldade * (1.0 / DIFICULDADE_MULT)
+		# frequência das perturbações é independente da punição: mais interação
+		dist_timer = randf_range(0.75, 1.45) / dificuldade
 
 	var pior: float = 0.0
 	var soma_dano: float = 0.0
@@ -262,7 +265,7 @@ func _atualizar_logica(delta: float) -> void:
 			soma_dano += (b - red_thresh_ajustado)
 			
 	if soma_dano > 0.0:
-		colapso = minf(100.0, colapso + soma_dano * 60.0 * DIFICULDADE_MULT * delta)
+		colapso = minf(100.0, colapso + soma_dano * 35.0 * DIFICULDADE_MULT * delta)
 	elif pior < 0.45:
 		colapso = maxf(0.0, colapso - 20.0 * (1.0 + (1.0 - DIFICULDADE_MULT)) * delta)
 
@@ -278,7 +281,7 @@ func _atualizar_logica(delta: float) -> void:
 	if score >= META:
 		score = META
 		ativo = false
-	elif tempo >= 30.0:
+	elif tempo >= TEMPO_LIMITE:
 		if score < META:
 			falhou = true
 		ativo = false
@@ -303,8 +306,10 @@ func _instab(c) -> float:
 
 func _perturbar(dif: float) -> void:
 	var c = CANAIS[randi() % CANAIS.size()]
-	c.agit = clampf(c.agit + randf_range(0.22, 0.42) * dif * DIFICULDADE_MULT, 0.0, 1.4)
-	c.nivel = clampf(c.nivel + randf_range(-0.45, 0.45) * dif * DIFICULDADE_MULT, -1.3, 1.3)
+	# força fixa (0.8), desacoplada do MULT de punição — perturbar bastante,
+	# mas o erro continua pouco punível (colapso baixo + limiar folgado)
+	c.agit = clampf(c.agit + randf_range(0.22, 0.42) * dif * 0.62, 0.0, 1.4)
+	c.nivel = clampf(c.nivel + randf_range(-0.45, 0.45) * dif * 0.62, -1.3, 1.3)
 	if _fala_label:
 		_fala_label.text = "« %s »" % FALAS[randi() % FALAS.size()]
 		_fala_label.modulate = Color(c.cor.r, c.cor.g, c.cor.b, 1.0)
@@ -324,10 +329,10 @@ func _unhandled_input(event: InputEvent) -> void:
 					# Se soltou bem próximo do equilíbrio perfeito (<0.15) e sem gastar foco extra (<0.15s)
 					if inst <= 0.15 and c.held_stable_time < 0.15:
 						_engajar_nota_popup("perfect", c.label)
-						_score_f += 150.0 # Bônus por precisão cirúrgica
+						_score_f += 300.0 # Bônus por precisão cirúrgica
 					elif inst <= 0.38:
 						_engajar_nota_popup("great", c.label)
-						_score_f += 75.0
+						_score_f += 150.0
 					c.was_unstable = false
 				return
 				

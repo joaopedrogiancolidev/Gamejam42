@@ -7,35 +7,41 @@ extends Node2D
 # ============================================================
 
 # --- Parâmetros de ritmo (editáveis no inspetor) ---
-@export var BPM: float = 75.0
+@export var BPM: float = 90.0
 @export var LEAD: float = 3.0          # tempo de preparação antes das notas
 @export var APPROACH: float = 2.5      # duração da viagem de cada nota ao alvo
 @export var BEAT_INICIAL: float = 8.0  # beat em que a primeira nota é gerada
 
+# --- Audio ---
+@onready var hit_sfx: AudioStreamPlayer = $HitSFX
+@onready var miss_sfx: AudioStreamPlayer = $MissSFX
+
 # --- Janelas de acerto (quanto maior, mais perdoador) ---
-@export var JANELA_PERFEITO: float = 0.12
-@export var JANELA_BOM: float = 0.28
+@export var JANELA_PERFEITO: float = 0.10
+@export var JANELA_BOM: float = 0.23
 
 # --- Geração de notas ---
-@export var CHANCE_HOLD: float = 0.08
-@export var CHANCE_ACORDE: float = 0.0  # 0 = sem acordes simultâneos
+@export var CHANCE_HOLD: float = 0.0    # holds REMOVIDOS: não nasce mais nota de segurar
+@export var CHANCE_ACORDE: float = 0.20  # acordes simultâneos (S+D etc) — mecânica destaque
 
 # --- Visuais ---
-@export_enum("estrela", "circulo") var ESTILO_NOTA: String = "estrela"
 @export var R_ALVO: float = 40.0
 @export var R_NOTA: float = 28.0
 
 # --- Contrato com o Hub ---
-@export var META: int = 1700
+@export var META: int = 5600
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
 
 # --- Referências aos nós da cena ---
 @onready var _centro        := $Centro
+@onready var _alvo_a        := $Alvos/AlvoA
 @onready var _alvo_s        := $Alvos/AlvoS
 @onready var _alvo_d        := $Alvos/AlvoD
-@onready var _alvo_f        := $Alvos/AlvoF
+@onready var _btn_a         := $HUD/BtnA
+@onready var _btn_s         := $HUD/BtnS
+@onready var _btn_d         := $HUD/BtnD
 @onready var _score_label   := $HUD/ScoreLabel
 @onready var _combo_label   := $HUD/ComboLabel
 @onready var _fill_score    := $HUD/BarraScoreFill
@@ -43,9 +49,9 @@ var falhou: bool = false
 
 # --- Dados dos alvos (tecla, cor; posição lida da cena em _ready) ---
 var ALVOS := [
-	{"code": KEY_S, "label": "S", "cor": Color("6ad0ff"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
-	{"code": KEY_D, "label": "D", "cor": Color("8a7bff"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
-	{"code": KEY_F, "label": "F", "cor": Color("46d6a0"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
+	{"code": KEY_A, "label": "A", "cor": Color("8a7bff"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
+	{"code": KEY_S, "label": "S", "cor": Color("46d6a0"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
+	{"code": KEY_D, "label": "D", "cor": Color("6ad0ff"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
 ]
 
 # --- Estado interno ---
@@ -66,6 +72,7 @@ var _popups: Array = []
 var _bursts: Array = []
 var _core: float = 0.0
 var _font: Font
+var _bubbles: Array = []
 
 
 func _ready() -> void:
@@ -77,9 +84,19 @@ func _ready() -> void:
 
 	# Lê posições dos nós da cena — mova os nós no editor para reposicionar
 	C = _centro.position
-	ALVOS[0].pos = _alvo_s.position
-	ALVOS[1].pos = _alvo_d.position
-	ALVOS[2].pos = _alvo_f.position
+	ALVOS[0].pos = _alvo_a.position
+	ALVOS[1].pos = _alvo_s.position
+	ALVOS[2].pos = _alvo_d.position
+	for pair in [[_btn_a, "res://assets/botton_a.png"], [_btn_s, "res://assets/botton_s.png"], [_btn_d, "res://assets/botton_d.png"]]:
+		if ResourceLoader.exists(pair[1]):
+			pair[0].texture = load(pair[1])
+	var bubble_paths := [
+		"res://assets/bubble/bubble_white_02.png",
+		"res://assets/bubble/bubble_green02.png",
+		"res://assets/bubble/bubble_blue02.png",
+	]
+	for path in bubble_paths:
+		_bubbles.append(load(path) if ResourceLoader.exists(path) else null)
 
 
 func reset() -> void:
@@ -177,18 +194,14 @@ func _aplicar_visual() -> void:
 	_combo_label.text = "COMBO: %d" % combo
 	_fill_score.scale.x = clampf(float(score) / META, 0.0, 1.0)
 
-	# Mostra contagem regressiva antes das notas começarem
-	if song_time < 0.0 and ativo:
-		_prepare_label.visible = true
-		_prepare_label.text = "PREPARE-SE\n%d" % max(int(ceil(-song_time)), 1)
-	else:
-		_prepare_label.visible = false
+	# PREPARE-SE removido: as notas entram com o lead-in normal, sem overlay
+	_prepare_label.visible = false
 
 	# Atualiza cor das letras dos alvos conforme o flash (tecla pressionada)
 	var teclas := [
+		_alvo_a.get_node("Tecla"),
 		_alvo_s.get_node("Tecla"),
 		_alvo_d.get_node("Tecla"),
-		_alvo_f.get_node("Tecla"),
 	]
 	for i in ALVOS.size():
 		if ALVOS[i].flash > 0.1:
@@ -231,6 +244,9 @@ func _press(ki: int) -> void:
 				melhor = n
 	if melhor != null and md <= JANELA_BOM:
 		_julgar(melhor, md)
+		hit_sfx.play()
+	else:
+		miss_sfx.play()
 
 
 func _release(ki: int) -> void:
@@ -254,12 +270,12 @@ func _julgar(n, dt: float) -> void:
 	var mult: int = 1 + combo / 10
 	if dt <= JANELA_PERFEITO:
 		n_perfeito += 1
-		score += 200 * mult
+		score += 400 * mult
 		_popup(pos, "PERFEITO!", Color(0.4, 1.0, 0.7))
 		_burst(pos, Color(0.4, 1.0, 0.7))
 	else:
 		n_bom += 1
-		score += 100 * mult
+		score += 200 * mult
 		_popup(pos, "bom", Color(1.0, 0.85, 0.4))
 		_burst(pos, ALVOS[n.key].cor)
 	if n.hold:
@@ -273,7 +289,7 @@ func _hold_ok(n) -> void:
 	combo += 1
 	combo_max = max(combo_max, combo)
 	var mult: int = 1 + combo / 10
-	score += 300 * mult
+	score += 600 * mult
 	_popup(ALVOS[n.key].pos, "SEGUROU!", Color(0.45, 0.8, 1.0))
 	_burst(ALVOS[n.key].pos, Color(0.45, 0.8, 1.0))
 
@@ -310,19 +326,20 @@ func _draw() -> void:
 	for a in ALVOS:
 		_desenhar_alvo(a)
 
-	# Linhas de conexão entre notas de um mesmo acorde
+	# Acordes (estilo Persona 4 Dancing All Night): as duas notas ficam
+	# LIGADAS por um traço neon grosso que ENGROSSA conforme se aproxima
+	# das extremidades, avisando que precisam ser apertadas JUNTAS.
 	var grupos := {}
 	for n in notas:
-		if (n.resolvido and not n.segurando) or n.grupo < 0:
+		if n.resolvido or n.grupo < 0:
 			continue
-		var p: Vector2 = _pos_nota(n)
-		if grupos.has(n.grupo):
-			grupos[n.grupo].append(p)
-		else:
-			grupos[n.grupo] = [p]
-	for g in grupos.values():
-		if g.size() >= 2:
-			draw_line(g[0], g[1], Color(1, 1, 1, 0.30), 3.0)
+		var info = grupos.get(n.grupo, {"pts": [], "prog": 0.0})
+		info.pts.append(_pos_nota(n))
+		info.prog = clampf((song_time - (n.hit_time - APPROACH)) / APPROACH, 0.0, 1.0)
+		grupos[n.grupo] = info
+	for info in grupos.values():
+		if info.pts.size() >= 2:
+			_desenhar_acorde(info.pts[0], info.pts[1], info.prog)
 
 	# Notas em movimento
 	for n in notas:
@@ -368,27 +385,56 @@ func _desenhar_nota(n) -> void:
 		return
 	var pos: Vector2 = _pos_nota(n)
 	draw_line(C, pos, Color(cor.r, cor.g, cor.b, 0.18), 2.0)
-	_forma_nota(pos, cor)
+	_forma_nota(pos, cor, n.key)
 	_letra(alvo.label, pos)  # letra acompanha a nota em movimento
 	if n.hold:
 		draw_arc(pos, R_NOTA + 6, 0, TAU, 32, Color(0.45, 0.8, 1.0, 0.7), 2.0)
 
 
-func _forma_nota(pos: Vector2, cor: Color) -> void:
-	if ESTILO_NOTA == "estrela":
-		draw_colored_polygon(_estrela(pos, R_NOTA + 6, (R_NOTA + 6) * 0.46, 5, _core * 1.5), cor)
+func _desenhar_acorde(a: Vector2, b: Vector2, prog: float) -> void:
+	# traço neon rosa/magenta vibrante pra destacar do resto
+	var cor := Color(1.0, 0.35, 0.85)
+	# a grossura cresce conforme as notas se aproximam dos alvos
+	var w: float = lerpf(4.0, 16.0, prog)
+	var pulso: float = 0.85 + 0.15 * sin(_core * 8.0)
+	# glow neon: camadas largas e translúcidas + núcleo branco brilhante
+	draw_line(a, b, Color(cor.r, cor.g, cor.b, 0.12 * pulso), w * 2.6)
+	draw_line(a, b, Color(cor.r, cor.g, cor.b, 0.30 * pulso), w * 1.7)
+	draw_line(a, b, Color(cor.r, cor.g, cor.b, 0.95), w)
+	draw_line(a, b, Color(1, 1, 1, 0.9), maxf(2.0, w * 0.35))
+	# "AO MESMO TEMPO" em cima do traço, no mesmo ângulo da linha
+	if _font and prog > 0.15:
+		var tam: int = int(lerpf(12.0, 22.0, prog))
+		var alpha: float = clampf((prog - 0.15) / 0.5, 0.0, 1.0)
+		_texto_na_linha("AO MESMO TEMPO", a, b, w, tam, Color(1.0, 0.6, 0.95, alpha))
+
+
+# Desenha um texto centralizado SOBRE a linha a->b, girado no ângulo dela.
+func _texto_na_linha(txt: String, a: Vector2, b: Vector2, larg_linha: float, tam: int, cor: Color) -> void:
+	if _font == null:
+		return
+	var ang: float = (b - a).angle()
+	# mantém o texto sempre legível (nunca de cabeça pra baixo)
+	if ang > PI / 2.0 or ang < -PI / 2.0:
+		ang += PI
+	var meio: Vector2 = (a + b) * 0.5
+	# desloca perpendicularmente pra ficar EM CIMA do traço (acima dele)
+	var perp := Vector2(cos(ang - PI / 2.0), sin(ang - PI / 2.0))
+	var base: Vector2 = meio + perp * (larg_linha * 0.5 + 6.0)
+	var w_txt: float = _font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam).x
+	draw_set_transform(base, ang, Vector2.ONE)
+	draw_string(_font, Vector2(-w_txt / 2.0, 0.0), txt, HORIZONTAL_ALIGNMENT_LEFT, -1, tam, cor)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)  # reseta a transform do canvas
+
+
+func _forma_nota(pos: Vector2, cor: Color, key: int) -> void:
+	var tex: Texture2D = _bubbles[key] if key < _bubbles.size() else null
+	if tex:
+		var sz := R_NOTA * 2.2
+		draw_texture_rect(tex, Rect2(pos.x - sz * 0.5, pos.y - sz * 0.5, sz, sz), false)
 	else:
 		draw_circle(pos, R_NOTA, cor)
 		draw_circle(pos, R_NOTA - 5, Color(0.06, 0.06, 0.12, 0.9))
-
-
-func _estrela(centro: Vector2, r_out: float, r_in: float, pontas: int, rot: float) -> PackedVector2Array:
-	var pts := PackedVector2Array()
-	for i in pontas * 2:
-		var ang: float = rot + PI * i / pontas - PI / 2
-		var r: float = r_out if i % 2 == 0 else r_in
-		pts.append(centro + Vector2(cos(ang), sin(ang)) * r)
-	return pts
 
 
 func _letra(label: String, pos: Vector2) -> void:
