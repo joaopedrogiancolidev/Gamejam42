@@ -20,6 +20,7 @@ extends Node2D
 
 @onready var _start: Label = $Conteudo/Start
 @onready var _painel: Control = $ComoJogarPainel
+@onready var _painel_creditos: Control = $CreditosPainel
 @onready var bg_music: AudioStreamPlayer = $bg_music
 
 var _t: float = 0.0
@@ -49,6 +50,15 @@ func _ready() -> void:
 		if hint:
 			hint.text = "[1]  Como jogar?"
 	_painel.visible = false
+	_set_tex("CreditosPainel/BtnVoltar", "res://assets/botton_nb1.png")
+	if not _set_tex("Conteudo/Btn3", "res://assets/botton_nb3.png"):
+		var b = get_node_or_null("Conteudo/Btn3")
+		if b:
+			b.visible = false
+		var hint = get_node_or_null("Conteudo/CreditosHint")
+		if hint:
+			hint.text = "[3]  Créditos"
+	_painel_creditos.visible = false
 	if MusicPlayer.playing:
 		MusicPlayer.stop()
 	bg_music.play()
@@ -76,9 +86,12 @@ func _input(event: InputEvent) -> void:
 	if not (event is InputEventKey) or not event.pressed or event.echo:
 		return
 
-	# painel "como jogar" aberto -> qualquer tecla fecha
 	if _painel.visible:
 		_painel.visible = false
+		return
+
+	if _painel_creditos.visible:
+		_painel_creditos.visible = false
 		return
 
 	match event.keycode:
@@ -86,6 +99,8 @@ func _input(event: InputEvent) -> void:
 			_comecar()
 		KEY_1, KEY_KP_1:
 			_painel.visible = true
+		KEY_3, KEY_KP_3:
+			_painel_creditos.visible = true
 		KEY_2, KEY_KP_2:
 			# atalho: vai direto pro jogo (Hub), pulando intro/tutorial
 			get_tree().change_scene_to_file("res://scenes/Hub.tscn")
