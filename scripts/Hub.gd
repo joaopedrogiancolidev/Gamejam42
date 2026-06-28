@@ -30,6 +30,7 @@ const CENAS_FINAL := {
 @onready var dance = $Dance
 @onready var waves = $Waves
 @onready var _background2: Sprite2D = $Background2
+@onready var bg_music: AudioStreamPlayer = $bg_music
 
 var estado: String = "rodando"     # "rodando" | "fim"
 var final_tipo: String = ""
@@ -41,6 +42,8 @@ var _bg_alpha_base: float = 0.2
 func _ready() -> void:
 	if _background2:
 		_bg_alpha_base = _background2.self_modulate.a
+	if not bg_music.playing:
+		bg_music.play()
 
 
 func _process(delta: float) -> void:
