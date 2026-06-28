@@ -17,8 +17,8 @@ extends Node2D
 @export var JANELA_BOM: float = 0.23
 
 # --- Geração de notas ---
-@export var CHANCE_HOLD: float = 0.15
-@export var CHANCE_ACORDE: float = 0.10  # acordes simultâneos (S+D etc) pra apertar
+@export var CHANCE_HOLD: float = 0.0    # holds REMOVIDOS: não nasce mais nota de segurar
+@export var CHANCE_ACORDE: float = 0.20  # acordes simultâneos (S+D etc) — mecânica destaque
 
 # --- Visuais ---
 @export_enum("estrela", "circulo") var ESTILO_NOTA: String = "estrela"
@@ -310,19 +310,20 @@ func _draw() -> void:
 	for a in ALVOS:
 		_desenhar_alvo(a)
 
-	# Linhas de conexão entre notas de um mesmo acorde
+	# Acordes (estilo Persona 4 Dancing All Night): as duas notas ficam
+	# LIGADAS por um traço neon grosso que ENGROSSA conforme se aproxima
+	# das extremidades, avisando que precisam ser apertadas JUNTAS.
 	var grupos := {}
 	for n in notas:
-		if (n.resolvido and not n.segurando) or n.grupo < 0:
+		if n.resolvido or n.grupo < 0:
 			continue
-		var p: Vector2 = _pos_nota(n)
-		if grupos.has(n.grupo):
-			grupos[n.grupo].append(p)
-		else:
-			grupos[n.grupo] = [p]
-	for g in grupos.values():
-		if g.size() >= 2:
-			draw_line(g[0], g[1], Color(1, 1, 1, 0.30), 3.0)
+		var info = grupos.get(n.grupo, {"pts": [], "prog": 0.0})
+		info.pts.append(_pos_nota(n))
+		info.prog = clampf((song_time - (n.hit_time - APPROACH)) / APPROACH, 0.0, 1.0)
+		grupos[n.grupo] = info
+	for info in grupos.values():
+		if info.pts.size() >= 2:
+			_desenhar_acorde(info.pts[0], info.pts[1], info.prog)
 
 	# Notas em movimento
 	for n in notas:
@@ -372,6 +373,25 @@ func _desenhar_nota(n) -> void:
 	_letra(alvo.label, pos)  # letra acompanha a nota em movimento
 	if n.hold:
 		draw_arc(pos, R_NOTA + 6, 0, TAU, 32, Color(0.45, 0.8, 1.0, 0.7), 2.0)
+
+
+func _desenhar_acorde(a: Vector2, b: Vector2, prog: float) -> void:
+	# traço neon rosa/magenta vibrante pra destacar do resto
+	var cor := Color(1.0, 0.35, 0.85)
+	# a grossura cresce conforme as notas se aproximam dos alvos
+	var w: float = lerpf(4.0, 16.0, prog)
+	var pulso: float = 0.85 + 0.15 * sin(_core * 8.0)
+	# glow neon: camadas largas e translúcidas + núcleo branco brilhante
+	draw_line(a, b, Color(cor.r, cor.g, cor.b, 0.12 * pulso), w * 2.6)
+	draw_line(a, b, Color(cor.r, cor.g, cor.b, 0.30 * pulso), w * 1.7)
+	draw_line(a, b, Color(cor.r, cor.g, cor.b, 0.95), w)
+	draw_line(a, b, Color(1, 1, 1, 0.9), maxf(2.0, w * 0.35))
+	# "AO MESMO TEMPO" surgindo e crescendo no meio do traço
+	if _font and prog > 0.15:
+		var meio: Vector2 = (a + b) * 0.5
+		var tam: int = int(lerpf(12.0, 22.0, prog))
+		var alpha: float = clampf((prog - 0.15) / 0.5, 0.0, 1.0)
+		_texto_centro_em("AO MESMO TEMPO", meio + Vector2(0, -w - 12.0), tam, Color(1.0, 0.6, 0.95, alpha))
 
 
 func _forma_nota(pos: Vector2, cor: Color) -> void:
