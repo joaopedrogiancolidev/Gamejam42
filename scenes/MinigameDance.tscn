@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://c48geakn1xmmc" path="res://scripts/MinigameDance.gd" id="1_dance"]
 [ext_resource type="AudioStream" uid="uid://dac7opsegj2xo" path="res://assets/sfx/hit.mp3" id="2_36tu2"]
 [ext_resource type="AudioStream" uid="uid://fk8heehm40b6" path="res://assets/sfx/miss.mp3" id="3_123nh"]
+[ext_resource type="FontFile" uid="uid://l1viy35bm006" path="res://assets/fonts/RubikGlitch-Regular.ttf" id="2_font"]
+[ext_resource type="FontFile" path="res://assets/fonts/ChakraPetch-Regular.ttf" id="3_font"]
+[ext_resource type="FontFile" path="res://assets/fonts/ChakraPetch-Bold.ttf" id="4_font"]
 
 [node name="MinigameDance" type="Node2D" unique_id=1376978469]
 script = ExtResource("1_dance")
@@ -18,45 +21,48 @@ position = Vector2(320, 380)
 
 [node name="Alvos" type="Node2D" parent="." unique_id=100000003]
 
-[node name="AlvoS" type="Node2D" parent="Alvos" unique_id=100000004]
-position = Vector2(121, 495)
+[node name="AlvoA" type="Node2D" parent="Alvos" unique_id=100000004]
+position = Vector2(110, 380)
 
-[node name="Tecla" type="Label" parent="Alvos/AlvoS" unique_id=100000005]
+[node name="Tecla" type="Label" parent="Alvos/AlvoA" unique_id=100000005]
 offset_left = -20.0
 offset_top = -18.0
 offset_right = 20.0
 offset_bottom = 18.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AlvoS" type="Node2D" parent="Alvos" unique_id=100000017]
+position = Vector2(320, 530)
+
+[node name="Tecla" type="Label" parent="Alvos/AlvoS" unique_id=100000018]
+offset_left = -20.0
+offset_top = -18.0
+offset_right = 20.0
+offset_bottom = 18.0
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "S"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AlvoD" type="Node2D" parent="Alvos" unique_id=100000006]
-position = Vector2(320, 150)
+[node name="AlvoD" type="Node2D" parent="Alvos" unique_id=100000008]
+position = Vector2(530, 380)
 
-[node name="Tecla" type="Label" parent="Alvos/AlvoD" unique_id=100000007]
+[node name="Tecla" type="Label" parent="Alvos/AlvoD" unique_id=100000009]
 offset_left = -20.0
 offset_top = -18.0
 offset_right = 20.0
 offset_bottom = 18.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "D"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="AlvoF" type="Node2D" parent="Alvos" unique_id=100000008]
-position = Vector2(519, 495)
-
-[node name="Tecla" type="Label" parent="Alvos/AlvoF" unique_id=100000009]
-offset_left = -20.0
-offset_top = -18.0
-offset_right = 20.0
-offset_bottom = 18.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 24
-text = "F"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -69,13 +75,41 @@ offset_right = 420.0
 offset_bottom = 56.0
 theme_override_colors/font_color = Color(0.541, 0.816, 1, 1)
 theme_override_font_sizes/font_size = 22
-text = "RACIONAL  (S D F)"
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_colors/font_color = Color(0.541, 0.816, 1.0, 1)
+text = "RACIONAL"
+
+[node name="BtnA" type="TextureRect" parent="HUD" unique_id=100000020]
+offset_left = 28.0
+offset_top = 60.0
+offset_right = 68.0
+offset_bottom = 100.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BtnS" type="TextureRect" parent="HUD" unique_id=100000021]
+offset_left = 72.0
+offset_top = 60.0
+offset_right = 112.0
+offset_bottom = 100.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BtnD" type="TextureRect" parent="HUD" unique_id=100000022]
+offset_left = 116.0
+offset_top = 60.0
+offset_right = 156.0
+offset_bottom = 100.0
+expand_mode = 1
+stretch_mode = 5
 
 [node name="ScoreLabel" type="Label" parent="HUD" unique_id=100000012]
 offset_left = 430.0
 offset_top = 26.0
 offset_right = 630.0
 offset_bottom = 52.0
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 20
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 20
 text = "SCORE: 0"
@@ -85,22 +119,22 @@ offset_left = 430.0
 offset_top = 52.0
 offset_right = 630.0
 offset_bottom = 74.0
-theme_override_colors/font_color = Color(1, 0.824, 0.29, 1)
+theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 16
 text = "COMBO: 0"
 
 [node name="BarraScoreBg" type="ColorRect" parent="HUD" unique_id=100000014]
 offset_left = 40.0
-offset_top = 78.0
+offset_top = 106.0
 offset_right = 600.0
-offset_bottom = 90.0
+offset_bottom = 118.0
 color = Color(0.12, 0.12, 0.2, 1)
 
 [node name="BarraScoreFill" type="ColorRect" parent="HUD" unique_id=100000015]
 offset_left = 40.0
-offset_top = 78.0
+offset_top = 106.0
 offset_right = 600.0
-offset_bottom = 90.0
+offset_bottom = 118.0
 color = Color(0.275, 0.839, 0.627, 1)
 
 [node name="PrepareLabel" type="Label" parent="HUD" unique_id=100000016]
@@ -109,7 +143,7 @@ offset_left = 110.0
 offset_top = 140.0
 offset_right = 530.0
 offset_bottom = 240.0
-theme_override_colors/font_color = Color(0.9, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 36
 text = "PREPARE-SE"
 horizontal_alignment = 1

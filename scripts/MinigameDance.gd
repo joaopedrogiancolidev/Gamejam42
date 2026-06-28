@@ -25,7 +25,6 @@ extends Node2D
 @export var CHANCE_ACORDE: float = 0.20  # acordes simultâneos (S+D etc) — mecânica destaque
 
 # --- Visuais ---
-@export_enum("estrela", "circulo") var ESTILO_NOTA: String = "estrela"
 @export var R_ALVO: float = 40.0
 @export var R_NOTA: float = 28.0
 
@@ -37,9 +36,12 @@ var falhou: bool = false
 
 # --- Referências aos nós da cena ---
 @onready var _centro        := $Centro
+@onready var _alvo_a        := $Alvos/AlvoA
 @onready var _alvo_s        := $Alvos/AlvoS
 @onready var _alvo_d        := $Alvos/AlvoD
-@onready var _alvo_f        := $Alvos/AlvoF
+@onready var _btn_a         := $HUD/BtnA
+@onready var _btn_s         := $HUD/BtnS
+@onready var _btn_d         := $HUD/BtnD
 @onready var _score_label   := $HUD/ScoreLabel
 @onready var _combo_label   := $HUD/ComboLabel
 @onready var _fill_score    := $HUD/BarraScoreFill
@@ -47,9 +49,9 @@ var falhou: bool = false
 
 # --- Dados dos alvos (tecla, cor; posição lida da cena em _ready) ---
 var ALVOS := [
-	{"code": KEY_S, "label": "S", "cor": Color("6ad0ff"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
-	{"code": KEY_D, "label": "D", "cor": Color("8a7bff"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
-	{"code": KEY_F, "label": "F", "cor": Color("46d6a0"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
+	{"code": KEY_A, "label": "A", "cor": Color("8a7bff"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
+	{"code": KEY_S, "label": "S", "cor": Color("46d6a0"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
+	{"code": KEY_D, "label": "D", "cor": Color("6ad0ff"), "pos": Vector2.ZERO, "flash": 0.0, "held": false},
 ]
 
 # --- Estado interno ---
@@ -70,6 +72,7 @@ var _popups: Array = []
 var _bursts: Array = []
 var _core: float = 0.0
 var _font: Font
+var _bubbles: Array = []
 
 
 func _ready() -> void:
@@ -81,9 +84,19 @@ func _ready() -> void:
 
 	# Lê posições dos nós da cena — mova os nós no editor para reposicionar
 	C = _centro.position
-	ALVOS[0].pos = _alvo_s.position
-	ALVOS[1].pos = _alvo_d.position
-	ALVOS[2].pos = _alvo_f.position
+	ALVOS[0].pos = _alvo_a.position
+	ALVOS[1].pos = _alvo_s.position
+	ALVOS[2].pos = _alvo_d.position
+	for pair in [[_btn_a, "res://assets/botton_a.png"], [_btn_s, "res://assets/botton_s.png"], [_btn_d, "res://assets/botton_d.png"]]:
+		if ResourceLoader.exists(pair[1]):
+			pair[0].texture = load(pair[1])
+	var bubble_paths := [
+		"res://assets/bubble/bubble_white_02.png",
+		"res://assets/bubble/bubble_green02.png",
+		"res://assets/bubble/bubble_blue02.png",
+	]
+	for path in bubble_paths:
+		_bubbles.append(load(path) if ResourceLoader.exists(path) else null)
 
 
 func reset() -> void:
@@ -186,9 +199,9 @@ func _aplicar_visual() -> void:
 
 	# Atualiza cor das letras dos alvos conforme o flash (tecla pressionada)
 	var teclas := [
+		_alvo_a.get_node("Tecla"),
 		_alvo_s.get_node("Tecla"),
 		_alvo_d.get_node("Tecla"),
-		_alvo_f.get_node("Tecla"),
 	]
 	for i in ALVOS.size():
 		if ALVOS[i].flash > 0.1:
@@ -372,7 +385,7 @@ func _desenhar_nota(n) -> void:
 		return
 	var pos: Vector2 = _pos_nota(n)
 	draw_line(C, pos, Color(cor.r, cor.g, cor.b, 0.18), 2.0)
-	_forma_nota(pos, cor)
+	_forma_nota(pos, cor, n.key)
 	_letra(alvo.label, pos)  # letra acompanha a nota em movimento
 	if n.hold:
 		draw_arc(pos, R_NOTA + 6, 0, TAU, 32, Color(0.45, 0.8, 1.0, 0.7), 2.0)
@@ -414,21 +427,14 @@ func _texto_na_linha(txt: String, a: Vector2, b: Vector2, larg_linha: float, tam
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)  # reseta a transform do canvas
 
 
-func _forma_nota(pos: Vector2, cor: Color) -> void:
-	if ESTILO_NOTA == "estrela":
-		draw_colored_polygon(_estrela(pos, R_NOTA + 6, (R_NOTA + 6) * 0.46, 5, _core * 1.5), cor)
+func _forma_nota(pos: Vector2, cor: Color, key: int) -> void:
+	var tex: Texture2D = _bubbles[key] if key < _bubbles.size() else null
+	if tex:
+		var sz := R_NOTA * 2.2
+		draw_texture_rect(tex, Rect2(pos.x - sz * 0.5, pos.y - sz * 0.5, sz, sz), false)
 	else:
 		draw_circle(pos, R_NOTA, cor)
 		draw_circle(pos, R_NOTA - 5, Color(0.06, 0.06, 0.12, 0.9))
-
-
-func _estrela(centro: Vector2, r_out: float, r_in: float, pontas: int, rot: float) -> PackedVector2Array:
-	var pts := PackedVector2Array()
-	for i in pontas * 2:
-		var ang: float = rot + PI * i / pontas - PI / 2
-		var r: float = r_out if i % 2 == 0 else r_in
-		pts.append(centro + Vector2(cos(ang), sin(ang)) * r)
-	return pts
 
 
 func _letra(label: String, pos: Vector2) -> void:
