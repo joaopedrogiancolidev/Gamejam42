@@ -34,6 +34,14 @@ var _continuar: Label
 var _t: float = 0.0
 
 
+# procura "Software/<caminho>" e, se não existir, "<caminho>" na raiz
+func _achar(caminho: String) -> Node:
+	var n: Node = get_node_or_null("Software/" + caminho)
+	if n == null:
+		n = get_node_or_null(caminho)
+	return n
+
+
 func _ready() -> void:
 	# suporta tanto a estrutura nova (nós dentro de Software)
 	# quanto a estrutura antiga (nós direto na raiz)
@@ -51,6 +59,8 @@ func _ready() -> void:
 		_texto.text = texto
 	# moldura do "pc" (arte do monitor). Se assets/monitor.png existir,
 	# usa a imagem e esconde a borda desenhada (que é só fallback).
+	var _frame := get_node_or_null("MonitorFrame")
+	var _mon := get_node_or_null("Monitor")
 	if ResourceLoader.exists("res://assets/monitor.png"):
 		$MonitorFrame.texture = load("res://assets/monitor.png")
 		$MonitorFrame.visible = true

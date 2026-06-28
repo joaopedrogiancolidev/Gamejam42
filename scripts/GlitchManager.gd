@@ -147,6 +147,11 @@ func _tentar_spawn() -> void:
 	_tecla_prev = false
 	if _tipo == "mash":
 		_montar_goofies()
+	else:
+		# glitch "SEGURE": trava os botões do lado afetado (não joga nem
+		# pontua) até o outro jogador consertar. O mash continua jogável.
+		var afetado: Node2D = _dance if _lado == "esq" else _waves
+		afetado.travado = true
 
 
 # espalha 4-6 imagens goofy gigantes pela região do lado afetado
@@ -230,8 +235,10 @@ func _resolver() -> void:
 	# devolve o lado afetado ao normal
 	_dance.position = _base_esq
 	_dance.modulate = Color.WHITE
+	_dance.travado = false
 	_waves.position = _base_dir
 	_waves.modulate = Color.WHITE
+	_waves.travado = false
 	_spawn_t = randf_range(SPAWN_MIN, SPAWN_MAX)
 
 
@@ -242,9 +249,11 @@ func _limpar() -> void:
 	if _dance:
 		_dance.position = _base_esq
 		_dance.modulate = Color.WHITE
+		_dance.travado = false
 	if _waves:
 		_waves.position = _base_dir
 		_waves.modulate = Color.WHITE
+		_waves.travado = false
 
 
 # ------------------------------------------------------------

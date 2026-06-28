@@ -33,6 +33,16 @@ extends Node2D
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
+# congelado por glitch do tipo "segurar": os botões deste lado travam
+# (não jogam nem pontuam) até o OUTRO jogador consertar. É separado de
+# `ativo` (que significa "ainda está na partida").
+var travado: bool = false:
+	set(v):
+		travado = v
+		if v:
+			for a in ALVOS:
+				a.held = false
+				a.flash = 0.0
 
 # --- Referências aos nós da cena ---
 @onready var _centro        := $Centro
@@ -162,7 +172,7 @@ func _process(delta: float) -> void:
 	_aplicar_visual()
 	queue_redraw()
 
-	if not ativo:
+	if not ativo or travado:
 		return
 
 	song_time += delta
@@ -217,7 +227,7 @@ func _pos_nota(n) -> Vector2:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not ativo or not (event is InputEventKey) or event.echo:
+	if not ativo or travado or not (event is InputEventKey) or event.echo:
 		return
 	for i in ALVOS.size():
 		if event.keycode == ALVOS[i].code:

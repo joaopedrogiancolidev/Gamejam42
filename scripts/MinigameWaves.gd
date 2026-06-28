@@ -39,6 +39,15 @@ const DIFICULDADE_MULT: float = 0.52 # PUNIÇÃO (dreno/colapso/limiar). Perturb
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
+# congelado por glitch do tipo "segurar": os botões deste lado travam
+# (não jogam nem pontuam) até o OUTRO jogador consertar. Separado de `ativo`.
+var travado: bool = false:
+	set(v):
+		travado = v
+		if v:
+			for c in CANAIS:
+				c.held = false
+				c.held_stable_time = 0.0
 
 var CANAIS := [
 	{"nome": "CanalJ", "code": KEY_J, "label": "J", "emo": "ANSIEDADE", "cor": Color("ff7bbf"), "nivel": 0.0, "agit": 0.0, "fase": 0.0, "held": false, "held_stable_time": 0.0, "was_unstable": false, "neon_t": 0.0},
@@ -207,7 +216,7 @@ func _process(delta: float) -> void:
 	if _fala_t > 0.0:
 		_fala_t -= delta
 
-	if ativo:
+	if ativo and not travado:
 		_atualizar_logica(delta)
 		_processar_animacao_nota(delta)
 
@@ -317,7 +326,7 @@ func _perturbar(dif: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not ativo or not (event is InputEventKey) or event.echo:
+	if not ativo or travado or not (event is InputEventKey) or event.echo:
 		return
 	for c in CANAIS:
 		if event.keycode == c.code:

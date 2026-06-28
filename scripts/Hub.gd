@@ -10,7 +10,7 @@ extends Node2D
 #  CENAS de final (cada uma é uma cena animada própria):
 #   - diferença < 25%        -> FinalFeliz
 #   - racional bem maior     -> FinalRacional
-#   - emocional bem maior    -> FinalEmocional
+#   - emocional bem maior    -> FinalEmocao
 #   - alguém COLAPSA          -> FinalGameover
 # ============================================================
 
@@ -24,7 +24,7 @@ const BG_PULSO_AMP: float = 0.12  # quanto o alpha sobe/desce
 const CENAS_FINAL := {
 	"feliz": preload("res://scenes/FinalFeliz.tscn"),
 	"racional": preload("res://scenes/FinalRacional.tscn"),
-	"emocional": preload("res://scenes/FinalEmocional.tscn"),
+	"emocional": preload("res://scenes/FinalEmocao.tscn"),
 	"gameover": preload("res://scenes/FinalGameover.tscn"),
 }
 
