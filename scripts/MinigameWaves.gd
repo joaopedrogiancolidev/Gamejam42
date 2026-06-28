@@ -283,7 +283,7 @@ func _atualizar_logica(delta: float) -> void:
 	if score >= META:
 		score = META
 		ativo = false
-	elif tempo >= 20.0:
+	elif tempo >= 30.0:
 		if score < META:
 			falhou = true
 		ativo = false

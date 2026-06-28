@@ -14,7 +14,11 @@ extends Node2D
 #   - alguém COLAPSA          -> FinalGameover
 # ============================================================
 
-const DURACAO: float = 20.0
+const DURACAO: float = 30.0
+
+# pulsação do background ("respiração do cérebro")
+const BG_PULSO_VEL: float = 1.1   # rad/s (~5.7s por ciclo)
+const BG_PULSO_AMP: float = 0.12  # quanto o alpha sobe/desce
 
 const CENAS_FINAL := {
 	"feliz": preload("res://scenes/FinalFeliz.tscn"),
@@ -25,11 +29,18 @@ const CENAS_FINAL := {
 
 @onready var dance = $Dance
 @onready var waves = $Waves
+@onready var _background2: Sprite2D = $Background2
 
 var estado: String = "rodando"     # "rodando" | "fim"
 var final_tipo: String = ""
 var tempo: float = 0.0
 var _cena_final: Node = null
+var _bg_alpha_base: float = 0.2
+
+
+func _ready() -> void:
+	if _background2:
+		_bg_alpha_base = _background2.self_modulate.a
 
 
 func _process(delta: float) -> void:
@@ -37,13 +48,28 @@ func _process(delta: float) -> void:
 		return
 
 	tempo += delta
+	_pulsar_background()
 
 	if dance.falhou or waves.falhou:
 		_terminar("gameover")
 		return
 
+	# os dois bateram a pontuação máxima -> acaba na hora (por enquanto)
+	if dance.score >= dance.META and waves.score >= waves.META:
+		_avaliar()
+		return
+
 	if tempo >= DURACAO:
 		_avaliar()
+
+
+# alpha do background sobe e desce devagar = sensação de estar
+# "dentro do cérebro" pulsando
+func _pulsar_background() -> void:
+	if not _background2:
+		return
+	var a: float = _bg_alpha_base + BG_PULSO_AMP * sin(tempo * BG_PULSO_VEL)
+	_background2.self_modulate.a = clampf(a, 0.0, 1.0)
 
 
 func _avaliar() -> void:
