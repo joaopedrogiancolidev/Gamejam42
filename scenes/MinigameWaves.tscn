@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://bwioxoxmq5w73" path="res://scripts/MinigameWaves.gd" id="1_waves"]
 [ext_resource type="AudioStream" uid="uid://bwswl0pgqsgh4" path="res://assets/music/Zeta - RAM.mp3" id="2_xdp1u"]
 [ext_resource type="Texture2D" uid="uid://dbo6clr7xphim" path="res://assets/red_botton.png" id="3_cln0p"]
+[ext_resource type="Script" path="res://scripts/ChordPlayer.gd" id="4_o8tfl"]
+[ext_resource type="AudioStream" uid="uid://s0tl6jx5oa1w" path="res://assets/sfx/musical-fx-roman-stinger-01.mp3" id="5_8t1mf"]
 
 [node name="MinigameWaves" type="Node2D" unique_id=1785144148]
 script = ExtResource("1_waves")
@@ -53,12 +55,19 @@ theme_override_font_sizes/font_size = 15
 horizontal_alignment = 2
 
 [node name="RedBotton" type="Sprite2D" parent="Canais/CanalJ" unique_id=235994358]
+modulate = Color(1, 1, 1, 0.5647059)
 position = Vector2(23.000034, 272)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_cln0p")
 
 [node name="CanalK" type="Node2D" parent="Canais" unique_id=352145449]
 position = Vector2(0, 360)
+
+[node name="RedBotton" type="Sprite2D" parent="Canais/CanalK" unique_id=999924333]
+modulate = Color(1, 1, 1, 0.5647059)
+position = Vector2(22.00002, -47.99997)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_cln0p")
 
 [node name="Zona" type="ColorRect" parent="Canais/CanalK" unique_id=1915743164]
 offset_top = -26.0
@@ -95,6 +104,13 @@ theme_override_font_sizes/font_size = 15
 
 [node name="CanalL" type="Node2D" parent="Canais" unique_id=623687382]
 position = Vector2(0, 520)
+
+[node name="RedBotton2" type="Sprite2D" parent="Canais/CanalL" unique_id=724207324]
+modulate = Color(1, 1, 1, 0.5647059)
+self_modulate = Color(18.892157, 18.892157, 18.892157, 1)
+position = Vector2(22.000061, -364)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_cln0p")
 
 [node name="Zona" type="ColorRect" parent="Canais/CanalL" unique_id=863702706]
 offset_top = -26.0
@@ -137,7 +153,8 @@ offset_top = 26.0
 offset_right = 380.0
 offset_bottom = 56.0
 theme_override_font_sizes/font_size = 22
-text = "EMOCIONAL  (J K L)"
+text = "EMOCIONAL  (J K L)
+"
 metadata/_edit_use_anchors_ = true
 
 [node name="ScoreLabel" type="Label" parent="HUD" unique_id=256686572]
@@ -161,17 +178,17 @@ metadata/_edit_use_anchors_ = true
 
 [node name="BarraScoreBg" type="ColorRect" parent="HUD" unique_id=1153369399]
 offset_left = 40.0
-offset_top = 85.0
+offset_top = 92.0
 offset_right = 600.0
-offset_bottom = 95.0
+offset_bottom = 102.0
 color = Color(0.12, 0.12, 0.2, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="BarraScoreFill" type="ColorRect" parent="HUD" unique_id=1887163555]
 offset_left = 40.0
-offset_top = 85.0
+offset_top = 92.0
 offset_right = 600.0
-offset_bottom = 95.0
+offset_bottom = 102.0
 color = Color(0.275, 0.839, 0.627, 1)
 metadata/_edit_use_anchors_ = true
 
@@ -225,6 +242,16 @@ offset_bottom = 692.0
 color = Color(1, 0.3, 0.3, 1)
 metadata/_edit_use_anchors_ = true
 
+[node name="Descricao" type="Label" parent="HUD" unique_id=251146357]
+offset_left = 118.00001
+offset_top = 62.000004
+offset_right = 632.0
+offset_bottom = 127.0
+scale = Vector2(0.7, 0.7)
+theme_override_font_sizes/font_size = 22
+text = "\"Segure as teclas J K L para estabilizar as ondas!\""
+metadata/_edit_use_anchors_ = true
+
 [node name="SomL" type="AudioStreamPlayer2D" parent="." unique_id=1590135177]
 stream = ExtResource("2_xdp1u")
 
@@ -234,12 +261,9 @@ stream = ExtResource("2_xdp1u")
 
 [node name="SomK" type="AudioStreamPlayer2D" parent="." unique_id=245906211]
 
-[node name="RedBotton" type="Sprite2D" parent="." unique_id=999924333]
-position = Vector2(22.00002, 312.00003)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("3_cln0p")
+[node name="ChordPlayer" type="Node" parent="." unique_id=1792445213 node_paths=PackedStringArray("base_player")]
+script = ExtResource("4_o8tfl")
+base_player = NodePath("AudioStreamPlayer")
 
-[node name="RedBotton2" type="Sprite2D" parent="." unique_id=724207324]
-position = Vector2(22.000061, 156.00002)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("3_cln0p")
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="ChordPlayer" unique_id=151142757]
+stream = ExtResource("5_8t1mf")
