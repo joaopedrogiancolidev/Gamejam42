@@ -1,6 +1,114 @@
-[gd_scene load_steps=2 format=3 uid="uid://dxq1cyberpsidance4"]
+[gd_scene format=3 uid="uid://ddo67vb1yguwj"]
 
-[ext_resource type="Script" path="res://scripts/MinigameDance.gd" id="1_dance"]
+[ext_resource type="Script" uid="uid://c48geakn1xmmc" path="res://scripts/MinigameDance.gd" id="1_dance"]
 
-[node name="MinigameDance" type="Node2D"]
+[node name="MinigameDance" type="Node2D" unique_id=1376978469]
 script = ExtResource("1_dance")
+
+[node name="Fundo" type="ColorRect" parent="." unique_id=100000001]
+show_behind_parent = true
+offset_right = 640.0
+offset_bottom = 720.0
+color = Color(0.043, 0.051, 0.086, 1)
+
+[node name="Centro" type="Node2D" parent="." unique_id=100000002]
+position = Vector2(320, 380)
+
+[node name="Alvos" type="Node2D" parent="." unique_id=100000003]
+
+[node name="AlvoS" type="Node2D" parent="Alvos" unique_id=100000004]
+position = Vector2(121, 495)
+
+[node name="Tecla" type="Label" parent="Alvos/AlvoS" unique_id=100000005]
+offset_left = -20.0
+offset_top = -18.0
+offset_right = 20.0
+offset_bottom = 18.0
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "S"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AlvoD" type="Node2D" parent="Alvos" unique_id=100000006]
+position = Vector2(320, 150)
+
+[node name="Tecla" type="Label" parent="Alvos/AlvoD" unique_id=100000007]
+offset_left = -20.0
+offset_top = -18.0
+offset_right = 20.0
+offset_bottom = 18.0
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "D"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AlvoF" type="Node2D" parent="Alvos" unique_id=100000008]
+position = Vector2(519, 495)
+
+[node name="Tecla" type="Label" parent="Alvos/AlvoF" unique_id=100000009]
+offset_left = -20.0
+offset_top = -18.0
+offset_right = 20.0
+offset_bottom = 18.0
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "F"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HUD" type="Node2D" parent="." unique_id=100000010]
+
+[node name="Titulo" type="Label" parent="HUD" unique_id=100000011]
+offset_left = 28.0
+offset_top = 26.0
+offset_right = 420.0
+offset_bottom = 56.0
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.541, 0.816, 1.0, 1)
+text = "RACIONAL  (S D F)"
+
+[node name="ScoreLabel" type="Label" parent="HUD" unique_id=100000012]
+offset_left = 430.0
+offset_top = 26.0
+offset_right = 630.0
+offset_bottom = 52.0
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "SCORE: 0"
+
+[node name="ComboLabel" type="Label" parent="HUD" unique_id=100000013]
+offset_left = 430.0
+offset_top = 52.0
+offset_right = 630.0
+offset_bottom = 74.0
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(1.0, 0.824, 0.29, 1)
+text = "COMBO: 0"
+
+[node name="BarraScoreBg" type="ColorRect" parent="HUD" unique_id=100000014]
+offset_left = 40.0
+offset_top = 78.0
+offset_right = 600.0
+offset_bottom = 90.0
+color = Color(0.12, 0.12, 0.2, 1)
+
+[node name="BarraScoreFill" type="ColorRect" parent="HUD" unique_id=100000015]
+offset_left = 40.0
+offset_top = 78.0
+offset_right = 600.0
+offset_bottom = 90.0
+color = Color(0.275, 0.839, 0.627, 1)
+
+[node name="PrepareLabel" type="Label" parent="HUD" unique_id=100000016]
+visible = false
+offset_left = 110.0
+offset_top = 140.0
+offset_right = 530.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 36
+theme_override_colors/font_color = Color(0.9, 0.9, 1.0, 1)
+text = "PREPARE-SE"
+horizontal_alignment = 1
+vertical_alignment = 1
