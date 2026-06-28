@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bwioxoxmq5w73" path="res://scripts/MinigameWaves.gd" id="1_waves"]
 [ext_resource type="AudioStream" uid="uid://bwswl0pgqsgh4" path="res://assets/music/Zeta - RAM.mp3" id="2_xdp1u"]
-[ext_resource type="Texture2D" uid="uid://2l038jrk0kiw" path="res://assets/botton_k.png" id="3_8t1mf"]
 [ext_resource type="Texture2D" uid="uid://dbo6clr7xphim" path="res://assets/red_botton.png" id="3_cln0p"]
 
 [node name="MinigameWaves" type="Node2D" unique_id=1785144148]
@@ -259,13 +258,3 @@ stream = ExtResource("2_xdp1u")
 [node name="SomJ" type="AudioStreamPlayer2D" parent="." unique_id=771193078]
 
 [node name="SomK" type="AudioStreamPlayer2D" parent="." unique_id=245906211]
-
-[node name="RedBotton" type="Sprite2D" parent="." unique_id=170270713]
-position = Vector2(78, 312)
-scale = Vector2(0.2826087, 0.3)
-texture = ExtResource("3_cln0p")
-
-[node name="BottonK" type="Sprite2D" parent="." unique_id=205607523]
-position = Vector2(142.00002, 308)
-scale = Vector2(0.26086956, 0.21086954)
-texture = ExtResource("3_8t1mf")
