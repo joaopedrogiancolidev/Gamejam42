@@ -25,7 +25,7 @@ buses/default_bus_layout="uid://dg6vfl3na4twe"
 [autoload]
 
 SairGlobal="*res://scripts/SairGlobal.gd"
-MusicPlayer="*uid://bihj6sjoag676"
+MusicPlayer="*res://scripts/MusicPlayer.gd"
 
 [display]
 
