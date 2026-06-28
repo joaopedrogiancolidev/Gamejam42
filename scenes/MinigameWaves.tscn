@@ -283,12 +283,12 @@ base_player = NodePath("AudioStreamPlayer")
 stream = ExtResource("5_8t1mf")
 
 [node name="BottonJ" type="Sprite2D" parent="." unique_id=1104363368]
-position = Vector2(20, 156)
+position = Vector2(21, 156)
 scale = Vector2(0.1826087, 0.19130436)
 texture = ExtResource("7_odrtq")
 
 [node name="BottonK" type="Sprite2D" parent="." unique_id=1678685488]
-position = Vector2(22, 313)
+position = Vector2(23.000002, 313.00003)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("8_q5wui")
 
