@@ -5,9 +5,7 @@ extends Node2D
 # ============================================================
 
 # refs de áudio
-var _som_j: AudioStreamPlayer2D
-var _som_k: AudioStreamPlayer2D
-var _som_l: AudioStreamPlayer2D
+@onready var chord_player: ChordPlayer = $ChordPlayer
 var _som_ruido: AudioStreamPlayer2D
 
 # desenho das ondas (relativo ao nó do canal -> posição vem da cena)
@@ -81,9 +79,6 @@ func _ready() -> void:
 	_fill_colapso = $HUD/BarraColapsoFill
 	
 	# Amarração segura dos nós de som usando caminhos relativos verificados
-	if has_node("SomJ"): _som_j = $SomJ
-	if has_node("SomK"): _som_k = $SomK
-	if has_node("SomL"): _som_l = $SomL
 	if has_node("SomRuido"): _som_ruido = $SomRuido
 	
 	# Inicialização do loop de estresse sonoro
@@ -203,9 +198,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			# Dispara o áudio correspondente no exato instante do clique
 			if event.pressed:
 				match c.label:
-					"J": if _som_j: _som_j.play()
-					"K": if _som_k: _som_k.play()
-					"L": if _som_l: _som_l.play()
+					"J": chord_player.press("C")
+					"K": chord_player.press("E")
+					"L": chord_player.press("G")
+			else:
+				match c.label:
+					"J": chord_player.release("C")
+					"K": chord_player.release("E")
+					"L": chord_player.release("G")
 			return
 
 
