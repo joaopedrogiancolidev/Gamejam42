@@ -24,7 +24,7 @@ const AGIT_PX: float = 52.0
 # === DRIVERS DE DIFICULDADE EXTREMA ===
 @export var PULL_NIVEL: float = 2.4    
 @export var PULL_AGIT: float = 2.2
-@export var DRAIN: float = 14.11       # gasto de foco -10% (era ... -> 15.68 -> 14.11)
+@export var DRAIN: float = 11.29       # gasto de foco -20% (era ... -> 14.11 -> 11.29)
 @export var RECUP_FOCO: float = 18.0   
 @export var RED_THRESH: float = 0.50  
 @export var RATE_SCORE: float = 2000.0 / 60.0  # enche a barra por TEMPO: 2000 em 60s (objetivo = aguentar 60s)
@@ -309,7 +309,7 @@ func _atualizar_logica(delta: float) -> void:
 			soma_dano += (b - red_thresh_ajustado)
 			
 	if soma_dano > 0.0:
-		colapso = minf(100.0, colapso + soma_dano * 14.0 * DIFICULDADE_MULT * delta)
+		colapso = minf(100.0, colapso + soma_dano * 11.9 * DIFICULDADE_MULT * delta)
 	elif pior < 0.45:
 		colapso = maxf(0.0, colapso - 20.0 * (1.0 + (1.0 - DIFICULDADE_MULT)) * delta)
 
