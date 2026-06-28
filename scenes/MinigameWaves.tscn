@@ -9,6 +9,11 @@
 [ext_resource type="Texture2D" uid="uid://xn6tauwpbkc3" path="res://assets/botton_j.png" id="7_odrtq"]
 [ext_resource type="Texture2D" uid="uid://2l038jrk0kiw" path="res://assets/botton_k.png" id="8_q5wui"]
 [ext_resource type="Texture2D" uid="uid://bokicppj6sgcq" path="res://assets/botton_l.png" id="9_krcoe"]
+[ext_resource type="Texture2D" uid="uid://cv6dvsfnfhtsj" path="res://assets/bubble/bubble_white_01.png" id="10_bj"]
+[ext_resource type="Texture2D" uid="uid://6ambdmct03o2" path="res://assets/bubble/bubble_green01.png" id="11_bk"]
+[ext_resource type="Texture2D" uid="uid://d20e26olaw2ap" path="res://assets/bubble/bubble_blue01.png" id="12_bl"]
+[ext_resource type="FontFile" uid="uid://l1viy35bm006" path="res://assets/fonts/RubikGlitch-Regular.ttf" id="2_font"]
+[ext_resource type="FontFile" path="res://assets/fonts/ChakraPetch-Bold.ttf" id="4_font"]
 
 [node name="MinigameWaves" type="Node2D" unique_id=1785144148]
 script = ExtResource("1_waves")
@@ -49,6 +54,7 @@ offset_top = -22.0
 offset_right = 280.0
 offset_bottom = 2.0
 theme_override_font_sizes/font_size = 14
+theme_override_fonts/font = ExtResource("4_font")
 text = "ANSIEDADE"
 
 [node name="Status" type="Label" parent="Canais/CanalJ" unique_id=1458333961]
@@ -101,6 +107,7 @@ offset_top = -26.0
 offset_right = 296.0
 offset_bottom = -2.0
 theme_override_font_sizes/font_size = 14
+theme_override_fonts/font = ExtResource("4_font")
 text = "TRISTEZA"
 
 [node name="Status" type="Label" parent="Canais/CanalK" unique_id=1197010645]
@@ -147,6 +154,7 @@ offset_top = -22.0
 offset_right = 280.0
 offset_bottom = 2.0
 theme_override_font_sizes/font_size = 14
+theme_override_fonts/font = ExtResource("4_font")
 text = "RAIVA"
 
 [node name="Status" type="Label" parent="Canais/CanalL" unique_id=1623545513]
@@ -165,6 +173,7 @@ offset_top = 26.0
 offset_right = 380.0
 offset_bottom = 56.0
 theme_override_font_sizes/font_size = 22
+theme_override_fonts/font = ExtResource("2_font")
 text = "EMOCIONAL
 "
 metadata/_edit_use_anchors_ = true
@@ -175,6 +184,7 @@ offset_top = 26.0
 offset_right = 620.0
 offset_bottom = 52.0
 theme_override_font_sizes/font_size = 20
+theme_override_fonts/font = ExtResource("4_font")
 text = "SCORE: 0"
 metadata/_edit_use_anchors_ = true
 
@@ -256,9 +266,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Descricao" type="Label" parent="HUD" unique_id=251146357]
 offset_left = 118.00001
-offset_top = 62.000004
+offset_top = 150.0
 offset_right = 632.0
-offset_bottom = 127.0
+offset_bottom = 215.0
 scale = Vector2(0.7, 0.7)
 theme_override_font_sizes/font_size = 22
 text = "\"Segure as teclas J K L para estabilizar as ondas!\""
@@ -283,16 +293,70 @@ base_player = NodePath("AudioStreamPlayer")
 stream = ExtResource("5_8t1mf")
 
 [node name="BottonJ" type="Sprite2D" parent="." unique_id=1104363368]
-position = Vector2(21, 156)
-scale = Vector2(0.1826087, 0.19130436)
+position = Vector2(48, 76)
+scale = Vector2(0.14, 0.14)
 texture = ExtResource("7_odrtq")
 
 [node name="BottonK" type="Sprite2D" parent="." unique_id=1678685488]
-position = Vector2(23.000002, 313.00003)
-scale = Vector2(0.2, 0.2)
+position = Vector2(92, 76)
+scale = Vector2(0.14, 0.14)
 texture = ExtResource("8_q5wui")
 
 [node name="BottonL" type="Sprite2D" parent="." unique_id=1733943134]
-position = Vector2(23.000015, 474)
-scale = Vector2(0.2, 0.2)
+position = Vector2(136, 76)
+scale = Vector2(0.14, 0.14)
 texture = ExtResource("9_krcoe")
+
+[node name="BolhaJ" type="Sprite2D" parent="." unique_id=1104363400]
+position = Vector2(24, 200)
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("10_bj")
+
+[node name="BolhaK" type="Sprite2D" parent="." unique_id=1104363401]
+position = Vector2(24, 360)
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("11_bk")
+
+[node name="BolhaL" type="Sprite2D" parent="." unique_id=1104363402]
+position = Vector2(24, 520)
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("12_bl")
+
+[node name="LetraJ" type="Label" parent="." unique_id=1104363410]
+offset_left = 4.0
+offset_top = 184.0
+offset_right = 44.0
+offset_bottom = 216.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 22
+text = "J"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LetraK" type="Label" parent="." unique_id=1104363411]
+offset_left = 4.0
+offset_top = 344.0
+offset_right = 44.0
+offset_bottom = 376.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 22
+text = "K"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LetraL" type="Label" parent="." unique_id=1104363412]
+offset_left = 4.0
+offset_top = 504.0
+offset_right = 44.0
+offset_bottom = 536.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 22
+text = "L"
+horizontal_alignment = 1
+vertical_alignment = 1

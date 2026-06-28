@@ -7,7 +7,7 @@
 header = "●  TUTORIAL — lado emocional"
 texto = ""
 esconder_arte = true
-proxima_cena = "res://scenes/PlotTwist.tscn"
+proxima_cena = "res://scenes/Tutorial2.tscn"
 
 [node name="Placeholder" parent="Software" parent_id_path=PackedInt32Array(434879675) index="7" unique_id=931311874]
 visible = false
@@ -35,7 +35,10 @@ PULL_NIVEL = 1.8
 PULL_AGIT = 1.6
 DRAIN = 22.0
 RED_THRESH = 0.62
+RATE_SCORE = 120.0
 TEMPO_LIMITE = 20.0
+autonomo = true
+proxima_cena = "res://scenes/Tutorial2.tscn"
 
 [node name="Instrucao" type="Label" parent="." index="5" unique_id=226189626]
 offset_left = 651.0
@@ -46,7 +49,7 @@ theme_override_colors/font_color = Color(0.7, 0.85, 1, 0.95)
 theme_override_font_sizes/font_size = 18
 text = "Primeiro, as ONDAS EMOCIONAIS.
 
-Segure  J  K  L  pra voltar pra zona calma.
+Segure  J  K  L  pra voltar pra zona calma, estabilizando as ondas de ANSIEDADE, TRISTEZA e RAIVA.
 
 Não deixe o RISCO DE COLAPSO encher."
 horizontal_alignment = 1
