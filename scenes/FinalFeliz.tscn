@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://c5ovsg5koi46s" path="res://assets/happy_ending.png" id="2_img"]
 
 [node name="FinalFeliz" instance=ExtResource("1_base")]
+mostrar_monitor = false
+escala_conteudo = 1.5
 texto = "João respirou. Disse 'não' pro deploy de sexta 18h, fechou o notebook e foi viver. O unicórnio que espere, ele escolheu ser uma pessoa inteira em vez de um recurso."
 imagem = ExtResource("2_img")
 

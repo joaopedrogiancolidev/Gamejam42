@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://dniqch4q8fttq" path="res://assets/final_emocao.png" id="2_img"]
 
 [node name="FinalEmocao" instance=ExtResource("1_base")]
+mostrar_monitor = false
+escala_conteudo = 1.5
 texto = "E no fim, o melhor jeito de resolver o bug foi deletando a startup da própria vida: João mandou o chefe e os prazos pro espaço, trocou as olheiras por um bronzeado e uma barba rala e foi ser feliz vendedora de arte física na praia. Agora, de bermuda florida em sua barraquinha sob o sol com o aviso \"I DON'T CODE ANYMORE\", ele sorri limpando a mente enquanto um teclado velho é levado pela maré da liberdade."
 imagem = ExtResource("2_img")
 

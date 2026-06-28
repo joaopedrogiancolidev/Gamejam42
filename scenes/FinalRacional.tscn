@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://c48nbqnje83p0" path="res://assets/final_racional.png" id="2_img"]
 
 [node name="FinalRacional" instance=ExtResource("1_base")]
+mostrar_monitor = false
+escala_conteudo = 1.5
 texto = "João entregou tudo: o legado domado, a demo no ar, metas batidas. O chefe postou no LinkedIn. O João virou um recurso eficiente — e esqueceu que existia vida fora da sprint."
 imagem = ExtResource("2_img")
 
