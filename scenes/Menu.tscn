@@ -33,6 +33,7 @@ offset_bottom = 720.0
 
 [node name="Titulo" type="Label" parent="Conteudo" unique_id=729010954]
 layout_mode = 0
+visible = false
 offset_top = 150.0
 offset_right = 1280.0
 offset_bottom = 240.0
@@ -41,11 +42,20 @@ theme_override_font_sizes/font_size = 76
 text = "CyberTerapia™"
 horizontal_alignment = 1
 
+[node name="LogoImg" type="TextureRect" parent="Conteudo" unique_id=729010955]
+layout_mode = 0
+offset_left = 190.0
+offset_top = 80.0
+offset_right = 1090.0
+offset_bottom = 380.0
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Tagline" type="Label" parent="Conteudo" unique_id=1820122755]
 layout_mode = 0
-offset_top = 250.0
+offset_top = 390.0
 offset_right = 1280.0
-offset_bottom = 284.0
+offset_bottom = 424.0
 theme_override_colors/font_color = Color(0.85, 0.85, 0.95, 0.85)
 theme_override_font_sizes/font_size = 24
 text = "by Sinapse.AI"
@@ -53,9 +63,9 @@ horizontal_alignment = 1
 
 [node name="Subtagline" type="Label" parent="Conteudo" unique_id=778171485]
 layout_mode = 0
-offset_top = 286.0
+offset_top = 426.0
 offset_right = 1280.0
-offset_bottom = 314.0
+offset_bottom = 454.0
 theme_override_colors/font_color = Color(0.6, 0.6, 0.75, 0.7)
 theme_override_font_sizes/font_size = 16
 text = "beta (muito beta)"

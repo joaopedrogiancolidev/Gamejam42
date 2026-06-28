@@ -27,6 +27,7 @@ var _t: float = 0.0
 func _ready() -> void:
 	_set_tex("Heads", "res://assets/background_2.png")
 	_set_tex("Cerebro", "res://assets/background.png")
+	_set_tex("Conteudo/LogoImg", "res://assets/logo.png")
 	# botões neon  (W A S D = razão/azul · I J K L = emoção/vermelho)
 	_set_tex("ComoJogarPainel/BtnW", "res://assets/botton_w.png")
 	_set_tex("ComoJogarPainel/BtnA", "res://assets/botton_a.png")

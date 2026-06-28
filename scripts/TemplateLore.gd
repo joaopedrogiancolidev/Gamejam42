@@ -24,19 +24,31 @@ extends Node2D
 @export var arte_placeholder: String = "[ ARTE AQUI ]"
 @export_file("*.tscn") var proxima_cena: String = ""
 
-@onready var _header: Label = $Software/Header
-@onready var _texto: Label = $Software/Conteudo/Texto
-@onready var _imagem: TextureRect = $Software/Imagem
-@onready var _placeholder: ColorRect = $Software/Placeholder
-@onready var _placeholder_desc: Label = $Software/Placeholder/Desc
-@onready var _continuar: Label = $Software/Conteudo/Continuar
+var _header: Label
+var _texto: Label
+var _imagem: TextureRect
+var _placeholder: ColorRect
+var _placeholder_desc: Label
+var _continuar: Label
 
 var _t: float = 0.0
 
 
 func _ready() -> void:
-	_header.text = header
-	_texto.text = texto
+	# suporta tanto a estrutura nova (nós dentro de Software)
+	# quanto a estrutura antiga (nós direto na raiz)
+	var sw := "Software/" if has_node("Software") else ""
+	_header          = get_node_or_null(sw + "Header")
+	_texto           = get_node_or_null(sw + "Conteudo/Texto")
+	_imagem          = get_node_or_null(sw + "Imagem")
+	_placeholder     = get_node_or_null(sw + "Placeholder")
+	_placeholder_desc = get_node_or_null(sw + "Placeholder/Desc")
+	_continuar       = get_node_or_null(sw + "Conteudo/Continuar")
+
+	if _header:
+		_header.text = header
+	if _texto:
+		_texto.text = texto
 	# moldura do "pc" (arte do monitor). Se assets/monitor.png existir,
 	# usa a imagem e esconde a borda desenhada (que é só fallback).
 	if ResourceLoader.exists("res://assets/monitor.png"):
@@ -45,14 +57,17 @@ func _ready() -> void:
 		$Monitor.visible = false
 	else:
 		$MonitorFrame.visible = false
-	if imagem:
+	if imagem and _imagem:
 		_imagem.texture = imagem
 		_imagem.visible = true
-		_placeholder.visible = false
-	else:
-		_imagem.visible = false
+		if _placeholder:
+			_placeholder.visible = false
+	elif _placeholder:
+		if _imagem:
+			_imagem.visible = false
 		_placeholder.visible = true
-		_placeholder_desc.text = arte_placeholder
+		if _placeholder_desc:
+			_placeholder_desc.text = arte_placeholder
 	# fade-in suave do conjunto
 	modulate = Color(1, 1, 1, 0)
 	var tw := create_tween()
@@ -60,7 +75,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	# pulso no "ENTER pra continuar"
+	if not _continuar:
+		return
 	_t += delta
 	var col: Color = _continuar.modulate
 	col.a = 0.55 + 0.45 * (0.5 + 0.5 * sin(_t * 3.0))
