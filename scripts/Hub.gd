@@ -98,6 +98,10 @@ func _avaliar() -> void:
 	var rac: int = dance.score
 	var emo: int = waves.score
 
+	# DEBUG: mostra os números reais que decidem o final (ver no painel Output)
+	print("[FINAL] racional=%d/%d  emocional=%d/%d  colapso=%.0f  tempo=%.1fs" % [
+		rac, dance.META, emo, waves.META, waves.colapso, tempo])
+
 	# 1) emocional não segurou a mente -> Colapso Mental
 	if emo < COLAPSO_MIN:
 		_terminar("gameover")
@@ -138,10 +142,9 @@ func _terminar(tipo: String) -> void:
 		sc.text = "Racional: %d%%      Emocional: %d%%" % [r, e]
 
 
-func _input(event: InputEvent) -> void:
-	if estado == "fim" and event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode in [KEY_ENTER, KEY_KP_ENTER, KEY_SPACE]:
-			_reiniciar()
+# OBS: no fim da partida, quem trata o ENTER é a própria cena de final
+# (TemplateLore -> proxima_cena = Menu). O Hub não reinicia mais no ENTER,
+# pra não conflitar com o "voltar ao menu".
 
 
 # para TODOS os sons da partida (música de fundo + qualquer player na árvore

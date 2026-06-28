@@ -10,6 +10,17 @@ texto = "Burnout em produção. A mente do João travou na sexta 18h e a CyberTe
 imagem = ExtResource("2_img")
 proxima_cena = "res://scenes/Menu.tscn"
 
+[node name="Variacao" type="Label" parent="Software/Conteudo"]
+offset_left = 300.0
+offset_top = 27.0
+offset_right = 688.0
+offset_bottom = 55.0
+theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 10
+text = "VARIAÇÃO GROTESCA PERCA TOTAL!"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="MonitorFrame" parent="." index="2" unique_id=886256351]
 visible = true
 

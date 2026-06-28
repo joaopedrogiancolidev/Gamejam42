@@ -82,6 +82,9 @@ func _input(event: InputEvent) -> void:
 			_comecar()
 		KEY_1, KEY_KP_1:
 			_painel.visible = true
+		KEY_2, KEY_KP_2:
+			# atalho: vai direto pro jogo (Hub), pulando intro/tutorial
+			get_tree().change_scene_to_file("res://scenes/Hub.tscn")
 
 
 func _comecar() -> void:

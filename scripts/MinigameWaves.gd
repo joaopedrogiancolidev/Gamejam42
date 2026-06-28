@@ -24,13 +24,13 @@ const AGIT_PX: float = 52.0
 # === DRIVERS DE DIFICULDADE EXTREMA ===
 @export var PULL_NIVEL: float = 2.4    
 @export var PULL_AGIT: float = 2.2
-@export var DRAIN: float = 19.6        # perda de foco -20% e depois -30% (era 35.0 -> 28.0)
+@export var DRAIN: float = 15.68       # gasto de foco -20% (era 35.0 -> 28.0 -> 19.6 -> 15.68)
 @export var RECUP_FOCO: float = 18.0   
 @export var RED_THRESH: float = 0.50  
 @export var RATE_SCORE: float = 2000.0 / 60.0  # enche a barra por TEMPO: 2000 em 60s (objetivo = aguentar 60s)
 
 const DIFICULDADE_MULT: float = 0.5616 # PUNIÇÃO (dreno/colapso/limiar). -10% de dificuldade (era 0.624)
-const ONDA_FORCA: float = 0.744 # força da ondulação por perturbação (+20%, era 0.62)
+const ONDA_FORCA: float = 0.6696 # índice/força das ondas -10% (era 0.744)
 const FREQ_MULT: float = 1.2    # frequência das perturbações (+20% mais frequentes)
 
 # --- contrato com o Hub ---
@@ -309,7 +309,7 @@ func _atualizar_logica(delta: float) -> void:
 			soma_dano += (b - red_thresh_ajustado)
 			
 	if soma_dano > 0.0:
-		colapso = minf(100.0, colapso + soma_dano * 35.0 * DIFICULDADE_MULT * delta)
+		colapso = minf(100.0, colapso + soma_dano * 14.0 * DIFICULDADE_MULT * delta)
 	elif pior < 0.45:
 		colapso = maxf(0.0, colapso - 20.0 * (1.0 + (1.0 - DIFICULDADE_MULT)) * delta)
 
