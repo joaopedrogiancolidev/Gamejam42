@@ -70,12 +70,12 @@ var CANAIS := [
 ]
 
 const FALAS := [
-	"...não consigo desligar a cabeça.",
-	"...sinto que decepciono todos.",
-	"...tem dias que nada importa.",
-	"...por que sempre comigo?",
-	"...eu devia estar melhor.",
+	"...ganho menos que um atendente de OXXO, com zero benefícios.",
+	"...'é rapidinho' faz três horas.",
+	"...esse código não tem salvação, só contenção.",
+	"...home office só quando ele 'sentir a energia do time'.",
 	"...não sei se isso adianta.",
+	"...equity de empresa que não fatura é só um print bonito."
 ]
 
 var tempo: float = 0.0
