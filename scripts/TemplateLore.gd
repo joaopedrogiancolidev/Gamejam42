@@ -22,6 +22,10 @@ extends Node2D
 @export_multiline var texto: String = "João respirou. Disse 'não' pro deploy de sexta 18h, fechou o notebook e foi viver. O unicórnio que espere, ele escolheu ser uma pessoa inteira em vez de um recurso."
 @export var imagem: Texture2D
 @export var arte_placeholder: String = "[ ARTE AQUI ]"
+# Esconde a área de arte (imagem + placeholder). Útil quando a telinha
+# vai abrigar OUTRA coisa no lugar — ex.: o Tutorial2 roda o minigame
+# Dance dentro do monitor. Desligado por padrão: não afeta as demais telas.
+@export var esconder_arte: bool = false
 @export_file("*.tscn") var proxima_cena: String = ""
 
 var _header: Label
@@ -67,7 +71,13 @@ func _ready() -> void:
 		$Monitor.visible = false
 	else:
 		$MonitorFrame.visible = false
-	if imagem and _imagem:
+	if esconder_arte:
+		# a telinha vira só moldura + texto; outra coisa ocupa o espaço
+		if _imagem:
+			_imagem.visible = false
+		if _placeholder:
+			_placeholder.visible = false
+	elif imagem and _imagem:
 		_imagem.texture = imagem
 		_imagem.visible = true
 		if _placeholder:

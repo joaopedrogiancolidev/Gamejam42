@@ -37,7 +37,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AlvoS" type="Node2D" parent="Alvos" unique_id=100000017]
-position = Vector2(320, 530)
+position = Vector2(320, 250)
 
 [node name="Tecla" type="Label" parent="Alvos/AlvoS" unique_id=100000018]
 offset_left = -20.0

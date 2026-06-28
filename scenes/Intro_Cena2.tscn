@@ -4,6 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://bebh0dwep5jev" path="res://assets/2.png" id="2_img"]
 
 [node name="Intro_Cena2" instance=ExtResource("1_base")]
-texto = "Sem tempo para testes seguros, João decide ser o próprio herói (ou a própria cobaia). Com as mãos tremendo mais que ponteiro de relógio velho, ele enfia na cabeça um capacete retrofuturista gigante cheio de cabos grossos conectados ao PC. A tela já começa a piscar uns erros bem sinistros em vermelho. Na prateleira, até o mascote de unicórnio parece olhar com cara de julgamento. João respira fundo, ignora os avisos de perigo e dá o famigerado play direto no próprio cérebro."
+texto = "Sem tempo para testes seguros, João decide ser o próprio herói (ou a própria cobaia). Com as mãos tremendo, ele enfia na cabeça um capacete retrofuturista gigante cheio de cabos grossos conectados ao PC. A tela já começa a piscar uns erros bem sinistros em vermelho. Na prateleira, até o mascote de unicórnio parece olhar com cara de julgamento. João respira fundo, ignora os avisos de perigo e dá o famigerado play direto no próprio cérebro."
 imagem = ExtResource("2_img")
 proxima_cena = "res://scenes/Intro_Cena3.tscn"

@@ -1,11 +1,48 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://b50ifuyqluaq7"]
 
-[ext_resource type="PackedScene" path="res://scenes/TemplateLore.tscn" id="1_base"]
+[ext_resource type="PackedScene" uid="uid://cb6o0dkp1x5xd" path="res://scenes/TemplateLore.tscn" id="1_base"]
+[ext_resource type="PackedScene" uid="uid://ddo67vb1yguwj" path="res://scenes/MinigameDance.tscn" id="2_dance"]
 
-[node name="Tutorial2" instance=ExtResource("1_base")]
-header = "●  TUTORIAL — lado racional"
-texto = "Agora o RITMO RACIONAL.
-No tempo certo, aperte W A S D pra executar as tarefas no ritmo.
-Mandar bem em sequência = COMBO."
-arte_placeholder = "[ aqui roda o minigame DANCE em modo fácil ]"
-proxima_cena = "res://scenes/Lore2.tscn"
+[node name="Tutorial2" unique_id=1768778737 instance=ExtResource("1_base")]
+header = "●  TUTORIAL — ritmo racional"
+texto = ""
+esconder_arte = true
+
+[node name="Placeholder" parent="Software" parent_id_path=PackedInt32Array(434879675) index="7" unique_id=931311874]
+visible = false
+
+[node name="Titulo" parent="Software/Placeholder" index="0" unique_id=135157807]
+visible = false
+
+[node name="Desc" parent="Software/Placeholder" index="1" unique_id=1048017954]
+visible = false
+
+[node name="Texto" parent="Software/Conteudo" parent_id_path=PackedInt32Array(329387098) index="0" unique_id=2123188344]
+visible = false
+offset_left = 601.11115
+
+[node name="Continuar" parent="Software/Conteudo" parent_id_path=PackedInt32Array(329387098) index="1" unique_id=1956556048]
+offset_left = 491.11108
+offset_top = 417.7778
+offset_right = 728.6666
+offset_bottom = 444.7778
+
+[node name="Dance" parent="." index="4" unique_id=254203455 instance=ExtResource("2_dance")]
+position = Vector2(320, 200)
+scale = Vector2(0.54, 0.54)
+BEAT_INICIAL = 4.0
+META = 1500
+autonomo = true
+proxima_cena = "res://scenes/Hub.tscn"
+
+[node name="Instrucao" type="Label" parent="." index="5" unique_id=226189625]
+offset_left = 734.0
+offset_top = 271.0
+offset_right = 948.0
+offset_bottom = 349.0
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 0.95)
+theme_override_font_sizes/font_size = 18
+text = "No tempo certo, aperte  A  S  D  no ritmo.  Em sequência = COMBO."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
