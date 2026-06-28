@@ -4,6 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://mwcasrcv0krb" path="res://assets/1.png" id="2_img"]
 
 [node name="Intro_Cena1" instance=ExtResource("1_base")]
-texto = "A salinha da startup tá um caos de canecas de café vazias e puro suco de desespero. O chefe, de terno e tudo, tá praticamente debruçado na mesa do João, apontando para o monitor com aquela cara de \"é pra ontem!\". Na tela, brilha o anúncio: \"CyberTerapia™ - PRONTO PARA O LANÇAMENTO?\". O João, que já tá com umas olheiras que parecem maquiagem de guaxinim de tanto programar, só consegue encarar os pixels sabendo que o código tá mais remendado que calça de festa junina. Mas prazo é prazo, né?"
+texto = "A salinha da startup tá um caos de canecas de café vazias e puro suco de desespero. O chefe, tá praticamente debruçado na mesa do João, apontando para o monitor com aquela cara de \"é pra ontem!\". Na tela, brilha o anúncio: \"CyberTerapia™ - PRONTO PARA O LANÇAMENTO?\". O João, que já tá com umas olheiras que parecem maquiagem de guaxinim de tanto programar, só consegue encarar os pixels sabendo que o código tá mais remendado que calça de festa junina. Mas prazo é prazo, né?"
 imagem = ExtResource("2_img")
 proxima_cena = "res://scenes/Intro_Cena2.tscn"

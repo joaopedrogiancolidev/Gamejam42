@@ -85,4 +85,4 @@ func _input(event: InputEvent) -> void:
 
 
 func _comecar() -> void:
-	get_tree().change_scene_to_file("res://scenes/Lore1.tscn")
+	get_tree().change_scene_to_file("res://scenes/Intro_Cena1.tscn")
