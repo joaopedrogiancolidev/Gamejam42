@@ -270,6 +270,222 @@ theme_override_font_sizes/font_size = 20
 text = "VOLTAR"
 vertical_alignment = 1
 
+[node name="Btn3" type="TextureRect" parent="Conteudo" unique_id=812345678]
+layout_mode = 0
+offset_left = 480.0
+offset_top = 651.0
+offset_right = 522.0
+offset_bottom = 693.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CreditosHint" type="Label" parent="Conteudo" unique_id=812345679]
+layout_mode = 0
+offset_left = 529.0
+offset_top = 662.0
+offset_right = 849.0
+offset_bottom = 694.0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.85, 0.85)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "CRÉDITOS"
+vertical_alignment = 1
+
+[node name="CreditosPainel" type="Control" parent="." unique_id=812345680]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="Escurecer" type="ColorRect" parent="CreditosPainel" unique_id=812345681]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(0, 0, 0, 0.85)
+
+[node name="Titulo" type="Label" parent="CreditosPainel" unique_id=812345682]
+layout_mode = 0
+offset_top = 80.0
+offset_right = 1280.0
+offset_bottom = 114.0
+theme_override_colors/font_color = Color(0.247, 0.816, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 30
+text = "CRÉDITOS"
+horizontal_alignment = 1
+
+[node name="TituloSub" type="Label" parent="CreditosPainel" unique_id=812345683]
+layout_mode = 0
+offset_top = 116.0
+offset_right = 1280.0
+offset_bottom = 134.0
+theme_override_colors/font_color = Color(0.85, 0.85, 0.95, 0.5)
+theme_override_font_sizes/font_size = 15
+text = "Sinapse.AI — GameJam 2025"
+horizontal_alignment = 1
+
+[node name="SecaoTime" type="Label" parent="CreditosPainel" unique_id=812345691]
+layout_mode = 0
+offset_top = 150.0
+offset_right = 1280.0
+offset_bottom = 164.0
+theme_override_colors/font_color = Color(0.247, 0.816, 1, 0.55)
+theme_override_font_sizes/font_size = 12
+text = "TIME"
+horizontal_alignment = 1
+
+[node name="NomeDanilo" type="Label" parent="CreditosPainel" unique_id=812345684]
+layout_mode = 0
+offset_top = 168.0
+offset_right = 1280.0
+offset_bottom = 188.0
+theme_override_colors/font_color = Color(0.9, 0.9, 1, 0.88)
+theme_override_font_sizes/font_size = 19
+text = "Danilo Pinheiro"
+horizontal_alignment = 1
+
+[node name="NomeJoao" type="Label" parent="CreditosPainel" unique_id=812345685]
+layout_mode = 0
+offset_top = 192.0
+offset_right = 1280.0
+offset_bottom = 212.0
+theme_override_colors/font_color = Color(0.9, 0.9, 1, 0.88)
+theme_override_font_sizes/font_size = 19
+text = "João Pedro Giancoli"
+horizontal_alignment = 1
+
+[node name="NomeLeticia" type="Label" parent="CreditosPainel" unique_id=812345686]
+layout_mode = 0
+offset_top = 216.0
+offset_right = 1280.0
+offset_bottom = 236.0
+theme_override_colors/font_color = Color(0.9, 0.9, 1, 0.88)
+theme_override_font_sizes/font_size = 19
+text = "Letícia Moneda"
+horizontal_alignment = 1
+
+[node name="NomeNicolas" type="Label" parent="CreditosPainel" unique_id=812345687]
+layout_mode = 0
+offset_top = 240.0
+offset_right = 1280.0
+offset_bottom = 260.0
+theme_override_colors/font_color = Color(0.9, 0.9, 1, 0.88)
+theme_override_font_sizes/font_size = 19
+text = "Nicolas Santana"
+horizontal_alignment = 1
+
+[node name="NomeRamis" type="Label" parent="CreditosPainel" unique_id=812345688]
+layout_mode = 0
+offset_top = 264.0
+offset_right = 1280.0
+offset_bottom = 284.0
+theme_override_colors/font_color = Color(0.9, 0.9, 1, 0.88)
+theme_override_font_sizes/font_size = 19
+text = "Ramis Damasceno"
+horizontal_alignment = 1
+
+[node name="SecaoMusica" type="Label" parent="CreditosPainel" unique_id=812345692]
+layout_mode = 0
+offset_top = 304.0
+offset_right = 1280.0
+offset_bottom = 318.0
+theme_override_colors/font_color = Color(0.247, 0.816, 1, 0.55)
+theme_override_font_sizes/font_size = 12
+text = "MÚSICA"
+horizontal_alignment = 1
+
+[node name="MusicaBurnout" type="Label" parent="CreditosPainel" unique_id=812345693]
+layout_mode = 0
+offset_top = 322.0
+offset_right = 1280.0
+offset_bottom = 338.0
+theme_override_colors/font_color = Color(0.75, 0.75, 0.88, 0.65)
+theme_override_font_sizes/font_size = 13
+text = "BURNOUT  ·  Anonymous420  ·  Free Music Archive  ·  CC BY 4.0"
+horizontal_alignment = 1
+
+[node name="MusicaUltrazero" type="Label" parent="CreditosPainel" unique_id=812345694]
+layout_mode = 0
+offset_top = 342.0
+offset_right = 1280.0
+offset_bottom = 358.0
+theme_override_colors/font_color = Color(0.75, 0.75, 0.88, 0.65)
+theme_override_font_sizes/font_size = 13
+text = "Ultrazero  ·  Artur Aravidi  ·  Free Music Archive  ·  CC BY-NC 4.0"
+horizontal_alignment = 1
+
+[node name="MusicaRAM" type="Label" parent="CreditosPainel" unique_id=812345695]
+layout_mode = 0
+offset_top = 362.0
+offset_right = 1280.0
+offset_bottom = 378.0
+theme_override_colors/font_color = Color(0.75, 0.75, 0.88, 0.65)
+theme_override_font_sizes/font_size = 13
+text = "RAM  ·  Zeta  ·  Free Music Archive  ·  CC BY-NC-SA 3.0"
+horizontal_alignment = 1
+
+[node name="SecaoSFX" type="Label" parent="CreditosPainel" unique_id=812345696]
+layout_mode = 0
+offset_top = 396.0
+offset_right = 1280.0
+offset_bottom = 410.0
+theme_override_colors/font_color = Color(0.247, 0.816, 1, 0.55)
+theme_override_font_sizes/font_size = 12
+text = "SFX"
+horizontal_alignment = 1
+
+[node name="SFXThud" type="Label" parent="CreditosPainel" unique_id=812345697]
+layout_mode = 0
+offset_top = 414.0
+offset_right = 1280.0
+offset_bottom = 430.0
+theme_override_colors/font_color = Color(0.75, 0.75, 0.88, 0.65)
+theme_override_font_sizes/font_size = 13
+text = "Thud-dry  ·  juskiddink  ·  Freesound  ·  CC BY 4.0"
+horizontal_alignment = 1
+
+[node name="SFXClap" type="Label" parent="CreditosPainel" unique_id=812345698]
+layout_mode = 0
+offset_top = 434.0
+offset_right = 1280.0
+offset_bottom = 450.0
+theme_override_colors/font_color = Color(0.75, 0.75, 0.88, 0.65)
+theme_override_font_sizes/font_size = 13
+text = "clapsticks  ·  Anton  ·  Freesound  ·  CC BY 4.0"
+horizontal_alignment = 1
+
+[node name="SFXWelove" type="Label" parent="CreditosPainel" unique_id=812345699]
+layout_mode = 0
+offset_top = 454.0
+offset_right = 1280.0
+offset_bottom = 470.0
+theme_override_colors/font_color = Color(0.75, 0.75, 0.88, 0.65)
+theme_override_font_sizes/font_size = 13
+text = "Outros SFX  ·  weloveindies.com"
+horizontal_alignment = 1
+
+[node name="BtnVoltar" type="TextureRect" parent="CreditosPainel" unique_id=812345689]
+layout_mode = 0
+offset_left = 553.0
+offset_top = 554.0
+offset_right = 595.0
+offset_bottom = 596.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CloseHint" type="Label" parent="CreditosPainel" unique_id=812345690]
+layout_mode = 0
+offset_left = 603.0
+offset_top = 556.0
+offset_right = 750.0
+offset_bottom = 591.0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.85, 0.7)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "VOLTAR"
+vertical_alignment = 1
+
 [node name="bg_music" type="AudioStreamPlayer" parent="." unique_id=174616843]
 stream = ExtResource("3_11y2r")
 bus = &"Music"
