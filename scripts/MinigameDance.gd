@@ -38,6 +38,16 @@ extends Node2D
 var score: int = 0
 var ativo: bool = true
 var falhou: bool = false
+# congelado por glitch do tipo "segurar": os botões deste lado travam
+# (não jogam nem pontuam) até o OUTRO jogador consertar. É separado de
+# `ativo` (que significa "ainda está na partida").
+var travado: bool = false:
+	set(v):
+		travado = v
+		if v:
+			for a in ALVOS:
+				a.held = false
+				a.flash = 0.0
 
 # --- Modo autônomo (tutorial / rodar fora do Hub) ---
 # DESLIGADO por padrão: no Hub continua tudo igual, o Hub manda no fim.
@@ -178,9 +188,10 @@ func _process(delta: float) -> void:
 	_aplicar_visual()
 	queue_redraw()
 
-	if not ativo:
-		# autônomo: terminou (bateu META) -> segue sozinho depois de um respiro
-		if autonomo:
+	if not ativo or travado:
+		# autônomo: terminou (bateu META) -> segue sozinho depois de um respiro.
+		# só quando ACABOU de verdade (not ativo), nunca no freeze do glitch.
+		if autonomo and not ativo:
 			_fim_t += delta
 			if _fim_t > 2.0:
 				_ir_proxima()
@@ -257,7 +268,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode in [KEY_ENTER, KEY_KP_ENTER, KEY_ESCAPE]:
 			_ir_proxima()
 			return
-	if not ativo or not (event is InputEventKey) or event.echo:
+	if not ativo or travado or not (event is InputEventKey) or event.echo:
 		return
 	for i in ALVOS.size():
 		if event.keycode == ALVOS[i].code:

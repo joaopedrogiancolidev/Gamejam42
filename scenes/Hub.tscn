@@ -1,67 +1,56 @@
 [gd_scene format=3 uid="uid://doyr84gsem0lm"]
 
-[ext_resource type="Script" uid="uid://bxqum3ym5r0k2" path="res://scripts/Hub.gd" id="1_hub"]
-[ext_resource type="PackedScene" uid="uid://ddo67vb1yguwj" path="res://scenes/MinigameDance.tscn" id="2_dance"]
-[ext_resource type="PackedScene" uid="uid://ddo67vclyoxcj" path="res://scenes/MinigameWaves.tscn" id="3_waves"]
-[ext_resource type="Script" uid="uid://cv0t765ay2tka" path="res://scripts/Overlay.gd" id="4_overlay"]
-[ext_resource type="AudioStream" uid="uid://bwswl0pgqsgh4" path="res://assets/music/Zeta - RAM.mp3" id="5_1t77w"]
-[ext_resource type="Texture2D" uid="uid://c4q2iaj4rbw65" path="res://assets/background_2.png" id="6_tm630"]
-[ext_resource type="Script" uid="uid://duy5xnb1kipxt" path="res://scripts/GlitchManager.gd" id="7_glitch"]
-[ext_resource type="PackedScene" uid="uid://cjeo7xgeaift7" path="res://scenes/MonitorUI.tscn" id="8_6grgh"]
+[ext_resource type="Script" uid="uid://rsnn36ujnd8" path="res://scripts/HubScreen.gd" id="1_screen"]
+[ext_resource type="PackedScene" uid="uid://cjeo7xgeaift7" path="res://scenes/MonitorUI.tscn" id="2_mon"]
+[ext_resource type="PackedScene" uid="uid://dleab4w55yc4a" path="res://scenes/GameWorld.tscn" id="3_game"]
 
-[node name="Hub" type="Node2D" unique_id=454329926]
-script = ExtResource("1_hub")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_screen"]
+bg_color = Color(0.024, 0.024, 0.051, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.35, 0.85, 1, 0.9)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
 
-[node name="Dance" parent="." unique_id=2128673391 instance=ExtResource("2_dance")]
-position = Vector2(0, 144)
-scale = Vector2(1, 0.8)
+[sub_resource type="ViewportTexture" id="ViewportTexture_game"]
+viewport_path = NodePath("GameViewport")
 
-[node name="Waves" parent="." unique_id=223587648 instance=ExtResource("3_waves")]
-position = Vector2(640, 144)
-scale = Vector2(1, 0.8)
+[node name="Hub" type="Node2D" unique_id=1651025321]
+script = ExtResource("1_screen")
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=583181739]
+[node name="GameViewport" type="SubViewport" parent="." unique_id=1690215129]
+disable_3d = true
+audio_listener_enable_2d = true
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
 
-[node name="Overlay" type="Node2D" parent="UI" unique_id=100183938]
-script = ExtResource("4_overlay")
+[node name="GameWorld" parent="GameViewport" unique_id=958487890 instance=ExtResource("3_game")]
 
-[node name="Moldura" type="Line2D" parent="UI/Overlay" unique_id=162615781]
-points = PackedVector2Array(0, 144, 1280, 144)
-width = 2.0
-default_color = Color(0.4, 0.4, 0.6, 0.25)
+[node name="MonitorUI" parent="." unique_id=356048547 instance=ExtResource("2_mon")]
 
-[node name="Divisoria" type="ColorRect" parent="UI/Overlay" unique_id=121702667]
-offset_left = 639.0
-offset_top = 144.0
-offset_right = 641.0
-offset_bottom = 720.0
-color = Color(0.5, 0.4, 0.8, 0.5)
+[node name="GameScreen" type="Panel" parent="." unique_id=1855996566]
+clip_children = 2
+offset_left = 210.0
+offset_top = 113.0
+offset_right = 1075.0
+offset_bottom = 623.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_screen")
 
-[node name="Cronometro" type="Label" parent="UI/Overlay" unique_id=2125937120]
-offset_top = 92.0
-offset_right = 1280.0
-offset_bottom = 132.0
-pivot_offset = Vector2(640, 112)
-theme_override_font_sizes/font_size = 30
-text = "30"
-horizontal_alignment = 1
-
-[node name="GlitchManager" type="Node2D" parent="UI" unique_id=778451293]
-script = ExtResource("7_glitch")
-
-[node name="bg_music" type="AudioStreamPlayer" parent="." unique_id=1073164063]
-stream = ExtResource("5_1t77w")
-volume_db = -10.0
-bus = &"Music"
-parameters/looping = true
-
-[node name="Background2" type="Sprite2D" parent="." unique_id=526787624]
-self_modulate = Color(1, 1, 1, 0.27450982)
-position = Vector2(638, 373)
-scale = Vector2(0.3641676, 0.27298388)
-texture = ExtResource("6_tm630")
-
-[node name="Node2D" type="Node2D" parent="." unique_id=18693503]
-
-[node name="MonitorUI" parent="Node2D" unique_id=820683137 instance=ExtResource("8_6grgh")]
-visible = false
+[node name="Tela" type="TextureRect" parent="GameScreen" unique_id=478118231]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = 10.0
+offset_right = 18.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_game")
+expand_mode = 1
+stretch_mode = 5
